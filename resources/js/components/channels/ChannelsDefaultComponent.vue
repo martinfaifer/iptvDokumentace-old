@@ -1,0 +1,12 @@
+<template>
+  <div>
+    <br />
+
+    <div>
+      <div class="rightFromSIdePanel">
+        <span class="display-1">Vyberte kanál z menu vlevo...</span>
+      </div>
+    </div>
+  </div>
+</template>
+

@@ -1,0 +1,100 @@
+  /* Animace */
+  .fade-enter-active,
+  .fade-leave-active {
+      transition-duration: 0.2s;
+      transition-property: opacity;
+      transition-timing-function: ease;
+  }
+
+  .fade-enter,
+  .fade-leave-active {
+      opacity: 0
+  }
+
+  .custom-loader {
+      animation: loader 1s infinite;
+      display: flex;
+  }
+
+  @-moz-keyframes loader {
+      from {
+          transform: rotate(0);
+      }
+
+      to {
+          transform: rotate(360deg);
+      }
+  }
+
+  @-webkit-keyframes loader {
+      from {
+          transform: rotate(0);
+      }
+
+      to {
+          transform: rotate(360deg);
+      }
+  }
+
+  @-o-keyframes loader {
+      from {
+          transform: rotate(0);
+      }
+
+      to {
+          transform: rotate(360deg);
+      }
+  }
+
+  @keyframes loader {
+      from {
+          transform: rotate(0);
+      }
+
+      to {
+          transform: rotate(360deg);
+      }
+  }
+
+  /* Konec animaci */
+
+  .little_right {
+      margin-left: 40%;
+  }
+
+  /* Settings */
+  .rightFromSIdePanel {
+      margin-left: 8%;
+      /* margin-top: -10%; */
+      position: relative;
+  }
+
+  .rightFromSidePanelSettings {
+      margin-left: 16%;
+      /* margin-top: -10%; */
+      position: relative;
+  }
+
+  .dashboardSearch {
+      margin-left: 8%;
+  }
+
+
+  /* Alert Div */
+  #alertDiv {
+      padding-top: 10px;
+      width: 20%;
+      left: 75%;
+      /* width: 10px; */
+      position: fixed;
+      z-index: 1;
+  }
+
+  .mt_6 {
+      margin-top: 6rem;
+  }
+
+  /* COLORS */
+  .bg-grey {
+      background-color: grey lighten-5;
+  }
