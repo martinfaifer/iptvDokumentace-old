@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- <link rel="shortcut icon" href="img/icon/favicon.ico" type="image/x-icon"> --}}
     <title>{{ config('app.name', 'TV dokumentace') }}</title>
-
+    <link rel="shortcut icon" href="img/icon/favicon.ico" type="image/x-icon">
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->

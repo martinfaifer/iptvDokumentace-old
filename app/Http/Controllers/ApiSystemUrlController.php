@@ -9,35 +9,24 @@ use Illuminate\Http\Request;
 
 class ApiSystemUrlController extends Controller
 {
-    public static function getNahledFromDohled($channelUrl)
+    public static function getNahledFromDohled($channel)
     {
         // ziskáme pole s url
         $dohled = ApiSystemUrl::where('type', "dohled")->first();
 
+        $channelName = str_replace(" ", "%20", $channel);
+
         if ($dohled == false) {
             return "false";
         } else {
-            $client = new Client;
 
-            $response = $client->post('http://' . $dohled->url . '/api/getDetail', [
-
-                'form_params' => [
-                    'url' => $channelUrl,
-                ]
-            ]);
-
-            if ($body = $response->getBody()->getContents()) {
-                $bodyParse = explode(",", $body);
-                $imgParse = $bodyParse[21];
-                $data1 = str_replace("\"img\":", "", $imgParse);
-                $data = str_replace("\"", "", $data1);
-                $output = str_replace("\\", "", $data);
-
-                if ($output == "false") {
-                    return "false";
-                } else {
-                    return $dohled->url . $output;
-                }
+            // získání skrz API url, kde se nachází obrázek (náhled)
+            $imgUrl = file_get_contents('http://' . $dohled->url . '/api/channel/nahled/' . $channelName);
+            if ($dohled->url . "false" == $dohled->url . $imgUrl) {
+                // nenačetl se obrazek => false
+                return "false";
+            } else {
+                return $dohled->url . $imgUrl;
             }
         }
     }
@@ -123,36 +112,20 @@ class ApiSystemUrlController extends Controller
     }
 
     /**
-     * testovací fn
+     * fn pro získání kvalit a bitratu, pro h264 a H265
      *
      * @return void
      */
-    public function apiTest()
+    public function getKvalityFromTranscoder()
     {
-
-        // ziskáme pole s url
-        $dohled = ApiSystemUrl::where('type', "dohled")->first();
-
-        if ($dohled == false) {
+        $apiUrl = ApiSystemUrl::where('type', "transcoder")->first();
+        if ($apiUrl == false) {
             return "false";
         } else {
-            $client = new Client;
 
-            $response = $client->post('http://' . $dohled->url . '/api/channel/historyData', [
+            $json = json_decode(file_get_contents('http://' . $apiUrl->url . '/api/getKvalities'), true);
 
-                'form_params' => [
-                    'channel_id' => "HBO",
-                ]
-            ]);
-
-
-            if ($body = $response->getBody()->getContents()) {
-                // $bodyParse = explode(",", $body);
-                print_r($response);
-                // $nameParse = $bodyParse[1];
-                // $nazev = str_replace("\"nazev\":", "", $nameParse);
-                // return $nazev;
-            }
+            return $json;
         }
     }
 }

@@ -1,6 +1,8 @@
 <template>
   <div>
     <br />
+    <br />
+    <br />
 
     <div>
       <div class="rightFromSIdePanel">

@@ -113,7 +113,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="editChannelName = false">Zavřít</v-btn>
-            <v-btn color="blue darken-1" text @click="channelNameEdit()">Uložit</v-btn>
+            <v-btn color="green darken-1" text @click="channelNameEdit()">Uložit</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -146,7 +146,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="editChannelISP = false">Zavřít</v-btn>
-            <v-btn color="blue darken-1" text @click="channelIspEdit()">Uložit</v-btn>
+            <v-btn color="green darken-1" text @click="channelIspEdit()">Uložit</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -184,7 +184,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="modalProNovyMulticast = false">Zavřít</v-btn>
-            <v-btn color="blue darken-1" text @click="addNewMulticast()">Uložit</v-btn>
+            <v-btn color="green darken-1" text @click="addNewMulticast()">Uložit</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -244,7 +244,7 @@
                   <v-spacer></v-spacer>
                   <v-btn
                     v-if="userData.role === '1' || userData.role === '2'"
-                    color="blue darken-1"
+                    color="red darken-1"
                     text
                     @click="deleteChannelISP = false"
                   >Zavřít</v-btn>
@@ -286,7 +286,7 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn color="blue darken-1" text @click="editChannelISP = false">Zavřít</v-btn>
-                  <v-btn color="blue darken-1" text @click="channelIspEdit()">Uložit</v-btn>
+                  <v-btn color="green darken-1" text @click="channelIspEdit()">Uložit</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -581,7 +581,7 @@
       </div>
 
       <!-- náhled -->
-      <v-row v-if="history !== 'false'">
+      <v-row>
         <v-card v-if="channelData.img !== 'false'" class="ma-6" width="400" outlined>
           <v-list-item>
             <v-list-item-content>
@@ -607,23 +607,41 @@
         </v-card>
         <!-- konec náhledu -->
         <!-- historie -->
-        <v-card v-if="history !== ''" class="ma-6" width="900" height="300px" outlined>
-          <v-simple-table height="300px">
-            <template v-slot:default>
-              <thead>
-                <tr>
-                  <th class="text-left">Status</th>
-                  <th class="text-left">Čas</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="data in history" :key="data.id">
-                  <td>{{ data.akce }}</td>
-                  <td>{{ data.created_at }}</td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
+        <v-card v-if="history === 'false'" class="ma-6" width="900" height="300px" outlined>
+          <v-list-item>
+            <v-list-item-content>
+              <v-card-text>
+                <v-row>
+                  <p>Na kanálu nebyl za poslední měsíc žádný výpadek.</p>
+                </v-row>
+              </v-card-text>
+            </v-list-item-content>
+          </v-list-item>
+        </v-card>
+        <v-card v-else-if="history !== ''" class="ma-6" width="900" height="300px" outlined>
+          <v-list-item>
+            <v-list-item-content>
+              <div class="overline mb-4">Náhled za poslední měsíc, kdy měl kanál výpadek</div>
+              <v-card-text>
+                <v-simple-table height="200px">
+                  <template v-slot:default>
+                    <thead>
+                      <tr>
+                        <th class="text-left">Status</th>
+                        <th class="text-left">Čas</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="data in history" :key="data.id">
+                        <td>{{ data.akce }}</td>
+                        <td>{{ data.created_at }}</td>
+                      </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
+              </v-card-text>
+            </v-list-item-content>
+          </v-list-item>
         </v-card>
         <v-card v-else loading class="ma-6" width="900" height="300px" outlined>
           <v-list-item>
@@ -637,11 +655,6 @@
           </v-list-item>
         </v-card>
         <!-- konec historie -->
-      </v-row>
-      <v-row v-else>
-        <v-alert class="ml-6" type="warning" width="1600">
-          <strong>Kanál nebyl nalezen na dohledu, zkontrolujte prosím název kanálu zda je shodný s dohledem</strong>
-        </v-alert>
       </v-row>
       <!-- modal multiplexer -->
 
@@ -666,7 +679,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="editMultiplexer = false">Zavřít</v-btn>
-              <v-btn color="blue darken-1" text @click="saveMultiplexer()">Uložit</v-btn>
+              <v-btn color="green darken-1" text @click="saveMultiplexer()">Uložit</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -718,7 +731,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeSatelit()">Zavřít</v-btn>
-              <v-btn color="blue darken-1" text @click="savePrijem()">Uložit</v-btn>
+              <v-btn color="green darken-1" text @click="savePrijem()">Uložit</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -731,6 +744,7 @@
 export default {
   data() {
     return {
+      image: "",
       isp: "",
       isps: "",
       multiplexers: "",
@@ -816,6 +830,17 @@ export default {
       .catch(function(error) {
         console.log("chyba" + error);
       });
+
+    // axios
+    //   .post("/api/channel/getNahled", {
+    //     id: this.$route.params.id
+    //   })
+    //   .then(function(response) {
+    //     currentObj.image = response.data;
+    //   })
+    //   .catch(function(error) {
+    //     console.log("chyba" + error);
+    //   });
   },
   methods: {
     //   zavreni modal okna pro pridani prijimace a smazani vsech hodnot
@@ -1129,6 +1154,22 @@ export default {
       );
     },
 
+    // image: function() {
+    //   setTimeout(
+    //     function() {
+    //       let currentObj = this;
+    //       axios
+    //         .post("/api/channel/getNahled", {
+    //           id: this.$route.params.id
+    //         })
+    //         .then(function(response) {
+    //           currentObj.image = response.data;
+    //         });
+    //     }.bind(this),
+    //     3000
+    //   );
+    // },
+
     status: function() {
       setTimeout(() => (this.status = false), 5000);
     },
@@ -1141,12 +1182,12 @@ export default {
         })
         .then(function(response) {
           currentObj.channelData = response.data;
+          currentObj.history = "";
+          currentObj.image = "";
         })
         .catch(function(error) {
           console.log("chyba" + error);
         });
-
-      currentObj.history = "";
 
       axios
         .post("/api/channelHistory", {
@@ -1158,6 +1199,17 @@ export default {
         .catch(function(error) {
           console.log("chyba" + error);
         });
+
+      //   axios
+      //     .post("/api/channel/getNahled", {
+      //       id: this.$route.params.id
+      //     })
+      //     .then(function(response) {
+      //       currentObj.image = response.data;
+      //     })
+      //     .catch(function(error) {
+      //       console.log("chyba" + error);
+      //     });
     },
 
     kategorieId: function() {

@@ -36,6 +36,10 @@ Route::post('/api/channel/get/multicast', 'ChannelsController@getChannelMulticas
 Route::post('/api/channel/get/h264', 'ChannelsController@getChannelh264Info');
 Route::post('/api/channel/get/h265', 'ChannelsController@getChannelH265Info');
 
+Route::post('/api/channel/getNahled', 'ChannelsController@getNahled');
+Route::get('/api/channels/hls/kvality', 'ApiSystemUrlController@getKvalityFromTranscoder');
+
+
 Route::get('/api/devices/get', 'DeviceController@get');
 Route::post('/api/device/get', 'DeviceController@getDeviceRoute');
 

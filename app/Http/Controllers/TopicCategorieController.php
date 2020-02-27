@@ -27,13 +27,14 @@ class TopicCategorieController extends Controller
         $childOfChild = array();
         $lastPart = array();
 
+        // získání hlavních vetvi (kategorií)
         $kategorie = TopicCategorie::where('subKategorie', "false")->get();
         foreach ($kategorie as  $k) {
 
-            // zpracování pole hlavních kategorií, vyhledání sub kategorií
+            // vyhledání sub kategorií, které mají ID hlavních kategorií
             $subKategorie = TopicCategorie::where('id_hlavniKategorie', $k->id)->get();
+            // vsechny subKategorie rozdeleni pole
             foreach ($subKategorie as $s) {
-
                 // overeni zda sub kategorie ma dalsi sub kategorii
                 $anotherSubKategorie = TopicCategorie::where('id_hlavniKategorie', $s->id)->get();
                 foreach ($anotherSubKategorie as $another) {
@@ -74,6 +75,8 @@ class TopicCategorieController extends Controller
                 'name' => $k->hlavniKategorie,
                 'children' => $sudData
             );
+
+            $sudData = array();
         }
 
         return $data;

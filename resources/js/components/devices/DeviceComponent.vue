@@ -19,6 +19,7 @@
     </div>
     <!-- end alert -->
     <div>
+      <br />
       <div class="rightFromSIdePanel">
         <div v-for="device in deviceData" v-bind:key="device.ip">
           <!-- MULTIPLEXERY -->
@@ -151,7 +152,7 @@
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn color="blue darken-1" text @click="modalEditMultiplexer = false">Zavřít</v-btn>
-                      <v-btn color="blue darken-1" text @click="saveMultiplexer()">Uložit</v-btn>
+                      <v-btn color="green darken-1" text @click="saveMultiplexer()">Uložit</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
@@ -264,7 +265,7 @@
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn color="blue darken-1" text @click="modalEditBlankom = false">Zavřít</v-btn>
-                      <v-btn color="blue darken-1" text @click="saveBlankomData()">Uložit</v-btn>
+                      <v-btn color="green darken-1" text @click="saveBlankomData()">Uložit</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
@@ -338,7 +339,7 @@
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn color="blue darken-1" text @click="modalEditRF = false">Zavřít</v-btn>
-                      <v-btn color="blue darken-1" text @click="saveBlankomRf()">Uložit</v-btn>
+                      <v-btn color="green darken-1" text @click="saveBlankomRf()">Uložit</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
@@ -910,7 +911,7 @@
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="modalEditFte = false">Zavřít</v-btn>
-                    <v-btn color="blue darken-1" text @click="saveBaseEditFte()">Uložit</v-btn>
+                    <v-btn color="green darken-1" text @click="saveBaseEditFte()">Uložit</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -987,7 +988,7 @@
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="modalEditFteSat = false">Zavřít</v-btn>
-                    <v-btn color="blue darken-1" text @click="saveFteSat()">Uložit</v-btn>
+                    <v-btn color="green darken-1" text @click="saveFteSat()">Uložit</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -1119,7 +1120,7 @@
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="modalEditNsp = false">Zavřít</v-btn>
-                    <v-btn color="blue darken-1" text @click="saveNsp()">Uložit</v-btn>
+                    <v-btn color="green darken-1" text @click="saveNsp()">Uložit</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -1246,7 +1247,7 @@
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="modalEditTranscoder = false">Zavřít</v-btn>
-                    <v-btn color="blue darken-1" text @click="saveGrapeTranscoder()">Uložit</v-btn>
+                    <v-btn color="green darken-1" text @click="saveGrapeTranscoder()">Uložit</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -1380,7 +1381,7 @@
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="modalEditLinux = false">Zavřít</v-btn>
-                    <v-btn color="blue darken-1" text @click="saveModalLinux()">Uložit</v-btn>
+                    <v-btn color="green darken-1" text @click="saveModalLinux()">Uložit</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -1490,7 +1491,7 @@
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="modalEditPoIp = false">Zavřít</v-btn>
-                    <v-btn color="blue darken-1" text @click="saveModalPoIp()">Uložit</v-btn>
+                    <v-btn color="green darken-1" text @click="saveModalPoIp()">Uložit</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -1617,7 +1618,7 @@
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="modalEditPowerVu = false">Zavřít</v-btn>
-                    <v-btn color="blue darken-1" text @click="saveModalPowerVu()">Uložit</v-btn>
+                    <v-btn color="green darken-1" text @click="saveModalPowerVu()">Uložit</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>

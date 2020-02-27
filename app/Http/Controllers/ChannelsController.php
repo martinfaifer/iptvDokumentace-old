@@ -105,25 +105,7 @@ class ChannelsController extends Controller
 
         // získání náhledu z h264 url pres API
 
-        $h264Data = H264Controller::getH264($request->id);
-        if (empty($h264Data)) {
-            $img = "false";
-        } else {
-            if ($h264Data->K1080 != null) {
-                $img = ApiSystemUrlController::getNahledFromDohled($h264Data->K1080);
-                // $historyName = ApiSystemUrlController::getHistoryName($h264Data->K1080);
-                // $history = ApiSystemUrlController::getHistyByName($historyName);
-            } elseif ($h264Data->K576 != null) {
-                $img = ApiSystemUrlController::getNahledFromDohled($h264Data->K576);
-                // $historyName = ApiSystemUrlController::getHistoryName($h264Data->K576);
-                // $history = ApiSystemUrlController::getHistyByName($historyName);
-            } elseif ($h264Data->K404 != null) {
-                $img = ApiSystemUrlController::getNahledFromDohled($h264Data->K404);
-                // $historyName = ApiSystemUrlController::getHistoryName($h264Data->K404);
-                // $history = ApiSystemUrlController::getHistyByName($historyName);
-            }
-        }
-
+        $img = ApiSystemUrlController::getNahledFromDohled($channel->nazev);
         if ($img == null) {
             $img = "false";
         }
@@ -177,6 +159,24 @@ class ChannelsController extends Controller
             'history' => $history,
 
         ];
+    }
+
+    /**
+     * fn pro získání náhledu z API
+     *
+     * @return void
+     */
+    public function getNahled(Request $request)
+    {
+
+        $img = "false";
+
+        $channel = Channels::where('id', $request->id)->first();
+        $img = ApiSystemUrlController::getNahledFromDohled($channel->nazev);
+        if ($img == null) {
+            $img = "false";
+        }
+        return $img;
     }
 
 

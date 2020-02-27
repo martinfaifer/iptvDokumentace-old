@@ -92,6 +92,43 @@
 
                 <!-- Kvality -->
                 <v-row>
+                  <v-toolbar
+                    v-if="kvalities != 'false'"
+                    dense
+                    flat
+                    color="transparent"
+                    height="15px"
+                  >
+                    <v-spacer></v-spacer>
+                    <div class="text-center d-flex align-center">
+                      <v-tooltip width="100px" left>
+                        <template v-slot:activator="{ on }">
+                          <v-icon color="primary" icon small v-on="on">mdi-comment-question-outline</v-icon>
+                        </template>
+                        <span
+                          v-for="kvalita in kvalities"
+                          v-bind:key="kvalita.id"
+                          v-if="kvalita.video === 'H.264'"
+                          class="font-weight-medium"
+                        >
+                          <p
+                            v-if="kvalita.kvalita === '1920x1080'"
+                          >Bitrate pro 1080p : {{kvalita.bitrate}} Kbps</p>
+                          <p
+                            v-if="kvalita.kvalita === '1280x720'"
+                          >Bitrate pro 720p : {{kvalita.bitrate}} Kbps</p>
+                          <p
+                            v-if="kvalita.kvalita === '1024x576'"
+                          >Bitrate pro 576p : {{kvalita.bitrate}} Kbps</p>
+                          <p
+                            v-if="kvalita.kvalita === '720x404'"
+                          >Bitrate pro 404p : {{kvalita.bitrate}} Kbps</p>
+                        </span>
+                      </v-tooltip>
+                    </div>
+                  </v-toolbar>
+                </v-row>
+                <v-row>
                   <span class="ma-3">
                     <strong>Výstup do 1080p:</strong>
                     <span>{{channelData.K1080}}</span>
@@ -235,7 +272,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="modalHlOutputs = false">Zavřít</v-btn>
-                <v-btn color="blue darken-1" text @click="saveHlsOutputData()">Uložit</v-btn>
+                <v-btn color="green darken-1" text @click="saveHlsOutputData()">Uložit</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -265,7 +302,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="modalTranscoder = false">Zavřít</v-btn>
-                <v-btn color="blue darken-1" text @click="saveTranscoder()">Uložit</v-btn>
+                <v-btn color="green darken-1" text @click="saveTranscoder()">Uložit</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -290,7 +327,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="modalDelete = false">Zavřít</v-btn>
-                <v-btn color="blue darken-1" text @click="sendDeleteHls()">Smazat</v-btn>
+                <v-btn color="green darken-1" text @click="sendDeleteHls()">Smazat</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -393,7 +430,7 @@
                   text
                   @click="modalAddHlsOutputAndTranscoder = false"
                 >Zavřít</v-btn>
-                <v-btn color="blue darken-1" text @click="saveHlsOutputAndTranscoder()">Uložit</v-btn>
+                <v-btn color="green darken-1" text @click="saveHlsOutputAndTranscoder()">Uložit</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -434,6 +471,7 @@ export default {
       newHlsMobile: "",
       transcoders: [],
       device: "",
+      kvalities: "",
       newDevice: ""
     };
   },
@@ -612,6 +650,10 @@ export default {
   },
   created() {
     axios.get("/api/getUser").then(response => (this.userData = response.data));
+
+    axios
+      .get("/api/channels/hls/kvality")
+      .then(response => (this.kvalities = response.data));
 
     let currentObj = this;
     axios

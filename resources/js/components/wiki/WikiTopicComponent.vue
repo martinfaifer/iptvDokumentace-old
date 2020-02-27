@@ -1,5 +1,7 @@
 <template>
   <div>
+    <br />
+    <br />
     <div v-if="topic != ''">
       <v-toolbar v-if="userData.role === '1'" dense flat color="transparent">
         <v-spacer></v-spacer>

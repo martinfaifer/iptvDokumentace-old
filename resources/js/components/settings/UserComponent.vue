@@ -18,6 +18,8 @@
     </div>
     <!-- end alert -->
     <br />
+    <br />
+    <br />
     <template>
       <v-card max-width="1400">
         <v-card-title>

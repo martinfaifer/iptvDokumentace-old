@@ -16,29 +16,9 @@
         </template>
       </div>
     </div>
-    <!-- Alert from IPTV Monitoring -->
-    <!-- <div id="alertDiv">
-      <template>
-        <div
-          v-for="iptvErr in iptvErrs"
-          v-bind:key="iptvErr.id"
-          class="white--text font-weight-normal"
-        >
-          <transition name="fade" mode="out-in">
-            <v-alert
-              dismissible
-              dense
-              v-if="iptvErr"
-              type="error"
-              class="font-weight-regular"
-            >{{iptvErr.nazev}}</v-alert>
-          </transition>
-        </div>
-      </template>
-    </div>-->
-    <!--  end of Alert -->
 
-    <v-toolbar color="#2B2B52" dense fixed>
+    <!-- test -->
+    <v-app-bar color="#2B2B52" fixed dense dark>
       <v-toolbar-items>
         <v-menu open-on-hover offset-y>
           <template v-slot:activator="{ on }">
@@ -105,8 +85,9 @@
         </v-menu>
       </template>
       <!-- Konec User casti -->
-    </v-toolbar>
+    </v-app-bar>
 
+    <!-- end test -->
     <!-- modal  -->
 
     <v-row justify="center">
@@ -143,7 +124,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="modalNewChannel = false">Zavřít</v-btn>
-            <v-btn color="blue darken-1" text @click="saveNewChannel()">Uložit</v-btn>
+            <v-btn color="green darken-1" text @click="saveNewChannel()">Uložit</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -193,7 +174,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="modalNewDevice = false">Zavřít</v-btn>
-            <v-btn color="blue darken-1" text @click="saveNewDevice()">Uložit</v-btn>
+            <v-btn color="green darken-1" text @click="saveNewDevice()">Uložit</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -218,7 +199,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="closeEditModal()">Zavřít</v-btn>
-            <v-btn color="blue darken-1" text @click="saveNewPass()">Uložit</v-btn>
+            <v-btn color="green darken-1" text @click="saveNewPass()">Uložit</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -236,14 +217,10 @@
             <v-container>
               <span>
                 <ol>
-                  <li>Přídán alerting na nefunkční kanály (získává se z IPTV Dohledu)</li>
-                  <li>Přidána historie u kanálu</li>
-
-                  <li>Přidáno vyhledávání u kanálu kdy stačí napsat IP k STB a vehledá se kanál nebo lze vyhledávat dle názvu</li>
-                  <li>Přidáno vyhledávání u zařízení, kdy je možné vyhledávat dle čísla karet, názvu zařízení, IP, satelitu, frekvence</li>
+                  <li>Upravena historie, nyní zobrazuje pouze čas, kdy byl na kanále evidovaný výpadek.</li>
+                  <li>Přidána informace u H264, kdy je popup při najetí na "?" s informací o bitratu.</li>
+                  <li>Přidán návod do Wiki na testovku.</li>
                 </ol>
-                <br />
-                <h3>U vyhledávání stačí psát vyhledávaný dotaz, klíče ve stylu NMS nejsou nutné</h3>
               </span>
             </v-container>
           </v-card-text>

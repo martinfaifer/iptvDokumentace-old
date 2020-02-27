@@ -179,7 +179,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="modalTranscoder = false">Zavřít</v-btn>
-                <v-btn color="blue darken-1" text @click="saveTranscoder()">Uložit</v-btn>
+                <v-btn color="green darken-1" text @click="saveTranscoder()">Uložit</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -205,7 +205,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="modalHlOutputs = false">Zavřít</v-btn>
-                <v-btn color="blue darken-1" text @click="saveHlsOutputData()">Uložit</v-btn>
+                <v-btn color="green darken-1" text @click="saveHlsOutputData()">Uložit</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -230,7 +230,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="modalDelete = false">Zavřít</v-btn>
-                <v-btn color="blue darken-1" text @click="sendDeleteHls()">Smazat</v-btn>
+                <v-btn color="red darken-1" text @click="sendDeleteHls()">Smazat</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -305,7 +305,7 @@
                   text
                   @click="modalAddHlsOutputAndTranscoder = false"
                 >Zavřít</v-btn>
-                <v-btn color="blue darken-1" text @click="saveHlsOutputAndTranscoder()">Uložit</v-btn>
+                <v-btn color="green darken-1" text @click="saveHlsOutputAndTranscoder()">Uložit</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>

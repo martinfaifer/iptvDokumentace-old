@@ -1,6 +1,8 @@
 <template>
   <div>
     <div class="rightFromSIdePanel">
+      <br />
+      <br />
       <v-container fluid>
         <!-- Tabs -->
         <template>
