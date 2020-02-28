@@ -113,7 +113,15 @@
                     :items="device.channels"
                     :search="search"
                     class="font-weight-regular"
-                  ></v-data-table>
+                  >
+                    <template v-slot:item.nazev="{ item }">
+                      <div>
+                        <v-btn v-bind:to="'/channel/' + item.id " target="_blank" dark text small>
+                          <span class="blue--text">{{item.nazev}}</span>
+                        </v-btn>
+                      </div>
+                    </template>
+                  </v-data-table>
                 </v-card>
               </template>
               <!-- modal editMultiplexer -->
@@ -873,7 +881,17 @@
                             </thead>
                             <tbody>
                               <tr v-for="item in device.channels" :key="item.name">
-                                <td>{{ item.nazev }}</td>
+                                <td>
+                                  <v-btn
+                                    v-bind:to="'/channel/' + item.id "
+                                    target="_blank"
+                                    dark
+                                    text
+                                    small
+                                  >
+                                    <span class="blue--text">{{item.nazev}}</span>
+                                  </v-btn>
+                                </td>
                               </tr>
                             </tbody>
                           </template>
@@ -1083,7 +1101,21 @@
                     :items="device.channels"
                     :search="search"
                     class="font-weight-regular"
-                  ></v-data-table>
+                  >
+                    <template v-slot:item.nazev="{ item }">
+                      <div>
+                        <v-btn
+                          v-bind:to="'/channel/' + item.channelId "
+                          target="_blank"
+                          dark
+                          text
+                          small
+                        >
+                          <span class="blue--text">{{item.nazev}}</span>
+                        </v-btn>
+                      </div>
+                    </template>
+                  </v-data-table>
                 </v-card>
               </template>
             </v-row>
@@ -1210,7 +1242,21 @@
                     :items="device.channels"
                     :search="search"
                     class="font-weight-regular"
-                  ></v-data-table>
+                  >
+                    <template v-slot:item.nazev="{ item }">
+                      <div>
+                        <v-btn
+                          v-bind:to="'/channel/' + item.channelId "
+                          target="_blank"
+                          dark
+                          text
+                          small
+                        >
+                          <span class="blue--text">{{item.nazev}}</span>
+                        </v-btn>
+                      </div>
+                    </template>
+                  </v-data-table>
                 </v-card>
               </template>
             </v-row>
@@ -1344,7 +1390,15 @@
                     :items="device.channels"
                     :search="search"
                     class="font-weight-regular"
-                  ></v-data-table>
+                  >
+                    <template v-slot:item.nazev="{ item }">
+                      <div>
+                        <v-btn v-bind:to="'/channel/' + item.id " target="_blank" dark text small>
+                          <span class="blue--text">{{item.nazev}}</span>
+                        </v-btn>
+                      </div>
+                    </template>
+                  </v-data-table>
                 </v-card>
               </template>
             </v-row>
@@ -1466,7 +1520,15 @@
                     :items="device.channels"
                     :search="search"
                     class="font-weight-regular"
-                  ></v-data-table>
+                  >
+                    <template v-slot:item.nazev="{ item }">
+                      <div>
+                        <v-btn v-bind:to="'/channel/' + item.id " target="_blank" dark text small>
+                          <span class="blue--text">{{item.nazev}}</span>
+                        </v-btn>
+                      </div>
+                    </template>
+                  </v-data-table>
                 </v-card>
               </template>
             </v-row>
@@ -1583,7 +1645,15 @@
                     :items="device.channels"
                     :search="search"
                     class="font-weight-regular"
-                  ></v-data-table>
+                  >
+                    <template v-slot:item.nazev="{ item }">
+                      <div>
+                        <v-btn v-bind:to="'/channel/' + item.id " target="_blank" dark text small>
+                          <span class="blue--text">{{item.nazev}}</span>
+                        </v-btn>
+                      </div>
+                    </template>
+                  </v-data-table>
                 </v-card>
               </template>
             </v-row>

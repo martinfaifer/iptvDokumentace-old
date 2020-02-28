@@ -71,7 +71,7 @@
                   v-on="on"
                   @click="modalDeleteHls()"
                 >
-                  <v-icon>mdi-delete-outline</v-icon>
+                  <v-icon color="red">mdi-delete-outline</v-icon>
                 </v-btn>
               </template>
               <span class="font-weight-medium">Odebrat HLS data od kanálu</span>

@@ -17,6 +17,7 @@
       </div>
     </div>
     <!-- end alert -->
+    <br />
     <v-toolbar v-if="userData.role === '1' || userData.role === '2'" dense flat color="transparent">
       <v-spacer></v-spacer>
       <div class="text-center d-flex align-center">

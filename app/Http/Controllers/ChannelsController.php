@@ -295,8 +295,28 @@ class ChannelsController extends Controller
      */
     public function create(Request $request)
     {
+
+        $validation = ValidationController::validateIfIsNull($request->channelName);
+        if ($validation != "true") {
+            return $validation;
+        }
+        $validation = ValidationController::validateIfIsNull($request->channelIsp);
+        if ($validation != "true") {
+            return $validation;
+        }
+        $validation = ValidationController::validateIPv4($request->channelMulticastKStb);
+        if ($validation != "true") {
+            return $validation;
+        }
+        $validation = ValidationController::validateIPv4($request->channelMulticast);
+        if ($validation != "true") {
+            return $validation;
+        }
+
+        $channelName = str_replace("/", "", $request->channelName);
+
         Channels::create([
-            'nazev' => $request->channelName,
+            'nazev' => $channelName,
             'ipKstb' => $request->channelMulticastKStb,
         ]);
 

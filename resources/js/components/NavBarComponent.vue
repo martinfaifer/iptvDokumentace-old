@@ -379,10 +379,10 @@ export default {
             currentObj.created = "true";
           }
 
-          channelIsp = "";
-          channelName = "";
-          channelMulticast = "";
-          channelMulticastKStb = "";
+          currentObj.channelIsp = "";
+          currentObj.channelName = "";
+          currentObj.channelMulticast = "";
+          currentObj.channelMulticastKStb = "";
         })
         .catch(function(error) {
           console.log("chyba" + error);
@@ -405,9 +405,9 @@ export default {
             currentObj.createdDevice = "true";
           }
 
-          deviceName = "";
-          deviceVendor = "";
-          deviceKategorie = "";
+          currentObj.deviceName = "";
+          currentObj.deviceVendor = "";
+          currentObj.deviceKategorie = "";
         })
         .catch(function(error) {
           console.log("chyba" + error);
