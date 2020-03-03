@@ -35,6 +35,9 @@ Route::get('/api/channels/get', 'ChannelsController@get');
 Route::post('/api/channel/get/multicast', 'ChannelsController@getChannelMulticastInfo');
 Route::post('/api/channel/get/h264', 'ChannelsController@getChannelh264Info');
 Route::post('/api/channel/get/h265', 'ChannelsController@getChannelH265Info');
+Route::post('/api/channel/save/iptvPackage', 'ChannelsController@savePackage');
+Route::post('/api/channel/package/delete', 'ChannelsController@removePackage');
+Route::post('api/channel/note/edit', 'ChannelsController@editNote');
 
 Route::post('/api/channel/getNahled', 'ChannelsController@getNahled');
 Route::get('/api/channels/hls/kvality', 'ApiSystemUrlController@getKvalityFromTranscoder');
@@ -66,6 +69,8 @@ Route::post('/api/channel/multiplexer/set', 'ChannelsController@setMultiplexer')
 Route::post('/api/channel/multiplexer/delete', 'ChannelsController@deleteMultiplexer');
 // ulození zarizení na prijem multicastu
 Route::post('/api/channel/savePrijem', 'DeviceController@savePrijem');
+// ulozeni zaloznihop prijimace
+Route::post('/api/channel/saveBackupPrijem', 'DeviceController@saveBackupPrijem');
 // editace názvu kanálu
 Route::post('/api/channel/name/edit', 'ChannelsController@editChannelName');
 // editace isp, multicasotvé adresy z prijimace a k stb
@@ -74,6 +79,8 @@ Route::post('/api/channel/isp/edit', 'IspChannelController@editIspData');
 Route::post('/api/channel/isp/delete', 'IspChannelController@deleteIspData');
 // odebrání prijimace od kanálu
 Route::post('/api/channel/prijem/delete', 'DeviceController@deletePrijem');
+// odebrani backup priujimace
+Route::post('/api/channel/backupprijem/delete', 'DeviceController@deleteBackupPrijem');
 // pridani noveho multicastu
 Route::post('/api/channel/isp/add', 'IspChannelController@addIspData');
 // editace jiz stavajiciho transcoderu
@@ -129,3 +136,13 @@ Route::post('/api/topic/get', 'TopicsController@getTopic');
 Route::post('/api/topic/edit', 'TopicsController@edit');
 Route::post('/api/topic/create', 'TopicsController@create');
 Route::post('/api/topic/remove', 'TopicsController@remove');
+
+
+
+// Routa pro vytvoreni pdf vsech kanalu
+Route::get('/api/channels/pdf', 'ChannelsController@channelsPDF')->name('channelPDF.pdf');
+
+
+// IPTV balicky
+Route::post('/api/iptvpackage/create', 'IPTVpackageController@create');
+Route::get('/api/iptvpackage/getAll', 'IPTVpackageController@getAll');

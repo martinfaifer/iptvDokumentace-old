@@ -53,6 +53,36 @@
           </template>
           <span class="font-weight-medium">Přidat / editovat přijímač</span>
         </v-tooltip>
+        <div v-for="backup in channelData.backup" v-bind:key="backup.tag">
+          <div v-if="backup.tag == 'KO'">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-btn
+                  @click="takeDataForBackupPrijem"
+                  class="mr-3"
+                  color="primary"
+                  fab
+                  x-small
+                  dark
+                  v-on="on"
+                >
+                  <v-icon>mdi-backup-restore</v-icon>
+                </v-btn>
+              </template>
+              <span class="font-weight-medium">Přidat / editovat záložní přijímač</span>
+            </v-tooltip>
+          </div>
+          <div v-else>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-btn class="mr-3" color="grey" fab x-small dark v-on="on">
+                  <v-icon>mdi-backup-restore</v-icon>
+                </v-btn>
+              </template>
+              <span class="font-weight-medium">Přidat / editovat záložní přijímač</span>
+            </v-tooltip>
+          </div>
+        </div>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
@@ -69,6 +99,26 @@
           </template>
           <span class="font-weight-medium">Přidat / editovat multiplexer</span>
         </v-tooltip>
+
+        <!-- přidání kanálu do programového balíčku -->
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              class="mr-3"
+              color="primary"
+              fab
+              x-small
+              dark
+              v-on="on"
+              @click="getIptvPackages()"
+            >
+              <v-icon>mdi-television-guide</v-icon>
+            </v-btn>
+          </template>
+          <span class="font-weight-medium">Přidat / editovat programový balíček</span>
+        </v-tooltip>
+
+        <!-- odebrání kanálu -->
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn class="mr-3" color="primary" fab x-small dark v-on="on" @click="deleteChannel()">
@@ -93,6 +143,40 @@
           >
             <v-icon small>mdi-pencil</v-icon>
           </v-btn>
+          <!-- Poznamka u kanalu -->
+          <span>
+            <span class="ma-3">
+              <strong>Poznámka:</strong>
+              {{channelData.poznamka}}
+            </span>
+            <v-btn
+              v-if="userData.role === '1' || userData.role === '2'"
+              color="primary"
+              x-small
+              dark
+              text
+              @click="editChannelNote = true , channelNote = channelData.poznamka"
+            >
+              <v-icon small>mdi-pencil</v-icon>
+            </v-btn>
+          </span>
+          <!-- Programovy balicek -->
+          <span v-if="channelData.balicek != 'false'">
+            <span class="ma-3">
+              <strong>Programový balíček:</strong>
+              {{channelData.balicek}}
+            </span>
+            <v-btn
+              v-if="userData.role === '1' || userData.role === '2'"
+              color="red"
+              x-small
+              dark
+              text
+              @click="packageDelete()"
+            >
+              <v-icon small>mdi-delete</v-icon>
+            </v-btn>
+          </span>
         </v-card-text>
       </v-list-item>
     </v-card>
@@ -124,7 +208,7 @@
 
     <!-- modal pro zalozeni noveho multicastu -->
 
-    <v-row justify="center">
+    <!-- <v-row justify="center">
       <v-dialog v-model="editChannelISP" persistent max-height="200px" max-width="500px">
         <v-card>
           <v-card-text>
@@ -151,7 +235,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-row>
+    </v-row>-->
 
     <!-- end modal pro zalozeni noveho kanalu -->
 
@@ -177,7 +261,12 @@
               </v-row>
               <v-row>
                 <v-col cols="12" sm="3" md="8">
-                  <v-text-field required label="multicastová adresa k STB" v-model="newStbIp"></v-text-field>
+                  <v-text-field
+                    v-if="channelData.ipKstb == '' "
+                    required
+                    label="multicastová adresa k STB"
+                    v-model="newStbIp"
+                  ></v-text-field>
                 </v-col>
               </v-row>
             </v-container>
@@ -225,7 +314,7 @@
               x-small
               dark
               text
-              @click="deleteMulticastdata()"
+              @click="deleteMulticastdata(channelMulticastId = multicast.id)"
             >
               <v-icon color="red" small>mdi-delete</v-icon>
             </v-btn>
@@ -581,6 +670,236 @@
         </v-alert>
       </div>
 
+      <!-- backup prijem -->
+      <div v-for="backup in channelData.backup" v-bind:key="backup.tag">
+        <div v-if="backup.tag != 'KO'">
+          <!--  tag PoIP -->
+          <v-card v-if="backup.tag === 'PoIP'" class="ma-3" width="1600" outlined>
+            <v-list-item>
+              <v-list-item-content>
+                <v-toolbar dense flat height="10" color="transparent">
+                  <v-spacer></v-spacer>
+                  <div class="text-center d-flex align-center">
+                    <span>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                          <v-btn
+                            v-if="userData.role === '1' || userData.role === '2'"
+                            icon
+                            x-small
+                            v-on="on"
+                            @click="deleteBackupPrijem()"
+                          >
+                            <v-icon color="red">mdi-delete</v-icon>
+                          </v-btn>
+                        </template>
+                        <span class="font-weight-medium">Odebrat Přijímač</span>
+                      </v-tooltip>
+                    </span>
+                  </div>
+                </v-toolbar>
+                <v-card-text>
+                  <span class="ma-3">
+                    <strong>Backup kanálu :</strong>
+                    {{backup.prijem}}
+                  </span>
+                </v-card-text>
+              </v-list-item-content>
+            </v-list-item>
+          </v-card>
+
+          <!-- tag Blankom -->
+          <v-card v-if="backup.tag === 'Blankom'" class="ma-3" width="1600" outlined>
+            <v-list-item>
+              <v-list-item-content>
+                <v-toolbar dense flat height="10" color="transparent">
+                  <v-spacer></v-spacer>
+                  <div class="text-center d-flex align-center">
+                    <span>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                          <v-btn
+                            v-if="userData.role === '1' || userData.role === '2'"
+                            icon
+                            x-small
+                            v-on="on"
+                            @click="deleteBackupPrijem()"
+                          >
+                            <v-icon color="red">mdi-delete</v-icon>
+                          </v-btn>
+                        </template>
+                        <span class="font-weight-medium">Odebrat Přijímač</span>
+                      </v-tooltip>
+                    </span>
+                  </div>
+                </v-toolbar>
+                <v-card-text>
+                  <span class="ma-3">
+                    <strong>Backup kanálu :</strong>
+                    <v-btn v-bind:to="'/device/' + backup.id " target="_blank" dark text>
+                      <span class="blue--text">{{backup.nazev}}</span>
+                    </v-btn>
+                  </span>
+                  <span class="ma-3">
+                    <strong>RF :</strong>
+                    <span v-for="rf in channelData.rf" v-bind:key="rf.id">{{rf}}</span>
+                  </span>
+                  <span class="ma-3">
+                    <strong>Nastavení Blankomu :</strong>
+                    <a :href="'http://'+backup.ip" target="_blank">{{backup.ip}}</a>
+                  </span>
+                  <span class="ma-3">
+                    <strong>Přihlášení :</strong>
+                    {{backup.login}}
+                  </span>
+                </v-card-text>
+              </v-list-item-content>
+            </v-list-item>
+          </v-card>
+
+          <!-- TAG FTE -->
+          <v-card v-if="backup.tag === 'FTE'" class="ma-3" width="1600" outlined>
+            <v-list-item>
+              <v-list-item-content>
+                <v-toolbar dense flat height="10" color="transparent">
+                  <v-spacer></v-spacer>
+                  <div class="text-center d-flex align-center">
+                    <span>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                          <v-btn
+                            v-if="userData.role === '1' || userData.role === '2'"
+                            icon
+                            x-small
+                            v-on="on"
+                            @click="deleteBackupPrijem()"
+                          >
+                            <v-icon color="red">mdi-delete</v-icon>
+                          </v-btn>
+                        </template>
+                        <span class="font-weight-medium">Odebrat Přijímač</span>
+                      </v-tooltip>
+                    </span>
+                  </div>
+                </v-toolbar>
+                <v-card-text>
+                  <span class="ma-3">
+                    <strong>Backup kanálu :</strong>
+                    <v-btn v-bind:to="'/device/' + backup.id " target="_blank" dark text>
+                      <span class="blue--text">{{backup.nazev}}</span>
+                    </v-btn>
+                  </span>
+                  <span class="ma-3">
+                    <strong>IP FTE :</strong>
+                    {{backup.ip}}
+                  </span>
+                </v-card-text>
+              </v-list-item-content>
+            </v-list-item>
+          </v-card>
+
+          <!-- tag PowerVu -->
+          <v-card v-if="backup.tag === 'PowerVu'" class="ma-3" width="1600" outlined>
+            <v-list-item>
+              <v-list-item-content>
+                <v-toolbar dense flat height="10" color="transparent">
+                  <v-spacer></v-spacer>
+                  <div class="text-center d-flex align-center">
+                    <span>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                          <v-btn
+                            v-if="userData.role === '1' || userData.role === '2'"
+                            icon
+                            x-small
+                            v-on="on"
+                            @click="deleteBackupPrijem()"
+                          >
+                            <v-icon color="red">mdi-delete</v-icon>
+                          </v-btn>
+                        </template>
+                        <span class="font-weight-medium">Odebrat Přijímač</span>
+                      </v-tooltip>
+                    </span>
+                  </div>
+                </v-toolbar>
+                <v-card-text>
+                  <span class="ma-3">
+                    <strong>Backup kanálu :</strong>
+                    <v-btn v-bind:to="'/device/' + backup.id " target="_blank" dark text>
+                      <span class="blue--text">{{prijem.nazev}}</span>
+                    </v-btn>
+                  </span>
+                  <span class="ma-3">
+                    <strong>IP :</strong>
+                    <a :href="'http://'+backup.ip" target="_blank">{{backup.ip}}</a>
+                  </span>
+                  <span class="ma-3">
+                    <strong>Přihlášení :</strong>
+                    {{backup.login}}
+                  </span>
+                </v-card-text>
+              </v-list-item-content>
+            </v-list-item>
+          </v-card>
+
+          <!-- tag Linux -->
+
+          <v-card v-if="backup.tag === 'Linux'" class="ma-3" width="1600" outlined>
+            <v-list-item>
+              <v-list-item-content>
+                <v-toolbar dense flat height="10" color="transparent">
+                  <v-spacer></v-spacer>
+                  <div class="text-center d-flex align-center">
+                    <span>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                          <v-btn
+                            v-if="userData.role === '1' || userData.role === '2'"
+                            icon
+                            x-small
+                            v-on="on"
+                            @click="deleteBackupPrijem()"
+                          >
+                            <v-icon color="red">mdi-delete</v-icon>
+                          </v-btn>
+                        </template>
+                        <span class="font-weight-medium">Odebrat Přijímač</span>
+                      </v-tooltip>
+                    </span>
+                  </div>
+                </v-toolbar>
+                <v-card-text>
+                  <span class="ma-3">
+                    <strong>Backup kanálu :</strong>
+                    <v-btn v-bind:to="'/device/' + backup.id " target="_blank" dark text>
+                      <span class="blue--text">{{backup.nazev}}</span>
+                    </v-btn>
+                  </span>
+                  <span class="ma-3">
+                    <strong>IP :</strong>
+                    <a :href="'ssh:'+ backup.ssh_user + '@'+backup.ip" target="_blank">{{backup.ip}}</a>
+                  </span>
+                  <span class="ma-3">
+                    <strong>Poznámka :</strong>
+                    {{backup.poznamka}}
+                  </span>
+                </v-card-text>
+              </v-list-item-content>
+            </v-list-item>
+          </v-card>
+          <!-- end devices -->
+        </div>
+
+        <div v-else>
+          <v-alert type="warning">
+            <strong>Není evidován backup</strong>
+          </v-alert>
+        </div>
+
+        <!-- end backup prijem -->
+      </div>
+
       <!-- náhled -->
       <v-row>
         <v-card v-if="channelData.img !== 'false'" class="ma-6" width="400" outlined>
@@ -687,6 +1006,59 @@
       </v-row>
       <!-- end modal multiplexer -->
 
+      <!-- modal pro poznamku u kanalu -->
+      <v-row justify="center">
+        <v-dialog v-model="editChannelNote" persistent max-height="200px" max-width="500px">
+          <v-card>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="8">
+                    <v-text-field required v-model="channelNote"></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="editChannelNote = false">Zavřít</v-btn>
+              <v-btn color="green darken-1" text @click="saveChannelNote()">Uložit</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+      <!-- end modal poznamky -->
+
+      <!-- modal pro editaci programových balícku / pridani programovaneho balicku ke kanalu -->
+
+      <v-row justify="center">
+        <v-dialog v-model="editIPTVpackage" persistent max-height="200px" max-width="500px">
+          <v-card>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="8">
+                    <v-select
+                      v-model="iptvPackageName"
+                      :items="iptvPackage"
+                      item-value="nazev"
+                      item-text="nazev"
+                      label="Programový balíček"
+                    ></v-select>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="editIPTVpackage = false">Zavřít</v-btn>
+              <v-btn color="green darken-1" text @click="saveIPTVPackage()">Uložit</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+      <!-- end programovy balicek modal -->
+
       <!-- modal prijem -->
 
       <v-row justify="center">
@@ -738,6 +1110,58 @@
         </v-dialog>
       </v-row>
       <!-- end modal prijem -->
+
+      <!-- modal backup prijem -->
+
+      <v-row justify="center">
+        <v-dialog v-model="addBackupSatelit" persistent max-height="200px" max-width="500px">
+          <v-card>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="8">
+                    <v-select
+                      v-model="kategorieId"
+                      :items="prijemKategorie"
+                      item-value="id"
+                      item-text="kategorie"
+                      label="kategorie"
+                    ></v-select>
+                  </v-col>
+                </v-row>
+                <v-row v-if="devices !=''">
+                  <v-col cols="12" sm="6" md="8">
+                    <v-select
+                      v-model="deviceId"
+                      :items="devices"
+                      item-value="id"
+                      item-text="name"
+                      label="Zařízení"
+                    ></v-select>
+                  </v-col>
+                </v-row>
+                <v-row v-if="rf !='' && rf != 'submit'">
+                  <v-col cols="12" sm="6" md="8">
+                    <v-select
+                      v-model="rfId"
+                      :items="rf"
+                      item-value="id"
+                      item-text="rf"
+                      label="RF na Blankomu"
+                    ></v-select>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closeBackupSatelit()">Zavřít</v-btn>
+              <v-btn color="green darken-1" text @click="saveBackupPrijem()">Uložit</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+      <!-- end modal backup prijem -->
     </div>
   </div>
 </template>
@@ -748,6 +1172,7 @@ export default {
       image: "",
       isp: "",
       isps: "",
+      iptvPackageName: "",
       multiplexers: "",
       editChannelName: false,
       editMulticastIp: false,
@@ -759,18 +1184,22 @@ export default {
       editMulticastInput: false,
       deleteChannelISP: false,
       modalProNovyMulticast: false,
+      addBackupSatelit: false,
+      editIPTVpackage: false,
+      editChannelNote: false,
+      channelNote: "",
       deleted: "",
       multiplexer: "",
       channelData: "",
       multicastIp: "",
       multiplexerId: "",
       stbIp: "",
-      prijemKategorie: "",
+      prijemKategorie: [],
       kategorieId: "",
-      devices: "",
+      devices: [],
       status: "",
       deviceId: "",
-      rf: "",
+      rf: [],
       rfId: "",
       channelName: "",
       channelIsp: "",
@@ -782,7 +1211,8 @@ export default {
       ispMulticastId: "",
       priority: "",
       userData: "",
-      history: ""
+      history: "",
+      iptvPackage: []
     };
   },
 
@@ -844,16 +1274,123 @@ export default {
     //   });
   },
   methods: {
+    saveChannelNote() {
+      let currentObj = this;
+      axios
+        .post("/api/channel/note/edit", {
+          channelId: this.$route.params.id,
+          channelNote: this.channelNote
+        })
+        .then(function(response) {
+          currentObj.status = response.data;
+
+          currentObj.editChannelNote = false;
+
+          axios
+            .post("/api/channel/get/multicast", {
+              id: currentObj.$route.params.id
+            })
+            .then(function(response) {
+              currentObj.channelData = response.data;
+            })
+            .catch(function(error) {
+              console.log("chyba" + error);
+            });
+        })
+        .catch(function(error) {
+          currentObj.status = "err";
+        });
+    },
     //   zavreni modal okna pro pridani prijimace a smazani vsech hodnot
     closeSatelit() {
       let currentObj = this;
-      (currentObj.prijemKategorie = ""),
+      (currentObj.prijemKategorie = []),
         (currentObj.kategorieId = ""),
-        (currentObj.devices = ""),
+        (currentObj.devices = []),
         (currentObj.deviceId = ""),
-        (currentObj.rf = ""),
+        (currentObj.rf = []),
         (currentObj.rfId = "");
       currentObj.addSatelit = false;
+    },
+    closeBackupSatelit() {
+      let currentObj = this;
+      (currentObj.prijemKategorie = []),
+        (currentObj.kategorieId = ""),
+        (currentObj.devices = []),
+        (currentObj.deviceId = ""),
+        (currentObj.rf = []),
+        (currentObj.rfId = "");
+      currentObj.addBackupSatelit = false;
+    },
+
+    // fn pro získání iptvBalicku
+    getIptvPackages() {
+      let currentObj = this;
+
+      axios
+        .get("/api/iptvpackage/getAll")
+        .then(
+          response => (
+            (this.iptvPackage = response.data),
+            (currentObj.editIPTVpackage = true)
+          )
+        )
+        .catch(function(error) {
+          console.log("chyba" + error);
+        });
+    },
+
+    saveIPTVPackage() {
+      let currentObj = this;
+      axios
+        .post("/api/channel/save/iptvPackage", {
+          channelId: this.$route.params.id,
+          iptvPackageName: this.iptvPackageName
+        })
+        .then(function(response) {
+          currentObj.status = response.data;
+
+          currentObj.editIPTVpackage = false;
+
+          axios
+            .post("/api/channel/get/multicast", {
+              id: currentObj.$route.params.id
+            })
+            .then(function(response) {
+              currentObj.channelData = response.data;
+            })
+            .catch(function(error) {
+              console.log("chyba" + error);
+            });
+        })
+        .catch(function(error) {
+          currentObj.status = "err";
+        });
+    },
+
+    packageDelete() {
+      let currentObj = this;
+      axios
+        .post("/api/channel/package/delete", {
+          channelId: this.$route.params.id
+        })
+        .then(function(response) {
+          currentObj.status = response.data;
+
+          axios
+            .post("/api/channel/get/multicast", {
+              id: currentObj.$route.params.id
+            })
+            .then(function(response) {
+              currentObj.channelData = response.data;
+            })
+            .catch(function(error) {
+              console.log("chyba" + error);
+            });
+        })
+        .catch(function(error) {
+          currentObj.status = "err";
+        });
     },
 
     // fn pro editace zdroju multicastu (ISP, multicast k STB, multicast od Prijmu)
@@ -924,7 +1461,7 @@ export default {
       axios
         .post("/api/channel/isp/delete", {
           channelId: this.$route.params.id,
-          ispMulticastId: this.channelMulticastId
+          channelMulticastId: this.channelMulticastId
         })
         .then(function(response) {
           currentObj.status = response.data;
@@ -955,6 +1492,21 @@ export default {
           response => (
             (this.prijemKategorie = response.data),
             (currentObj.addSatelit = true)
+          )
+        )
+        .catch(function(error) {
+          console.log("chyba" + error);
+        });
+    },
+
+    takeDataForBackupPrijem() {
+      let currentObj = this;
+      axios
+        .get("/api/prijem/get")
+        .then(
+          response => (
+            (this.prijemKategorie = response.data),
+            (currentObj.addBackupSatelit = true)
           )
         )
         .catch(function(error) {
@@ -1041,6 +1593,42 @@ export default {
           currentObj.status = "err";
         });
     },
+    saveBackupPrijem() {
+      let currentObj = this;
+      currentObj.addBackupSatelit = false;
+      axios
+        .post("/api/channel/saveBackupPrijem", {
+          channelId: this.$route.params.id,
+          kategorieId: this.kategorieId,
+          deviceId: this.deviceId,
+          rfId: this.rfId
+        })
+        .then(function(response) {
+          currentObj.status = response.data;
+
+          currentObj.deviceId = "";
+          currentObj.rfId = "";
+          currentObj.prijemKategorie = [];
+          currentObj.kategorieId = "";
+          currentObj.devices = [];
+          currentObj.deviceId = "";
+          currentObj.rf = [];
+
+          axios
+            .post("/api/channel/get/multicast", {
+              id: currentObj.$route.params.id
+            })
+            .then(function(response) {
+              currentObj.channelData = response.data;
+            })
+            .catch(function(error) {
+              console.log("chyba" + error);
+            });
+        })
+        .catch(function(error) {
+          currentObj.status = "err";
+        });
+    },
     savePrijem() {
       let currentObj = this;
       currentObj.addSatelit = false;
@@ -1056,11 +1644,11 @@ export default {
 
           currentObj.deviceId = "";
           currentObj.rfId = "";
-          currentObj.prijemKategorie = "";
+          currentObj.prijemKategorie = [];
           currentObj.kategorieId = "";
-          currentObj.devices = "";
+          currentObj.devices = [];
           currentObj.deviceId = "";
-          currentObj.rf = "";
+          currentObj.rf = [];
 
           axios
             .post("/api/channel/get/multicast", {
@@ -1068,6 +1656,31 @@ export default {
             })
             .then(function(response) {
               currentObj.channelData = response.data;
+            })
+            .catch(function(error) {
+              console.log("chyba" + error);
+            });
+        })
+        .catch(function(error) {
+          currentObj.status = "err";
+        });
+    },
+    deleteBackupPrijem() {
+      let currentObj = this;
+      axios
+        .post("/api/channel/backupprijem/delete", {
+          channelId: this.$route.params.id
+        })
+        .then(function(response) {
+          currentObj.status = response.data;
+
+          axios
+            .post("/api/channel/get/multicast", {
+              id: currentObj.$route.params.id
+            })
+            .then(function(response) {
+              currentObj.channelData = response.data;
+              currentObj.addBackupSatelit = false;
             })
             .catch(function(error) {
               console.log("chyba" + error);
@@ -1151,28 +1764,12 @@ export default {
               currentObj.channelData = response.data;
             });
         }.bind(this),
-        3000
+        30000
       );
     },
 
-    // image: function() {
-    //   setTimeout(
-    //     function() {
-    //       let currentObj = this;
-    //       axios
-    //         .post("/api/channel/getNahled", {
-    //           id: this.$route.params.id
-    //         })
-    //         .then(function(response) {
-    //           currentObj.image = response.data;
-    //         });
-    //     }.bind(this),
-    //     3000
-    //   );
-    // },
-
     status: function() {
-      setTimeout(() => (this.status = false), 5000);
+      setTimeout(() => (this.status = false), 3000);
     },
 
     $route(to, from) {
@@ -1200,17 +1797,6 @@ export default {
         .catch(function(error) {
           console.log("chyba" + error);
         });
-
-      //   axios
-      //     .post("/api/channel/getNahled", {
-      //       id: this.$route.params.id
-      //     })
-      //     .then(function(response) {
-      //       currentObj.image = response.data;
-      //     })
-      //     .catch(function(error) {
-      //       console.log("chyba" + error);
-      //     });
     },
 
     kategorieId: function() {
@@ -1249,5 +1835,10 @@ export default {
       }
     }
   }
+  //   beforeDestroy: function() {
+  //     this.channelData.destroy();
+  //     this.status.destroy();
+  //     this.deleted.destroy();
+  //   }
 };
 </script>

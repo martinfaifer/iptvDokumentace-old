@@ -21,6 +21,20 @@ class IspChannelController extends Controller
      */
     public function editIspData(Request $request)
     {
+        $validation = ValidationController::validateIfIsNull($request->isp);
+        if ($validation != "true") {
+            return $validation;
+        }
+
+        $validation = ValidationController::validateIPv4($request->stbIp);
+        if ($validation != "true") {
+            return $validation;
+        }
+
+        $validation = ValidationController::validateIPv4($request->multicastIp);
+        if ($validation != "true") {
+            return $validation;
+        }
 
         // aktualizace záznamu v Isp_channels table
         $update = Isp_channel::find($request->channelMulticastId);
@@ -50,7 +64,7 @@ class IspChannelController extends Controller
     {
         $pocetVystupu = Isp_channel::where('id_channel', $request->channelId)->count();
         if ($pocetVystupu > 1) {
-            Isp_channel::find($request->ispMulticastId)->delete();
+            Isp_channel::find($request->channelMulticastId)->delete();
             return [
                 'isAlert' => "isAlert",
                 'stat' => "success",

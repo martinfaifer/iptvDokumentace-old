@@ -9,6 +9,12 @@ use Illuminate\Http\Request;
 
 class ApiSystemUrlController extends Controller
 {
+    /**
+     * fn pro získání náhledu
+     *
+     * @param [type] $channel
+     * @return void
+     */
     public static function getNahledFromDohled($channel)
     {
         // ziskáme pole s url
@@ -21,12 +27,17 @@ class ApiSystemUrlController extends Controller
         } else {
 
             // získání skrz API url, kde se nachází obrázek (náhled)
-            $imgUrl = file_get_contents('http://' . $dohled->url . '/api/channel/nahled/' . $channelName);
-            if ($dohled->url . "false" == $dohled->url . $imgUrl) {
-                // nenačetl se obrazek => false
-                return "false";
+            $test = @file_get_contents('http://' . $dohled->url . '/api/channel/nahled/' . $channelName);
+            if ($test) {
+                $imgUrl = file_get_contents('http://' . $dohled->url . '/api/channel/nahled/' . $channelName);
+                if ($dohled->url . "false" == $dohled->url . $imgUrl) {
+                    // nenačetl se obrazek => false
+                    return "false";
+                } else {
+                    return $dohled->url . $imgUrl;
+                }
             } else {
-                return $dohled->url . $imgUrl;
+                return "false";
             }
         }
     }
@@ -44,10 +55,14 @@ class ApiSystemUrlController extends Controller
         if ($dohled == false) {
             return "false";
         } else {
+            $test = @file_get_contents('http://' . $dohled->url . '/api/getCrashedChannels', true);
+            if ($test) {
+                $json = json_decode(file_get_contents('http://' . $dohled->url . '/api/getCrashedChannels'), true);
 
-            $json = json_decode(file_get_contents('http://' . $dohled->url . '/api/getCrashedChannels'), true);
-
-            return $json;
+                return $json;
+            } else {
+                return "false";
+            }
         }
     }
 
@@ -69,10 +84,14 @@ class ApiSystemUrlController extends Controller
         if ($dohled == false) {
             return "false";
         } else {
+            $test = @file_get_contents('http://' . $dohled->url . '/api/channel/crashed/' . $channelName, true);
+            if ($test) {
+                $json = json_decode(file_get_contents('http://' . $dohled->url . '/api/channel/crashed/' . $channelName), true);
 
-            $json = json_decode(file_get_contents('http://' . $dohled->url . '/api/channel/crashed/' . $channelName), true);
-
-            return $json;
+                return $json;
+            } else {
+                return "false";
+            }
         }
     }
 
@@ -104,9 +123,6 @@ class ApiSystemUrlController extends Controller
                 $bodyParse = explode(",", $body);
                 return $body;
                 die;
-                // $nameParse = $bodyParse[1];
-                // $nazev = str_replace("\"nazev\":", "", $nameParse);
-                // return $nazev;
             }
         }
     }
@@ -123,9 +139,15 @@ class ApiSystemUrlController extends Controller
             return "false";
         } else {
 
-            $json = json_decode(file_get_contents('http://' . $apiUrl->url . '/api/getKvalities'), true);
+            $test = @file_get_contents('http://' . $apiUrl->url . '/api/getKvalities', true);
 
-            return $json;
+            if ($test) {
+                $json = json_decode(file_get_contents('http://' . $apiUrl->url . '/api/getKvalities'), true);
+
+                return $json;
+            } else {
+                return "false";
+            }
         }
     }
 }

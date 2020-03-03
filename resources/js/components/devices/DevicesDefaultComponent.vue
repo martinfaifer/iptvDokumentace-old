@@ -5,7 +5,7 @@
     <br />
 
     <div>
-      <div class="rightFromSIdePanel">
+      <div class="rightFromSIdePanelDefault">
         <span class="display-1">Vyberte zařízení z menu vlevo...</span>
       </div>
     </div>

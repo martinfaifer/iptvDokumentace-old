@@ -69,6 +69,12 @@
       position: relative;
   }
 
+  .rightFromSIdePanelDefault {
+      margin-left: 10%;
+      /* margin-top: -10%; */
+      position: relative;
+  }
+
   .rightFromSidePanelSettings {
       margin-left: 16%;
       /* margin-top: -10%; */

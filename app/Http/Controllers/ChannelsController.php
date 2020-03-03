@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Channels;
 use App\H264;
 use App\H265;
+use App\IPTVpackage;
+use Illuminate\Broadcasting\Channel;
+// use Barryvdh\DomPDF\PDF;
+use PDF;
 use Illuminate\Http\Request;
 
 class ChannelsController extends Controller
@@ -47,6 +51,12 @@ class ChannelsController extends Controller
      */
     public function editChannelName(Request $request)
     {
+
+        $validation = ValidationController::validateIfIsNull($request->channelName);
+        if ($validation != "true") {
+            return $validation;
+        }
+
         $this->updateChannel("nazev", $request->channelName, $request->channelId);
         return [
             'isAlert' => "isAlert",
@@ -58,6 +68,12 @@ class ChannelsController extends Controller
     // Uložení nového nebo editovaného multiplexeru
     public function setMultiplexer(Request $request)
     {
+
+        $validation = ValidationController::validateIfIsNull($request->multiplexerId);
+        if ($validation != "true") {
+            return $validation;
+        }
+
         $update = Channels::find($request->channelId);
 
         $update->multiplexer_id = $request->multiplexerId;
@@ -98,13 +114,28 @@ class ChannelsController extends Controller
         $img = "false";
         $historyName = "false";
         $history = "false";
+        $backupPrijimac = array();
+        $balicek = "false";
+        $poznamka = "false";
         // $outup = "false";
+
 
         // hledání konkrétního kanálu dle "id"
         $channel = Channels::where('id', $request->id)->first();
 
-        // získání náhledu z h264 url pres API
+        // vyhledání balíčku do ktereho je kanal prirazen
+        if ($channel->iptvPackage == null && $channel->iptvSubPackage == null) {
+            $balicek = "false";
+        } else if ($channel->iptvPackage != null && $channel->iptvSubPackage == null) {
+            $findBalicek = IPTVpackageController::findPackageById($channel->iptvPackage, "main");
+            $balicek = $findBalicek->nazevBalicku;
+        } else {
+            $findBalicek = IPTVpackageController::findPackageById($channel->iptvSubPackage, "sub");
 
+            $balicek = $findBalicek->subBalicek;
+        }
+
+        // získání náhledu
         $img = ApiSystemUrlController::getNahledFromDohled($channel->nazev);
         if ($img == null) {
             $img = "false";
@@ -133,6 +164,8 @@ class ChannelsController extends Controller
         }
         $prijimac = DeviceController::sortDevice($channel->device_id);
 
+        $backupPrijimac = DeviceController::sortDevice($channel->device_backup_id);
+
         $rfUnSort = BlankomPortController::getChannelOnBlankom($channel->blankom_rf);
         if (!empty($rfUnSort)) {
             $rf = $rfUnSort->rf;
@@ -157,6 +190,9 @@ class ChannelsController extends Controller
             'rf' => $rf,
             'img' => $img,
             'history' => $history,
+            'backup' => $backupPrijimac,
+            'balicek' => $balicek,
+            'poznamka' => $channel->poznamka
 
         ];
     }
@@ -356,5 +392,84 @@ class ChannelsController extends Controller
                 'msg' => "Nejdříve odeberte H264 a H265 kvality!"
             ];
         }
+    }
+
+
+    /**
+     *
+     * fn pro získání PDF vsechn kanálů s IP k stb
+     *
+     * @return void
+     */
+    public function channelsPDF()
+    {
+        $channels = Channels::all();
+        $pdf = PDF::loadView('channelPDF', compact('channels'));
+        $pdf->save(storage_path() . '_filename.pdf');
+        return $pdf->download('channelPDF.pdf');
+    }
+
+
+    /**
+     * fn pro ulození balíčku ke kanálu
+     *
+     * @return void
+     */
+    public function savePackage(Request $request)
+    {
+        // zjisteni zda kanál jiz ma na sobe vazany nejaký balicek
+        $channel = Channels::where('id', $request->channelId)->first();
+        if ($channel->iptvPackage != null || $channel->iptvSubPackage != null) {
+            $this->updateChannel("iptvPackage", null, $request->channelId);
+            $this->updateChannel("iptvSubPackage", null, $request->channelId);
+        }
+
+        // vyhledání názvu balíčku zda existuje v hlavní nabídce,
+        $infoOBalicku = IPTVpackageController::findPackageByName($request->iptvPackageName);
+        if ($infoOBalicku["tag"] == "error") {
+            return [
+                'isAlert' => "isAlert",
+                'stat' => "error",
+                'msg' => "Balíček nebyl nalezen"
+            ];
+        } else if ($infoOBalicku["tag"] == "main") {
+            return $this->updateChannel("iptvPackage", $infoOBalicku["id"], $request->channelId);
+        } else {
+            return $this->updateChannel("iptvSubPackage", $infoOBalicku["id"], $request->channelId);
+        }
+    }
+
+
+    /**
+     * fn pro smazani programoveho balicku
+     *
+     * @param Request $request-channelId
+     * @return void
+     */
+    public function removePackage(Request $request)
+    {
+        $channel = Channels::where('id', $request->channelId)->first();
+        if ($channel->iptvPackage != null || $channel->iptvSubPackage != null) {
+            $this->updateChannel("iptvPackage", null, $request->channelId);
+            $this->updateChannel("iptvSubPackage", null, $request->channelId);
+
+            return [
+                'isAlert' => "isAlert",
+                'stat' => "success",
+                'msg' => "Balíček byl z editován u kanálu"
+            ];
+        }
+    }
+
+
+    public function editNote(Request $request)
+    {
+        $this->updateChannel("poznamka", $request->channelNote, $request->channelId);
+
+        return [
+            'isAlert' => "isAlert",
+            'stat' => "success",
+            'msg' => "Poznámka byla změněna"
+        ];
     }
 }

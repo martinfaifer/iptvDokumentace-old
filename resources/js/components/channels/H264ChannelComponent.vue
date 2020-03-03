@@ -240,7 +240,7 @@
                 <v-container>
                   <v-row>
                     <v-col cols="12" sm="3" md="8">
-                      <v-text-field required label="Chunk store ID " v-model="chunkStoreId"></v-text-field>
+                      <v-text-field required label="Chunk store ID *" v-model="chunkStoreId"></v-text-field>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -259,13 +259,13 @@
                   </v-row>
                   <v-row>
                     <v-col cols="12" sm="3" md="8">
-                      <v-text-field label="výstup ve pro HLS kdekoliv " v-model="hlsKdekoliv"></v-text-field>
+                      <v-text-field label="výstup ve pro HLS kdekoliv *" v-model="hlsKdekoliv"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="3" md="8">
-                      <v-text-field label="výstup ve pro HLS local " v-model="hlsLocal"></v-text-field>
+                      <v-text-field label="výstup ve pro HLS local *" v-model="hlsLocal"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="3" md="8">
-                      <v-text-field label="výstup ve pro HLS mobile " v-model="hlsMobile"></v-text-field>
+                      <v-text-field label="výstup ve pro HLS mobile *" v-model="hlsMobile"></v-text-field>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -382,7 +382,7 @@
                 <v-container>
                   <v-row>
                     <v-col cols="12" sm="3" md="8">
-                      <v-text-field required label="Chunk store ID " v-model="newChunkStoreId"></v-text-field>
+                      <v-text-field required label="Chunk store ID *" v-model="newChunkStoreId"></v-text-field>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -401,13 +401,13 @@
                   </v-row>
                   <v-row>
                     <v-col cols="12" sm="3" md="8">
-                      <v-text-field label="výstup ve pro HLS kdekoliv " v-model="newHlsKdekoliv"></v-text-field>
+                      <v-text-field label="výstup ve pro HLS kdekoliv *" v-model="newHlsKdekoliv"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="3" md="8">
-                      <v-text-field label="výstup ve pro HLS local " v-model="newHlsLocal"></v-text-field>
+                      <v-text-field label="výstup ve pro HLS local *" v-model="newHlsLocal"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="3" md="8">
-                      <v-text-field label="výstup ve pro HLS mobile " v-model="newHlsMobile"></v-text-field>
+                      <v-text-field label="výstup ve pro HLS mobile *" v-model="newHlsMobile"></v-text-field>
                     </v-col>
                   </v-row>
                   <v-divider></v-divider>
@@ -418,7 +418,7 @@
                         :items="transcoders"
                         item-value="id"
                         item-text="name"
-                        label="Transcoder"
+                        label="Transcoder *"
                       ></v-select>
                     </v-col>
                   </v-row>

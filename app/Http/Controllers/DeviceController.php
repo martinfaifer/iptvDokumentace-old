@@ -333,6 +333,69 @@ class DeviceController extends Controller
     {
         $column = "device_id";
 
+
+
+        switch ($request->kategorieId) {
+            case 4:
+                ChannelsController::updateChannel($column, $request->deviceId, $request->channelId);
+                break;
+            case 5:
+                ChannelsController::updateChannel($column, $request->deviceId, $request->channelId);
+                break;
+            case 2:
+                $vendor = Device::where('id', $request->deviceId)->first();
+                switch ($vendor->vendor_id) {
+                        // Blankom
+                    case 1:
+                        ChannelsController::updateChannel($column, $request->deviceId, $request->channelId);
+                        ChannelsController::updateChannel("blankom_rf", $request->rfId, $request->channelId);
+                        break;
+                        // FTE
+                    case 2:
+                        ChannelsController::updateChannel($column, $request->deviceId, $request->channelId);
+                        break;
+                        // Nvidia
+                    case 4:
+                        ChannelsController::updateChannel($column, $request->deviceId, $request->channelId);
+                        break;
+                        // Neznámý výrobce
+                    case 5:
+                        ChannelsController::updateChannel($column, $request->deviceId, $request->channelId);
+                        break;
+                        // Cisco
+                    case 6:
+                        ChannelsController::updateChannel($column, $request->deviceId, $request->channelId);
+                        break;
+                    default:
+                        return [
+                            'isAlert' => "isAlert",
+                            'stat' => "error",
+                            'msg' => "Nepodařilo se z editovat zařízení, obraťte se na MF"
+                        ];
+                }
+                break;
+            default:
+                return [
+                    'isAlert' => "isAlert",
+                    'stat' => "error",
+                    'msg' => "Nepodařilo se z editovat zařízení, obraťte se na MF"
+                ];
+        }
+    }
+
+
+    /**
+     * fn pro ulození založního prijimace
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function saveBackupPrijem(Request $request)
+    {
+        $column = "device_backup_id";
+
+
+
         switch ($request->kategorieId) {
             case 4:
                 ChannelsController::updateChannel($column, $request->deviceId, $request->channelId);
@@ -384,6 +447,17 @@ class DeviceController extends Controller
     public function deletePrijem(Request $request)
     {
         ChannelsController::updateChannel("device_id", "false", $request->channelId);
+
+        return [
+            'isAlert' => "isAlert",
+            'stat' => "success",
+            'msg' => "Přijímč byl odebrán"
+        ];
+    }
+
+    public function deleteBackupPrijem(Request $request)
+    {
+        ChannelsController::updateChannel("device_backup_id", "false", $request->channelId);
 
         return [
             'isAlert' => "isAlert",
@@ -634,6 +708,22 @@ class DeviceController extends Controller
      */
     public function editMultiplexer(Request $request)
     {
+
+        $validation = ValidationController::validateIfIsNull($request->deviceName);
+        if ($validation != "true") {
+            return $validation;
+        }
+
+        $validation = ValidationController::validateIfIsNull($request->deviceLogin);
+        if ($validation != "true") {
+            return $validation;
+        }
+
+        $validation = ValidationController::validateIPv4($request->deviceIp);
+        if ($validation != "true") {
+            return $validation;
+        }
+
         $data = array(
             'name' => $request->deviceName,
             'ip' => $request->deviceIp,
@@ -657,6 +747,21 @@ class DeviceController extends Controller
      */
     public function basicEditBlankom(Request $request)
     {
+        $validation = ValidationController::validateIfIsNull($request->deviceName);
+        if ($validation != "true") {
+            return $validation;
+        }
+
+        $validation = ValidationController::validateIfIsNull($request->deviceLogin);
+        if ($validation != "true") {
+            return $validation;
+        }
+
+        $validation = ValidationController::validateIPv4($request->deviceIp);
+        if ($validation != "true") {
+            return $validation;
+        }
+
         $data = array(
             'name' => $request->deviceName,
             'ip' => $request->deviceIp,
@@ -687,6 +792,7 @@ class DeviceController extends Controller
      */
     public function editBlankomRf(Request $request)
     {
+
         $data = array(
             'dvb' => $request->rfDVB,
             'satelit' => $request->rfSatelit,
@@ -713,6 +819,17 @@ class DeviceController extends Controller
      */
     public function basicEditFte(Request $request)
     {
+        $validation = ValidationController::validateIfIsNull($request->deviceName);
+        if ($validation != "true") {
+            return $validation;
+        }
+
+        $validation = ValidationController::validateIPv4($request->deviceIp);
+        if ($validation != "true") {
+            return $validation;
+        }
+
+
         $data = array(
             'name' => $request->deviceName,
             'ip' => $request->deviceIp,
@@ -768,6 +885,21 @@ class DeviceController extends Controller
      */
     public function editNsp(Request $request)
     {
+        $validation = ValidationController::validateIfIsNull($request->deviceName);
+        if ($validation != "true") {
+            return $validation;
+        }
+
+        $validation = ValidationController::validateIfIsNull($request->deviceLogin);
+        if ($validation != "true") {
+            return $validation;
+        }
+
+        $validation = ValidationController::validateIPv4($request->deviceIp);
+        if ($validation != "true") {
+            return $validation;
+        }
+
         $data = array(
             'name' => $request->deviceName,
             'ip' => $request->deviceIp,
@@ -791,6 +923,17 @@ class DeviceController extends Controller
      */
     public function editTranscoder(Request $request)
     {
+
+        $validation = ValidationController::validateIfIsNull($request->deviceName);
+        if ($validation != "true") {
+            return $validation;
+        }
+
+        $validation = ValidationController::validateIPv4($request->deviceIp);
+        if ($validation != "true") {
+            return $validation;
+        }
+
         $data = array(
             'name' => $request->deviceName,
             'ip' => $request->deviceIp,
@@ -815,6 +958,22 @@ class DeviceController extends Controller
      */
     public function editLinux(Request $request)
     {
+
+        $validation = ValidationController::validateIfIsNull($request->deviceName);
+        if ($validation != "true") {
+            return $validation;
+        }
+
+        $validation = ValidationController::validateIfIsNull($request->deviceLogin);
+        if ($validation != "true") {
+            return $validation;
+        }
+
+        $validation = ValidationController::validateIPv4($request->deviceIp);
+        if ($validation != "true") {
+            return $validation;
+        }
+
         $login = explode(" / ", $request->deviceLogin);
 
         $data = array(
@@ -841,6 +1000,12 @@ class DeviceController extends Controller
      */
     public function editPoIp(Request $request)
     {
+
+        $validation = ValidationController::validateIfIsNull($request->deviceName);
+        if ($validation != "true") {
+            return $validation;
+        }
+
         $data = array(
             'name' => $request->deviceName,
             'poznamka' => $request->deviceNote,
@@ -862,6 +1027,22 @@ class DeviceController extends Controller
      */
     public function editPowerVu(Request $request)
     {
+
+        $validation = ValidationController::validateIfIsNull($request->deviceName);
+        if ($validation != "true") {
+            return $validation;
+        }
+
+        $validation = ValidationController::validateIfIsNull($request->deviceLogin);
+        if ($validation != "true") {
+            return $validation;
+        }
+
+        $validation = ValidationController::validateIPv4($request->deviceIp);
+        if ($validation != "true") {
+            return $validation;
+        }
+
         $data = array(
             'name' => $request->deviceName,
             'ip' => $request->deviceIp,
@@ -989,20 +1170,51 @@ class DeviceController extends Controller
      */
     public function create(Request $request)
     {
-        Device::create([
-            'name' => $request->deviceName,
-            'vendor_id' => $request->deviceVendor,
-            'id_kategory' => $request->deviceKategorie,
-            'ip' => $request->deviceIp
-        ]);
 
-        $overeni = Device::where('ip', $request->deviceIp)->first();
+        $validation = ValidationController::validateIfIsNull($request->deviceName);
+        if ($validation != "true") {
+            return $validation;
+        }
 
-        return [
-            'isAlert' => "isAlert",
-            'stat' => "success",
-            'msg' => "Zařízení bylo založeno",
-            'id' => $overeni->id
-        ];
+        $validation = ValidationController::validateIfIsNull($request->deviceVendor);
+        if ($validation != "true") {
+            return $validation;
+        }
+
+        $validation = ValidationController::validateIfIsNull($request->deviceKategorie);
+        if ($validation != "true") {
+            return $validation;
+        }
+
+        $validation = ValidationController::validateIPv4($request->deviceIp);
+        if ($validation != "true") {
+            return $validation;
+        }
+
+        // overeni zda jiz zarizeni s danou IP neexistuje
+        $checkIfExist = Device::where('ip', $request->deviceIp)->first();
+        if ($checkIfExist == "false") {
+            Device::create([
+                'name' => $request->deviceName,
+                'vendor_id' => $request->deviceVendor,
+                'id_kategory' => $request->deviceKategorie,
+                'ip' => $request->deviceIp
+            ]);
+
+            $overeni = Device::where('ip', $request->deviceIp)->first();
+
+            return [
+                'isAlert' => "isAlert",
+                'stat' => "success",
+                'msg' => "Zařízení bylo založeno",
+                'id' => $overeni->id
+            ];
+        } else {
+            return [
+                'isAlert' => "isAlert",
+                'stat' => "error",
+                'msg' => "Zařízení s touto IP je již založeno",
+            ];
+        }
     }
 }

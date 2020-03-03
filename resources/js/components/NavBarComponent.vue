@@ -26,7 +26,16 @@
           </template>
           <v-list v-if="userData.role === '1' || userData.role === '2'">
             <v-list-item>
-              <v-btn @click="openChannelModal()" text small>Přidat nový kanál</v-btn>
+              <v-btn @click="openChannelModal()" text small>
+                <v-icon dark left>mdi-plus mdi-18px</v-icon>Přidat nový kanál
+              </v-btn>
+            </v-list-item>
+            <v-list-item>
+              <a style="text-decoration:none" target="_blank" href="/api/channels/pdf">
+                <v-btn text small>
+                  <v-icon dark left>mdi-briefcase-download-outline mdi-18px</v-icon>Export kanálů do pdf
+                </v-btn>
+              </a>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -36,7 +45,9 @@
           </template>
           <v-list v-if="userData.role === '1' || userData.role === '2'">
             <v-list-item>
-              <v-btn @click="openDeviceModal()" text small>Přidat nové zařízení</v-btn>
+              <v-btn @click="openDeviceModal()" text small>
+                <v-icon dark left>mdi-plus mdi-18px</v-icon>Přidat nové zařízení
+              </v-btn>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -217,9 +228,8 @@
             <v-container>
               <span>
                 <ol>
-                  <li>Upravena historie, nyní zobrazuje pouze čas, kdy byl na kanále evidovaný výpadek.</li>
-                  <li>Přidána informace u H264, kdy je popup při najetí na "?" s informací o bitratu.</li>
-                  <li>Přidán návod do Wiki na testovku.</li>
+                  <li>Přidána validace vstupních dat při zakládání / editaci</li>
+                  <li>Přidán export všech kanálů do PDF</li>
                 </ol>
               </span>
             </v-container>
@@ -264,7 +274,8 @@ export default {
       deviceIp: "",
       created: "",
       createdDevice: "",
-      status: ""
+      status: "",
+      export: ""
     };
   },
   created() {
@@ -423,7 +434,7 @@ export default {
             .get("/api/getAlerts")
             .then(response => (this.iptvErrs = response.data));
         }.bind(this),
-        3000
+        60000
       );
     },
     // Presmerování na login pokud neni prihlasen uzivatel
@@ -460,7 +471,7 @@ export default {
       }
     },
     status: function() {
-      setTimeout(() => (this.status = false), 5000);
+      setTimeout(() => (this.status = false), 3000);
     }
   }
 };

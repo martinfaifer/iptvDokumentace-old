@@ -51,6 +51,10 @@ class H264Controller extends Controller
      */
     public function editTranscoder(Request $request)
     {
+        $validation = ValidationController::validateIfIsNull($request->multiplexerId);
+        if ($validation != "true") {
+            return $validation;
+        }
         return $this->updateH264("id_device", $request->device, $request->channelId);
     }
 
@@ -170,6 +174,28 @@ class H264Controller extends Controller
                 $this->device = $request->newDevice;
             }
 
+            /**
+             * validace vstupních dat
+             */
+            $validation = ValidationController::validateIfIsNull($this->hlsKdekoliv);
+            if ($validation != "true") {
+                return $validation;
+            }
+            $validation = ValidationController::validateIfIsNull($this->hlsLocal);
+            if ($validation != "true") {
+                return $validation;
+            }
+            $validation = ValidationController::validateIfIsNull($this->hlsMobile);
+            if ($validation != "true") {
+                return $validation;
+            }
+            $validation = ValidationController::validateIfIsNull($this->device);
+            if ($validation != "true") {
+                return $validation;
+            }
+            /**
+             * konec validace vstupu
+             */
             H264::create([
                 'id_channel' => $request->newChannelId,
                 'kodek' => $this->kodek,
