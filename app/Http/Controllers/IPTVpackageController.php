@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Channels;
 use App\IPTVpackage;
 use App\IPTVsubPackage;
 use Illuminate\Http\Request;
@@ -139,5 +140,49 @@ class IPTVpackageController extends Controller
         } else {
             return  IPTVsubPackage::where('id', $packageId)->first();
         }
+    }
+
+    /**
+     * fn na získání bšech kanálů patřící do daného balíčku
+     *
+     * @param Request $request->packageName
+     * @return void
+     */
+    public function getChannelByPackage(Request $request)
+    {
+        // definice proměnné
+        $data = array();
+        $findfIfIsMain = IPTVpackage::where('nazevBalicku', $request->packageName)->first();
+        if ($findfIfIsMain) {
+            // hledání v základních programových balíčcích
+            $channels = Channels::all();
+            foreach ($channels as $channel) {
+                if (strpos($channel->iptvPackage, strval($findfIfIsMain->id)) !== false) {
+                    $data[] = array(
+                        'id' => $channel->id,
+                        'nazev' => $channel->nazev,
+                        'ipKstb' => $channel->ipKstb
+                    );
+                }
+            }
+            // odeslání dat do frontendu
+            return $data;
+        } else {
+            // prvni podminka nebyla splnena, hleda se tedy v priplatkovych baliccich
+            $subPackage = IPTVsubPackage::where('subBalicek', $request->packageName)->first();
+
+            $channels = Channels::all();
+            foreach ($channels as $channel) {
+                if (strpos($channel->iptvSubPackage, strval($subPackage->id)) !== false) {
+                    $data[] = array(
+                        'id' => $channel->id,
+                        'nazev' => $channel->nazev,
+                        'ipKstb' => $channel->ipKstb
+                    );
+                }
+            }
+        }
+        // odeslání dat do frontendu
+        return $data;
     }
 }

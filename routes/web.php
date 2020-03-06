@@ -146,3 +146,4 @@ Route::get('/api/channels/pdf', 'ChannelsController@channelsPDF')->name('channel
 // IPTV balicky
 Route::post('/api/iptvpackage/create', 'IPTVpackageController@create');
 Route::get('/api/iptvpackage/getAll', 'IPTVpackageController@getAll');
+Route::post('/api/iptvpackage', 'IPTVpackageController@getChannelByPackage');

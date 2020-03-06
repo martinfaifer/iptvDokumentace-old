@@ -115,8 +115,10 @@ class ChannelsController extends Controller
         $historyName = "false";
         $history = "false";
         $backupPrijimac = array();
-        $balicek = "false";
+        $balicek = array();
         $poznamka = "false";
+        $mainBalicek = array();
+        $subBalicek = array();
         // $outup = "false";
 
 
@@ -126,14 +128,86 @@ class ChannelsController extends Controller
         // vyhledání balíčku do ktereho je kanal prirazen
         if ($channel->iptvPackage == null && $channel->iptvSubPackage == null) {
             $balicek = "false";
-        } else if ($channel->iptvPackage != null && $channel->iptvSubPackage == null) {
-            $findBalicek = IPTVpackageController::findPackageById($channel->iptvPackage, "main");
-            $balicek = $findBalicek->nazevBalicku;
-        } else {
-            $findBalicek = IPTVpackageController::findPackageById($channel->iptvSubPackage, "sub");
 
-            $balicek = $findBalicek->subBalicek;
+            // Hlavni balicky (MINI, Basic, MAX)
         }
+        if ($channel->iptvPackage != null) {
+
+            $balicky = explode(",", $channel->iptvPackage);
+            if (is_array($balicky)) {
+                foreach ($balicky as $programovyBalicek) {
+                    $findBalicek = IPTVpackageController::findPackageById($programovyBalicek, "main");
+                    $mainBalicek[] = $findBalicek->nazevBalicku;
+                }
+            } else {
+                $findBalicek = IPTVpackageController::findPackageById($balicky, "main");
+                $mainBalicek = $findBalicek->nazevBalicku;
+            }
+
+            // Příplatkové balíčky
+        }
+        if ($channel->iptvSubPackage != null) {
+
+            $balicky = explode(",", $channel->iptvSubPackage);
+            if (is_array($balicky)) {
+                foreach ($balicky as $programovySubBalicek) {
+
+                    $findBalicek = IPTVpackageController::findPackageById($programovySubBalicek, "sub");
+                    $subBalicek[] = $findBalicek->subBalicek;
+                }
+            } else {
+                $findBalicek = IPTVpackageController::findPackageById($balicky, "sub");
+                $subBalicek = $findBalicek->subBalicek;
+            }
+        }
+
+        // overeni, zda je mainBalicek a $subBalicek array
+        if (is_array($mainBalicek) && is_array($subBalicek)) {
+            $balicek = array_merge($mainBalicek, $subBalicek);
+        } else {
+            $balicek = array($mainBalicek, $subBalicek);
+        }
+
+        // else {
+
+        //     // Main balicky
+        //     $mainBalicky = explode(",", $channel->iptvPackage);
+        //     if (is_array($mainBalicky)) {
+        //         foreach ($mainBalicky as $programovySubBalicek) {
+        //             $findBalicek = IPTVpackageController::findPackageById($programovySubBalicek, "main");
+        //             $mainBalicek[] = $findBalicek->nazevBalicku;
+        //         }
+        //     } else {
+        //         $findBalicek = IPTVpackageController::findPackageById($mainBalicky, "main");
+        //         $mainBalicek = $findBalicek->nazevBalicku;
+        //     }
+
+        //     // sub balicky
+        //     $subBalicky = explode(",", $channel->iptvSubPackage);
+        //     if (is_array($subBalicky)) {
+        //         foreach ($subBalicky as $programovyBalicek) {
+        //             $findBalicek = IPTVpackageController::findPackageById($programovyBalicek, "sub");
+        //             $subBalicek[] = $findBalicek->nazevBalicku;
+        //         }
+        //     } else {
+        //         $findBalicek = IPTVpackageController::findPackageById($subBalicky, "sub");
+        //         $subBalicek = $findBalicek->nazevBalicku;
+        //     }
+
+        //     // overeni, zda je mainBalicek a $subBalicek array
+        //     if (is_array($mainBalicek) && is_array($subBalicek)) {
+        //         $balicek = array_merge($mainBalicek, $subBalicek);
+        //     } else {
+        //         $balicek = array($mainBalicek, $subBalicek);
+        //     }
+        // }
+
+        // overeni, zda je mainBalicek a $subBalicek array
+        // if (is_array($mainBalicek) && is_array($subBalicek)) {
+        //     $balicek = array_merge($mainBalicek, $subBalicek);
+        // } else {
+        //     $balicek = array($mainBalicek, $subBalicek);
+        // }
 
         // získání náhledu
         $img = ApiSystemUrlController::getNahledFromDohled($channel->nazev);
@@ -411,7 +485,46 @@ class ChannelsController extends Controller
 
 
     /**
+     * fn pro přidání k již existujímu záznamu nový záznam oddělený ","
+     *
+     * @return void
+     */
+    public static function addToExistRecordaNewOne($column, $columnData, $channelId)
+    {
+        $takeCurrentRecord = Channels::where('id', $channelId)->first();
+        $currnetRecords = $takeCurrentRecord->$column;
+
+        if ($takeCurrentRecord->$column != null) {
+            $update = Channels::find($channelId);
+
+            $update->$column = $currnetRecords . "," . $columnData;
+
+            $update->save();
+
+            return [
+                'isAlert' => "isAlert",
+                'stat' => "success",
+                'msg' => "Editace proběhla úspěšně"
+            ];
+        } else {
+            $update = Channels::find($channelId);
+
+            $update->$column =  $columnData;
+
+            $update->save();
+
+            return [
+                'isAlert' => "isAlert",
+                'stat' => "success",
+                'msg' => "Editace proběhla úspěšně"
+            ];
+        }
+    }
+
+    /**
      * fn pro ulození balíčku ke kanálu
+     *
+     * addIPTVPackage => false, pokud true, doplňuje se balíček
      *
      * @return void
      */
@@ -419,7 +532,7 @@ class ChannelsController extends Controller
     {
         // zjisteni zda kanál jiz ma na sobe vazany nejaký balicek
         $channel = Channels::where('id', $request->channelId)->first();
-        if ($channel->iptvPackage != null || $channel->iptvSubPackage != null) {
+        if ($channel->iptvPackage != null && $request->addIPTVPackage == false || $channel->iptvSubPackage != null && $request->addIPTVPackage == false) {
             $this->updateChannel("iptvPackage", null, $request->channelId);
             $this->updateChannel("iptvSubPackage", null, $request->channelId);
         }
@@ -432,8 +545,12 @@ class ChannelsController extends Controller
                 'stat' => "error",
                 'msg' => "Balíček nebyl nalezen"
             ];
-        } else if ($infoOBalicku["tag"] == "main") {
+        } else if ($infoOBalicku["tag"] == "main" && $request->addIPTVPackage == false) {
             return $this->updateChannel("iptvPackage", $infoOBalicku["id"], $request->channelId);
+        } else if ($infoOBalicku["tag"] == "main" && $request->addIPTVPackage == true) {
+            return $this->addToExistRecordaNewOne("iptvPackage", $infoOBalicku["id"], $request->channelId);
+        } else if ($infoOBalicku["tag"] != "main" && $request->addIPTVPackage == true) {
+            return $this->addToExistRecordaNewOne("iptvSubPackage", $infoOBalicku["id"], $request->channelId);
         } else {
             return $this->updateChannel("iptvSubPackage", $infoOBalicku["id"], $request->channelId);
         }

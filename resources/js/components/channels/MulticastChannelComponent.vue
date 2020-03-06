@@ -161,10 +161,11 @@
             </v-btn>
           </span>
           <!-- Programovy balicek -->
-          <span v-if="channelData.balicek != 'false'">
+          <span v-if="channelData.balicek != ''">
             <span class="ma-3">
               <strong>Programový balíček:</strong>
-              {{channelData.balicek}}
+              <span v-for="balicek in channelData.balicek">{{balicek}} ,</span>
+              <!-- {{channelData.balicek}} -->
             </span>
             <v-btn
               v-if="userData.role === '1' || userData.role === '2'"
@@ -1047,6 +1048,9 @@
                     ></v-select>
                   </v-col>
                 </v-row>
+                <v-row v-if="channelData.balicek != 'false'">
+                  <v-checkbox v-model="addIPTVPackage" label="Přidat k již existujícímu"></v-checkbox>
+                </v-row>
               </v-container>
             </v-card-text>
             <v-card-actions>
@@ -1212,7 +1216,8 @@ export default {
       priority: "",
       userData: "",
       history: "",
-      iptvPackage: []
+      iptvPackage: [],
+      addIPTVPackage: false
     };
   },
 
@@ -1345,12 +1350,14 @@ export default {
       axios
         .post("/api/channel/save/iptvPackage", {
           channelId: this.$route.params.id,
-          iptvPackageName: this.iptvPackageName
+          iptvPackageName: this.iptvPackageName,
+          addIPTVPackage: this.addIPTVPackage
         })
         .then(function(response) {
           currentObj.status = response.data;
 
           currentObj.editIPTVpackage = false;
+          currentObj.addIPTVPackage = false;
 
           axios
             .post("/api/channel/get/multicast", {

@@ -52,6 +52,7 @@
           </v-list>
         </v-menu>
         <v-btn class="white--text" text router to="/wiki">Wiki</v-btn>
+        <v-btn class="white--text" text router to="/channelPackages">Programové balíčky</v-btn>
         <v-btn v-if="userData.role === '1'" class="white--text" text router to="/settings">Nastavení</v-btn>
       </v-toolbar-items>
 

@@ -11,6 +11,8 @@ import LoginComponent from './components/LoginComponent.vue';
 import NavBarComponent from './components/NavBarComponent.vue';
 import PageNotFoundComponent from './components/PageNotFoundComponent';
 import SettingsComponent from './components/SettingsComponent.vue';
+import ChannelPackage from './components/channelPackages/ChannelPackageComponent.vue';
+import ChannelPackagesComonent from './components/channelPackages/ChannelPackagesComonent.vue';
 import AllChannelsComponent from './components/channels/AllChannelsComponent.vue';
 import ChannelsDefaultComponent from './components/channels/ChannelsDefaultComponent.vue';
 import H264ChannelComponent from './components/channels/H264ChannelComponent.vue';
@@ -76,6 +78,16 @@ let routes = [
                         path: '/wiki/:id',
                         component: WikiTopicComponent
                     },
+                ]
+            },
+            {
+                path: 'channelPackages',
+                component: ChannelPackagesComonent,
+                children: [
+                    {
+                        path: '/channelPackages/:nazev',
+                        component: ChannelPackage
+                    }
                 ]
             },
             {
