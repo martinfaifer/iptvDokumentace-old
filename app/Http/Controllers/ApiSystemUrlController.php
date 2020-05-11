@@ -49,21 +49,22 @@ class ApiSystemUrlController extends Controller
      */
     public function getIPTVAlert()
     {
-        // ziskáme pole s url
-        $dohled = ApiSystemUrl::where('type', "dohled")->first();
+        // // ziskáme pole s url
+        // $dohled = ApiSystemUrl::where('type', "dohled")->first();
 
-        if ($dohled == false) {
-            return "false";
-        } else {
-            $test = @file_get_contents('http://' . $dohled->url . '/api/getCrashedChannels', true);
-            if ($test) {
-                $json = json_decode(file_get_contents('http://' . $dohled->url . '/api/getCrashedChannels'), true);
+        // if ($dohled == false) {
+        //     return "false";
+        // } else {
+        //     $test = file_get_contents('http://' . $dohled->url . '/api/getCrashedChannels', true);
+        //     if ($test) {
+        //         $json = json_decode(file_get_contents('http://' . $dohled->url . '/api/getCrashedChannels'), true);
 
-                return $json;
-            } else {
-                return "false";
-            }
-        }
+        //         return $json;
+        //     } else {
+        //         return "false";
+        //     }
+        // }
+        return "false";
     }
 
     /**

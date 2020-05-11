@@ -147,3 +147,9 @@ Route::get('/api/channels/pdf', 'ChannelsController@channelsPDF')->name('channel
 Route::post('/api/iptvpackage/create', 'IPTVpackageController@create');
 Route::get('/api/iptvpackage/getAll', 'IPTVpackageController@getAll');
 Route::post('/api/iptvpackage', 'IPTVpackageController@getChannelByPackage');
+
+
+// CA modul
+Route::get('/api/ca_modul/get', 'CAModulController@get');
+// Pocet kanaálu na CA modulu
+Route::get('/api/ca_modul/channels/get', 'CAModulChannelController@get');

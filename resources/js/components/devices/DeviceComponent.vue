@@ -35,7 +35,7 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-if="userData.role === '1' || userData.role === '2'"
+                                v-show="userData.role === '1' || userData.role === '2'"
                                 icon
                                 x-small
                                 v-on="on"
@@ -51,7 +51,7 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-if="userData.role === '1' || userData.role === '2'"
+                                v-show="userData.role === '1' || userData.role === '2'"
                                 @click="RemoveDevice(deviceId = device.id)"
                                 icon
                                 x-small
@@ -181,7 +181,7 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-if="userData.role === '1' || userData.role === '2'"
+                                v-show="userData.role === '1' || userData.role === '2'"
                                 icon
                                 x-small
                                 v-on="on"
@@ -197,7 +197,7 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-if="userData.role === '1' || userData.role === '2'"
+                                v-show="userData.role === '1' || userData.role === '2'"
                                 @click="RemoveDevice(deviceId = device.id)"
                                 icon
                                 x-small
@@ -367,7 +367,7 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-if="userData.role === '1' || userData.role === '2'"
+                                v-show="userData.role === '1' || userData.role === '2'"
                                 icon
                                 x-small
                                 v-on="on"
@@ -460,7 +460,7 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-if="userData.role === '1' || userData.role === '2'"
+                                v-show="userData.role === '1' || userData.role === '2'"
                                 @click="rf = 'RF2', rfPolarizace = device.RF2_polarizace, deviceId = device.id, rfDVB = device.RF2_dvb, rfSatelit = device.RF2_satelit, rfFreq = device.RF2_freq, rfSymbol = device.RF2_Symbol, rfFec = device.RF2_fec, rfCI = device.CI_2, modalEditRF = true "
                                 icon
                                 x-small
@@ -526,7 +526,7 @@
                         <div>
                           <v-row v-if="channel.rf === 'RF2'">
                             <v-btn
-                              v-if="userData.role === '1' || userData.role === '2'"
+                              v-show="userData.role === '1' || userData.role === '2'"
                               v-bind:to="'/channel/' + channel.channelId "
                               target="_blank"
                               dark
@@ -553,7 +553,7 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-if="userData.role === '1' || userData.role === '2'"
+                                v-show="userData.role === '1' || userData.role === '2'"
                                 @click="rf = 'RF3', rfPolarizace = device.RF3_polarizace, deviceId = device.id, rfDVB = device.RF3_dvb, rfSatelit = device.RF3_satelit, rfFreq = device.RF3_freq, rfSymbol = device.RF3_Symbol, rfFec = device.RF3_fec, rfCI = device.CI_3, modalEditRF = true "
                                 icon
                                 x-small
@@ -646,7 +646,7 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-if="userData.role === '1' || userData.role === '2'"
+                                v-show="userData.role === '1' || userData.role === '2'"
                                 @click="rf = 'RF4', rfPolarizace = device.RF4_polarizace, deviceId = device.id, rfDVB = device.RF4_dvb, rfSatelit = device.RF4_satelit, rfFreq = device.RF4_freq, rfSymbol = device.RF4_symbol, rfFec = device.RF4_fec, rfCI = device.CI_4, modalEditRF = true "
                                 icon
                                 x-small
@@ -743,7 +743,7 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-if="userData.role === '1' || userData.role === '2'"
+                                v-show="userData.role === '1' || userData.role === '2'"
                                 @click="modalEditFte = true, deviceIp = device.ip, deviceNote = device.poznamka, deviceName = device.nazev, deviceId = device.id"
                                 icon
                                 x-small
@@ -759,7 +759,7 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-if="userData.role === '1' || userData.role === '2'"
+                                v-show="userData.role === '1' || userData.role === '2'"
                                 @click="RemoveDevice(deviceId = device.id)"
                                 icon
                                 x-small
@@ -804,7 +804,7 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-if="userData.role === '1' || userData.role === '2'"
+                                v-show="userData.role === '1' || userData.role === '2'"
                                 @click="modalEditFteSat = true, deviceId = device.id, FteDVB = device.FTE_dvb, FteFreq =  device.FTE_freq,FteSatelit = device.FTE_satelit, FteSymbol = device.FTE_Symbol, FteFec = device.FEC_fec, FteCI_A = device.CI_A, FteCI_B = device.CI_B, FtePolarizace = device.FTE_polarizace  "
                                 icon
                                 x-small
@@ -1028,7 +1028,7 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-if="userData.role === '1' || userData.role === '2'"
+                                v-show="userData.role === '1' || userData.role === '2'"
                                 @click="modalEditNsp = true, deviceId = device.id, deviceIp = device.ip, deviceName = device.nazev, deviceLogin = device.login, deviceNote = device.poznamka"
                                 icon
                                 x-small
@@ -1044,7 +1044,7 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-if="userData.role === '1' || userData.role === '2'"
+                                v-show="userData.role === '1' || userData.role === '2'"
                                 @click="RemoveDevice(deviceId = device.id)"
                                 icon
                                 x-small
@@ -1173,7 +1173,7 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-if="userData.role === '1' || userData.role === '2'"
+                                v-show="userData.role === '1' || userData.role === '2'"
                                 @click="modalEditTranscoder = true, deviceId = device.id, deviceIp = device.ip, deviceName = device.nazev, deviceNote = device.poznamka"
                                 icon
                                 x-small
@@ -1189,7 +1189,7 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-if="userData.role === '1' || userData.role === '2'"
+                                v-show="userData.role === '1' || userData.role === '2'"
                                 @click="RemoveDevice(deviceId = device.id)"
                                 icon
                                 x-small
@@ -1314,7 +1314,7 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-if="userData.role === '1' || userData.role === '2'"
+                                v-show="userData.role === '1' || userData.role === '2'"
                                 @click="modalEditLinux = true, deviceName = device.nazev, deviceId = device.id, deviceIp = device.ip, deviceLogin = device.login, deviceNote = device.poznamka"
                                 icon
                                 x-small
@@ -1330,7 +1330,7 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-if="userData.role === '1' || userData.role === '2'"
+                                v-show="userData.role === '1' || userData.role === '2'"
                                 @click="RemoveDevice(deviceId = device.id)"
                                 icon
                                 x-small
@@ -1471,7 +1471,7 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-if="userData.role === '1' || userData.role === '2'"
+                                v-show="userData.role === '1' || userData.role === '2'"
                                 @click="RemoveDevice(deviceId = device.id)"
                                 icon
                                 x-small
@@ -1572,7 +1572,7 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-if="userData.role === '1' || userData.role === '2'"
+                                v-show="userData.role === '1' || userData.role === '2'"
                                 @click="modalEditPowerVu = true, deviceName = device.nazev, deviceId = device.id, deviceIp = device.ip, deviceLogin = device.login,  deviceNote = device.poznamka"
                                 icon
                                 x-small
@@ -1588,7 +1588,7 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-if="userData.role === '1' || userData.role === '2'"
+                                v-show="userData.role === '1' || userData.role === '2'"
                                 @click="RemoveDevice(deviceId = device.id)"
                                 icon
                                 x-small
@@ -1759,7 +1759,8 @@ export default {
         { name: " Hotbird13 13E" },
         { name: "Telstar 12 15W" },
         { name: "Thor 5 " },
-        { name: "Thor6 " }
+        { name: "Thor6 " },
+        { name: "Eutelsat 16A 16°East" }
       ],
       dvbs: [
         { name: "DVB-S" },
@@ -1769,6 +1770,21 @@ export default {
       ],
       polarizace: [{ name: "vertikální" }, { name: "horizontální" }]
     };
+  },
+
+created() {
+    axios.get("/api/getUser").then(response => (this.userData = response.data));
+    let currentObj = this;
+    axios
+      .post("/api/device/get", {
+        id: this.$route.params.id
+      })
+      .then(function(response) {
+        currentObj.deviceData = response.data;
+      })
+      .catch(function(error) {
+        currentObj.deviceData = "error";
+      });
   },
 
   methods: {
@@ -2150,19 +2166,5 @@ export default {
         });
     }
   },
-  created() {
-    axios.get("/api/getUser").then(response => (this.userData = response.data));
-    let currentObj = this;
-    axios
-      .post("/api/device/get", {
-        id: this.$route.params.id
-      })
-      .then(function(response) {
-        currentObj.deviceData = response.data;
-      })
-      .catch(function(error) {
-        currentObj.deviceData = "error";
-      });
-  }
 };
 </script>

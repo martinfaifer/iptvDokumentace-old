@@ -59,7 +59,7 @@
       <v-spacer></v-spacer>
       <!-- alerting -->
 
-      <template v-if="$vuetify.breakpoint.smAndUp">
+      <!-- <template v-if="$vuetify.breakpoint.smAndUp">
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
             <v-btn class="white--text" icon v-on="on">
@@ -73,7 +73,7 @@
             </v-list-item>
           </v-list>
         </v-menu>
-      </template>
+      </template>-->
 
       <!-- end of alerts -->
       <!-- User cast -->
