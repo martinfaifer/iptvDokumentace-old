@@ -20,7 +20,7 @@
         <!-- end alert -->
         <br />
         <v-toolbar
-             v-show="userData.role === '1' || userData.role === '2'"
+            v-show="userData.role === '1' || userData.role === '2'"
             dense
             flat
             color="transparent"
@@ -146,6 +146,45 @@
                     >
                 </v-tooltip>
 
+                <!-- založení kanálu na dohledu -->
+                <v-tooltip bottom v-if="dohledData === 'false'">
+                    <template v-slot:activator="{ on }">
+                        <v-btn
+                            class="mr-3"
+                            color="primary"
+                            fab
+                            x-small
+                            dark
+                            v-on="on"
+                            @click="openDialogForCreateDohledChannel()"
+                        >
+                            <v-icon color="green">mdi-monitor-multiple</v-icon>
+                        </v-btn>
+                    </template>
+                    <span class="font-weight-medium"
+                        >Založit kanál do dohledu</span
+                    >
+                </v-tooltip>
+
+                <v-tooltip bottom v-else>
+                    <template v-slot:activator="{ on }">
+                        <v-btn
+                            class="mr-3"
+                            color="primary"
+                            fab
+                            x-small
+                            dark
+                            v-on="on"
+                            @click="openDialogForCreateDohledChannel()"
+                        >
+                            <v-icon color="green">mdi-monitor-multiple</v-icon>
+                        </v-btn>
+                    </template>
+                    <span class="font-weight-medium"
+                        >Editovat dohledovaný kanál</span
+                    >
+                </v-tooltip>
+
                 <!-- odebrání kanálu -->
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on }">
@@ -170,7 +209,7 @@
                 <v-card-text>
                     <span class="ma-3">{{ channelData.nazev }}</span>
                     <v-btn
-                         v-show="userData.role === '1' || userData.role === '2'"
+                        v-show="userData.role === '1' || userData.role === '2'"
                         color="primary"
                         x-small
                         dark
@@ -189,7 +228,7 @@
                             {{ channelData.poznamka }}
                         </span>
                         <v-btn
-                             v-show="
+                            v-show="
                                 userData.role === '1' || userData.role === '2'
                             "
                             color="primary"
@@ -214,7 +253,7 @@
                             <!-- {{channelData.balicek}} -->
                         </span>
                         <v-btn
-                             v-show="
+                            v-show="
                                 userData.role === '1' || userData.role === '2'
                             "
                             color="red"
@@ -390,13 +429,13 @@
                             <span>{{ channelData.ipKstb }}</span>
                         </span>
 
-                         <span class="ma-3">
+                        <span class="ma-3">
                             <strong>Dohledovaná url : </strong>
                             <span>{{ channelData.dohledUrl }}</span>
                         </span>
 
                         <v-btn
-                             v-show="
+                            v-show="
                                 userData.role === '1' || userData.role === '2'
                             "
                             color="primary"
@@ -416,7 +455,7 @@
                             <v-icon small>mdi-pencil</v-icon>
                         </v-btn>
                         <v-btn
-                             v-show="
+                            v-show="
                                 userData.role === '1' || userData.role === '2'
                             "
                             color="primary"
@@ -451,7 +490,7 @@
                                 <v-card-actions>
                                     <v-spacer></v-spacer>
                                     <v-btn
-                                         v-show="
+                                        v-show="
                                             userData.role === '1' ||
                                                 userData.role === '2'
                                         "
@@ -504,7 +543,7 @@
                                                 ></v-text-field>
                                             </v-col>
                                         </v-row>
-                                         <v-row>
+                                        <v-row>
                                             <v-col cols="12" sm="3" md="8">
                                                 <v-text-field
                                                     required
@@ -556,7 +595,7 @@
                                         <v-tooltip bottom>
                                             <template v-slot:activator="{ on }">
                                                 <v-btn
-                                                     v-show="
+                                                    v-show="
                                                         userData.role === '1' ||
                                                             userData.role ===
                                                                 '2'
@@ -637,7 +676,7 @@
                                         <v-tooltip bottom>
                                             <template v-slot:activator="{ on }">
                                                 <v-btn
-                                                     v-show="
+                                                    v-show="
                                                         userData.role === '1' ||
                                                             userData.role ===
                                                                 '2'
@@ -690,7 +729,7 @@
                                         <v-tooltip bottom>
                                             <template v-slot:activator="{ on }">
                                                 <v-btn
-                                                     v-show="
+                                                    v-show="
                                                         userData.role === '1' ||
                                                             userData.role ===
                                                                 '2'
@@ -805,7 +844,7 @@
                                         <v-tooltip bottom>
                                             <template v-slot:activator="{ on }">
                                                 <v-btn
-                                                     v-show="
+                                                    v-show="
                                                         userData.role === '1' ||
                                                             userData.role ===
                                                                 '2'
@@ -897,7 +936,7 @@
                                         <v-tooltip bottom>
                                             <template v-slot:activator="{ on }">
                                                 <v-btn
-                                                     v-show="
+                                                    v-show="
                                                         userData.role === '1' ||
                                                             userData.role ===
                                                                 '2'
@@ -972,7 +1011,7 @@
                                         <v-tooltip bottom>
                                             <template v-slot:activator="{ on }">
                                                 <v-btn
-                                                     v-show="
+                                                    v-show="
                                                         userData.role === '1' ||
                                                             userData.role ===
                                                                 '2'
@@ -1066,7 +1105,7 @@
                                                     v-slot:activator="{ on }"
                                                 >
                                                     <v-btn
-                                                         v-show="
+                                                        v-show="
                                                             userData.role ===
                                                                 '1' ||
                                                                 userData.role ===
@@ -1126,7 +1165,7 @@
                                                     v-slot:activator="{ on }"
                                                 >
                                                     <v-btn
-                                                         v-show="
+                                                        v-show="
                                                             userData.role ===
                                                                 '1' ||
                                                                 userData.role ===
@@ -1215,7 +1254,7 @@
                                                     v-slot:activator="{ on }"
                                                 >
                                                     <v-btn
-                                                         v-show="
+                                                        v-show="
                                                             userData.role ===
                                                                 '1' ||
                                                                 userData.role ===
@@ -1288,7 +1327,7 @@
                                                     v-slot:activator="{ on }"
                                                 >
                                                     <v-btn
-                                                         v-show="
+                                                        v-show="
                                                             userData.role ===
                                                                 '1' ||
                                                                 userData.role ===
@@ -1370,7 +1409,7 @@
                                                     v-slot:activator="{ on }"
                                                 >
                                                     <v-btn
-                                                         v-show="
+                                                        v-show="
                                                             userData.role ===
                                                                 '1' ||
                                                                 userData.role ===
@@ -1440,6 +1479,68 @@
                 </div>
 
                 <!-- end backup prijem -->
+            </div>
+
+            <!-- data z dohledu -->
+            <div v-show="dohledData != 'false'">
+                <v-row>
+                    <v-card
+                        class="ma-3 ml-6"
+                        width="1600"
+                        outlined
+                        v-for="dohledovaData in dohledData"
+                        :key="dohledovaData.id"
+                    >
+                        <v-list-item>
+                            <v-card-text>
+                                <span class="ma-3">
+                                    <strong>Status kanálu:</strong>
+                                    <span
+                                        v-if="dohledovaData.Alert === 'success'"
+                                        class="green--text"
+                                    >
+                                        funkční
+                                    </span>
+                                    <span v-else class="red--text">
+                                        výpadek
+                                    </span>
+                                </span>
+                                <!-- Poznamka u kanalu -->
+
+                                <span
+                                    class="ma-3 ml-12"
+                                    v-if="
+                                        dohledovaData.noMonitor === 'mdi-check'
+                                    "
+                                >
+                                    <strong class="green--text"
+                                        >Kanál je dohledován</strong
+                                    >
+                                </span>
+                                <span class="ma-3 ml-12" v-else>
+                                    <strong class="red--text"
+                                        >Kanál se nedohleduje</strong
+                                    >
+                                </span>
+
+                                <!-- Programovy balicek -->
+                                <span
+                                    class="ma-3 ml-12"
+                                    v-if="dohledovaData.audioLang != null"
+                                >
+                                    <strong>Jazyková stopa:</strong>
+                                    <span>{{ dohledovaData.audioLang }}</span>
+                                </span>
+                                <span v-else class="ma-3 ml-12">
+                                    <strong
+                                        >Jazykovou stopu se nepodařilo
+                                        detekovat</strong
+                                    >
+                                </span>
+                            </v-card-text>
+                        </v-list-item>
+                    </v-card>
+                </v-row>
             </div>
 
             <!-- náhled -->
@@ -1537,7 +1638,7 @@
                     </v-list-item>
                 </v-card>
                 <v-card -->
-                    <!-- v-else
+                <!-- v-else
                     loading
                     class="ma-6"
                     width="900"
@@ -1777,7 +1878,7 @@
                                     </v-col>
                                 </v-row>
 
-                                  <v-row v-if="rfId != ''">
+                                <v-row v-if="rfId != ''">
                                     <v-col cols="12" sm="6" md="8">
                                         <v-select
                                             v-model="ci"
@@ -1920,6 +2021,90 @@
                 </v-dialog>
             </v-row>
             <!-- end modal backup prijem -->
+
+            <!-- modal pro založení kanálu do dohledu -->
+
+            <v-row justify="center">
+                <v-dialog
+                    v-model="dohledDialog"
+                    persistent
+                    max-height="200px"
+                    max-width="600px"
+                >
+                    <v-card>
+                        <v-card-text>
+                            <v-container>
+                                <v-row>
+                                    <v-col cols="12" sm="12" md="12">
+                                        <v-text-field
+                                            label="dohledovaná url"
+                                            v-model="channelData.dohledUrl"
+                                            disabled
+                                        ></v-text-field>
+                                    </v-col>
+                                </v-row>
+                                <v-row>
+                                    <v-col cols="6" sm="6" md="6">
+                                        <v-checkbox
+                                            v-model="dohledovatStream"
+                                            label="Dohledovat stream?"
+                                        ></v-checkbox>
+                                    </v-col>
+                                </v-row>
+                                <v-row v-show="dohledovatStream != false">
+                                    <v-col cols="6" sm="6" md="6">
+                                        <v-checkbox
+                                            v-model="dohledVolume"
+                                            label="Dohledovat hlasitosti"
+                                        ></v-checkbox>
+                                    </v-col>
+                                    <v-col cols="6" sm="6" md="6">
+                                        <v-checkbox
+                                            v-model="dohledBitrate"
+                                            label="Dohled datového toku"
+                                        ></v-checkbox>
+                                    </v-col>
+                                </v-row>
+                                <v-row v-show="dohledovatStream != false">
+                                    <v-col cols="6" sm="6" md="6">
+                                        <v-checkbox
+                                            v-model="sendMailAlert"
+                                            label="Zaslat mail alert"
+                                        ></v-checkbox>
+                                    </v-col>
+                                    <v-col cols="6" sm="6" md="6">
+                                        <v-checkbox
+                                            v-model="sendSMS"
+                                            label="Zaslat SMS alert"
+                                        ></v-checkbox>
+                                    </v-col>
+                                </v-row>
+                                <v-row v-show="dohledovatStream != false">
+                                    <v-col cols="6" sm="6" md="6">
+                                        <v-checkbox
+                                            v-model="vytvoritNahled"
+                                            label="Vytvořit náhled"
+                                        ></v-checkbox>
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                                color="blue darken-1"
+                                text
+                                @click="closeDohledDialog()"
+                                >Zavřít</v-btn
+                            >
+                            <v-btn color="green darken-1" text @click=""
+                                >Uložit</v-btn
+                            >
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+            </v-row>
+            <!-- konec modal pro založení kanálu do dohledu -->
         </div>
     </div>
 </template>
@@ -1927,7 +2112,13 @@
 export default {
     data() {
         return {
-            cis: ['1', '2', '3', '4'],
+            vytvoritNahled: true,
+            sendSMS: false,
+            sendMailAlert: true,
+            dohledBitrate: true,
+            dohledovatStream: true,
+            dohledVolume: true,
+            cis: ["1", "2", "3", "4"],
             ci: "",
             camodulNumber: "",
             camodulChannel: [],
@@ -1980,10 +2171,13 @@ export default {
             iptvPackage: [],
             addIPTVPackage: false,
             dohledUrl: "",
+            dohledDialog: false,
+            dohledData: false
         };
     },
 
     created() {
+        this.loadDataFromDohled();
         axios
             .get("/api/getUser")
             .then(response => (this.userData = response.data));
@@ -2020,29 +2214,41 @@ export default {
                 console.log("chyba" + error);
             });
 
-        axios
-            .post("/api/channelHistory", {
-                id: this.$route.params.id
-            })
-            .then(function(response) {
-                currentObj.history = response.data;
-            })
-            .catch(function(error) {
-                console.log("chyba" + error);
-            });
+        // získání dat z dohledu
 
         // axios
-        //   .post("/api/channel/getNahled", {
-        //     id: this.$route.params.id
-        //   })
-        //   .then(function(response) {
-        //     currentObj.image = response.data;
-        //   })
-        //   .catch(function(error) {
-        //     console.log("chyba" + error);
-        //   });
+        //     .post("/api/channelHistory", {
+        //         id: this.$route.params.id
+        //     })
+        //     .then(function(response) {
+        //         currentObj.history = response.data;
+        //     })
+        //     .catch(function(error) {
+        //         console.log("chyba" + error);
+        //     });
     },
     methods: {
+        loadDataFromDohled() {
+            let currentObj = this;
+            axios
+                .post("/api/getChannelDataFromDohled", {
+                    id: this.$route.params.id
+                })
+                .then(function(response) {
+                    currentObj.dohledData = response.data;
+                })
+                .catch(function(error) {
+                    console.log("chyba" + error);
+                });
+        },
+
+        closeDohledDialog() {
+            this.dohledDialog = false;
+        },
+        openDialogForCreateDohledChannel() {
+            this.dohledDialog = true;
+        },
+
         saveChannelNote() {
             let currentObj = this;
             axios
@@ -2531,6 +2737,15 @@ export default {
         }
     },
 
+    // mounted() {
+    //     this.interval = setInterval(
+    //         function() {
+    //             this.loadDataFromDohled();
+    //         }.bind(this),
+    //         10000
+    //     );
+    // },
+
     watch: {
         history: function() {
             if (this.history.length === 0) {
@@ -2585,16 +2800,17 @@ export default {
                     console.log("chyba" + error);
                 });
 
-            axios
-                .post("/api/channelHistory", {
-                    id: this.$route.params.id
-                })
-                .then(function(response) {
-                    currentObj.history = response.data;
-                })
-                .catch(function(error) {
-                    console.log("chyba" + error);
-                });
+                this.loadDataFromDohled();
+            // axios
+            //     .post("/api/channelHistory", {
+            //         id: this.$route.params.id
+            //     })
+            //     .then(function(response) {
+            //         currentObj.history = response.data;
+            //     })
+            //     .catch(function(error) {
+            //         console.log("chyba" + error);
+            //     });
         },
 
         kategorieId: function() {

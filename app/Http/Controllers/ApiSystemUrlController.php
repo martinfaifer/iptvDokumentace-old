@@ -165,7 +165,43 @@ class ApiSystemUrlController extends Controller
         $client = new Client();
 
         $res = $client->get('10.255.255.51/api/channel/get/img?channelUrl=' . trim(Channels::first()->dohledUrl));
-        // echo $res->getStatusCode();
         echo $res->getBody();
+    }
+
+
+    /**
+     * fn pro vyhledání zda kanál existuje v dohledovacím systému
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function checkIfChannelExistAndReturnChannelDataOrFalseStatus(Request $request)
+    {
+        if (!ApiSystemUrl::where('type', "dohled")->first()) {
+            return "false";
+        } else {
+            $client = new Client();
+            $res = $client->get("10.255.255.51/api/channel/get_data_if_exist_or_return_false?channelUrl=" . trim(Channels::where('id', $request->id)->first()->dohledUrl));
+            // echo $res->getStatusCode();
+            echo $res->getBody();
+        }
+    }
+
+    /**
+     * fn pro vyhledání grafu urovne hlasitosti pro daný kanál
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function checkIfChannelExistAndReturnChartVolumeDataOrFalseStatus(Request $request)
+    {
+        if (!ApiSystemUrl::where('type', "dohled")->first()) {
+            return "false";
+        } else {
+            $client = new Client();
+            $res = $client->get("10.255.255.51/api/channel/get_data_if_exist_or_return_false?channelUrl=" . trim(Channels::where('id', $request->id)->first()->dohledUrl));
+            // echo $res->getStatusCode();
+            echo $res->getBody();
+        }
     }
 }

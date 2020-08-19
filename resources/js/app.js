@@ -3,6 +3,9 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import Vuetify from 'vuetify';
+import Chart from 'chart.js';
+import Chartkick from 'vue-chartkick'
+
 
 import VueRouter from 'vue-router';
 
@@ -29,7 +32,7 @@ import WikiTopicComponent from './components/wiki/WikiTopicComponent.vue';
 // midleware
 Vue.use(Vuetify);
 Vue.use(VueRouter);
-
+Vue.use(Chartkick.use(Chart));
 
 
 // routing
