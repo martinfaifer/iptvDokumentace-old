@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\CAModul;
+use App\CAModulChannel;
 use App\Channels;
 use App\H264;
 use App\H265;
@@ -119,11 +121,23 @@ class ChannelsController extends Controller
         $poznamka = "false";
         $mainBalicek = array();
         $subBalicek = array();
+        $ca_modul = "false";
+        $ca_modul_number = "false";
+        $ca_modul_max_channels = "false";
+        $ci = "false";
+        $dohledUrl = "fasle";
         // $outup = "false";
 
 
         // hledání konkrétního kanálu dle "id"
         $channel = Channels::where('id', $request->id)->first();
+
+        // vyhledání zda existuje CA Modul a dohledání případných informací o něm
+        if ($channel->ca_modul != null) {
+            // vyhledání typu CA modulu
+            $ca_modul = CAModul::where('id', $channel->ca_modul)->first()->ca_modul;
+            $ca_modul_max_channels = CAModulChannel::where('id', $channel->max_ca_module_channels)->first()->pocet_podporovanych_kanalu;
+        }
 
         // vyhledání balíčku do ktereho je kanal prirazen
         if ($channel->iptvPackage == null && $channel->iptvSubPackage == null) {
@@ -262,12 +276,16 @@ class ChannelsController extends Controller
             'multiplexer' => $multiplexer,
             'prijem' => $prijimac,
             'rf' => $rf,
+            'ci' => $channel->ci,
             'img' => $img,
             'history' => $history,
             'backup' => $backupPrijimac,
             'balicek' => $balicek,
-            'poznamka' => $channel->poznamka
-
+            'poznamka' => $channel->poznamka,
+            'ca_modul' => $ca_modul,
+            'ca_modul_number' => $channel->ca_modul_number,
+            'max_ca_module_channels' => $ca_modul_max_channels,
+            'dohledUrl' => $channel->dohledUrl
         ];
     }
 

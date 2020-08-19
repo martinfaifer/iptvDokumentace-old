@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Blankom_port;
+use App\CAModulChannel;
 use App\Channels;
 use App\Device;
 use App\H264;
@@ -323,6 +324,11 @@ class DeviceController extends Controller
      *  $request->deviceId => Pokud deviceId = 2 => Vše až na Blankom (4 - 10) posílá deviceId, pokud zařízení je Blankom je nutné poslat rfId
      *  $request->deviceId => Pokud deviceId = 4 => Zasílá se jen deviceId
      *  $request->deviceId => Pokud deviceId = 5 => zasílá se jen deviceId
+     *  $request->camodulNumber -> zasílá se číslo modulu, není nutné aby existovalo, ne vždy jsou evidodavné, takže primárně se jedná o nové kanály
+     *  $request->camodulId -> zasílá se ID výrobce CA modulu
+     *  $request->camodulChannelId -> maximální počet dekryptovaných kanálů v modulu
+     *
+     * Při založení se zjištuje zda je jiz maodul použit, pokud je, zjištuje se maximální počet kanálů a porovnává se s aktuálním stavem, kdy je do toho již započítám tento nový kanál
      *
      *  $request->channelId (ID kanálu)
      *
@@ -349,10 +355,31 @@ class DeviceController extends Controller
                     case 1:
                         ChannelsController::updateChannel($column, $request->deviceId, $request->channelId);
                         ChannelsController::updateChannel("blankom_rf", $request->rfId, $request->channelId);
+                        ChannelsController::updateChannel("ci", $request->ci, $request->channelId);
+                        if ($request->camodulId != '') {
+                            if (Channels::where('ca_modul_number', $request->camodulNumber)->first()) {
+                                // získání kolik kanálů je možné dekryptovat na modulu
+                                $informaceOpoctuKanaluVmodulu = CAModulChannel::where('id', $request->camodulChannelId)->first();
+                                if (Channels::where('ca_modul_number', $request->camodulNumber)->count() < $informaceOpoctuKanaluVmodulu->pocet_podporovanych_kanalu) {
+                                    ChannelsController::updateChannel("ca_modul", $request->camodulId, $request->channelId);
+                                    ChannelsController::updateChannel("ca_modul_number", $request->camodulNumber, $request->channelId);
+                                    ChannelsController::updateChannel("max_ca_module_channels", $request->camodulChannelId, $request->channelId);
+                                } else {
+                                    return [
+                                        'isAlert' => "isAlert",
+                                        'stat' => "error",
+                                        'msg' => "Maximální počet kanálů byl pessažen"
+                                    ];
+                                }
+                            }
+                        }
                         break;
                         // FTE
                     case 2:
                         ChannelsController::updateChannel($column, $request->deviceId, $request->channelId);
+                        ChannelsController::updateChannel("ca_modul", $request->camodulId, $request->channelId);
+                        ChannelsController::updateChannel("ca_modul_number", $request->camodulNumber, $request->channelId);
+                        ChannelsController::updateChannel("max_ca_module_channels", $request->camodulChannelId, $request->channelId);
                         break;
                         // Nvidia
                     case 4:
@@ -410,6 +437,7 @@ class DeviceController extends Controller
                     case 1:
                         ChannelsController::updateChannel($column, $request->deviceId, $request->channelId);
                         ChannelsController::updateChannel("blankom_rf", $request->rfId, $request->channelId);
+                        ChannelsController::updateChannel("ci", $request->ci, $request->channelId);
                         break;
                         // FTE
                     case 2:

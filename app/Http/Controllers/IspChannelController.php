@@ -31,10 +31,13 @@ class IspChannelController extends Controller
             return $validation;
         }
 
-        $validation = ValidationController::validateIPv4($request->multicastIp);
-        if ($validation != "true") {
-            return $validation;
-        }
+        // $validation = ValidationController::validateIPv4($request->multicastIp);
+        // if ($validation != "true") {
+        //     return $validation;
+        // }
+
+
+        $dohledUrl = $request->dohledUrl ?? null;
 
         // aktualizace záznamu v Isp_channels table
         $update = Isp_channel::find($request->channelMulticastId);
@@ -45,6 +48,7 @@ class IspChannelController extends Controller
         $update->save();
 
         ChannelsController::updateChannel("ipKstb", $request->stbIp, $request->channelId);
+        ChannelsController::updateChannel("dohledUrl", $dohledUrl, $request->channelId);
 
         return [
             'isAlert' => "isAlert",

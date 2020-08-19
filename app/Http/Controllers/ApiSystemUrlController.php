@@ -151,4 +151,21 @@ class ApiSystemUrlController extends Controller
             }
         }
     }
+
+
+
+    /**
+     * fn pro nacteí obrázku z dohledu
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function getImgFromDohled(Request $request)
+    {
+        $client = new Client();
+
+        $res = $client->get('10.255.255.51/api/channel/get/img?channelUrl=' . trim(Channels::first()->dohledUrl));
+        // echo $res->getStatusCode();
+        echo $res->getBody();
+    }
 }

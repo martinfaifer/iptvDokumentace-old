@@ -47,7 +47,7 @@ Route::get('/api/devices/get', 'DeviceController@get');
 Route::post('/api/device/get', 'DeviceController@getDeviceRoute');
 
 // vendors
-Route::get('/api/vendors/get', 'DevicevendorController@all');
+Route::get('/api/vendors/get', 'DeviceVendorController@all');
 // device categorie
 Route::get('/api/categories/get', 'DeviceCategorieController@all');
 
@@ -153,3 +153,12 @@ Route::post('/api/iptvpackage', 'IPTVpackageController@getChannelByPackage');
 Route::get('/api/ca_modul/get', 'CAModulController@get');
 // Pocet kanaálu na CA modulu
 Route::get('/api/ca_modul/channels/get', 'CAModulChannelController@get');
+
+
+
+// API
+Route::get('/api/communacation/channel', 'ApiController@getChannelDataForExternalSystem');
+Route::get('/api/communication/channels/monitor', 'ApiController@getChannelDataForDohled');
+
+
+Route::get('/api/get_img_from_dohled', 'ApiSystemUrlController@getImgFromDohled');

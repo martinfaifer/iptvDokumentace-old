@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class H265Controller extends Controller
 {
+
+    var $kvalita1080p = NULL;
+    var $kvalita720p = NULL;
+    var $device = NULL;
+
     public static function getH265($channelId)
     {
         return H265::where('id_channel', $channelId)->first();

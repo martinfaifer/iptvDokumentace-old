@@ -5164,11 +5164,772 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     var _ref;
 
     return _ref = {
+      cis: ['1', '2', '3', '4'],
+      ci: "",
+      camodulNumber: "",
+      camodulChannel: [],
+      camodulChannelId: "",
+      camodulId: "",
+      camodul: [],
       image: "",
       isp: "",
       isps: "",
@@ -5204,7 +5965,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       channelName: "",
       channelIsp: "",
       channelMulticastId: ""
-    }, _defineProperty(_ref, "multicastIp", ""), _defineProperty(_ref, "stbIp", ""), _defineProperty(_ref, "newStbIp", ""), _defineProperty(_ref, "newMulticastIp", ""), _defineProperty(_ref, "ispMulticastId", ""), _defineProperty(_ref, "priority", ""), _defineProperty(_ref, "userData", ""), _defineProperty(_ref, "history", ""), _defineProperty(_ref, "iptvPackage", []), _defineProperty(_ref, "addIPTVPackage", false), _ref;
+    }, _defineProperty(_ref, "multicastIp", ""), _defineProperty(_ref, "stbIp", ""), _defineProperty(_ref, "newStbIp", ""), _defineProperty(_ref, "newMulticastIp", ""), _defineProperty(_ref, "ispMulticastId", ""), _defineProperty(_ref, "priority", ""), _defineProperty(_ref, "userData", ""), _defineProperty(_ref, "history", ""), _defineProperty(_ref, "iptvPackage", []), _defineProperty(_ref, "addIPTVPackage", false), _defineProperty(_ref, "dohledUrl", ""), _ref;
   },
   created: function created() {
     var _this = this;
@@ -5275,12 +6036,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     //   zavreni modal okna pro pridani prijimace a smazani vsech hodnot
     closeSatelit: function closeSatelit() {
       var currentObj = this;
-      currentObj.prijemKategorie = [], currentObj.kategorieId = "", currentObj.devices = [], currentObj.deviceId = "", currentObj.rf = [], currentObj.rfId = "";
+      currentObj.camodulNumber = "", currentObj.camodul = [], currentObj.camodulId = "", currentObj.camodulChannelId = "", currentObj.camodulChannel = [], currentObj.prijemKategorie = [], currentObj.kategorieId = "", currentObj.devices = [], currentObj.deviceId = "", currentObj.rf = [], currentObj.rfId = "";
       currentObj.addSatelit = false;
     },
     closeBackupSatelit: function closeBackupSatelit() {
       var currentObj = this;
-      currentObj.prijemKategorie = [], currentObj.kategorieId = "", currentObj.devices = [], currentObj.deviceId = "", currentObj.rf = [], currentObj.rfId = "";
+      currentObj.camodulNumber = "", currentObj.camodul = [], currentObj.camodulId = "", currentObj.camodulChannelId = "", currentObj.camodulChannel = [], currentObj.prijemKategorie = [], currentObj.kategorieId = "", currentObj.devices = [], currentObj.deviceId = "", currentObj.rf = [], currentObj.rfId = "";
       currentObj.addBackupSatelit = false;
     },
     // fn pro získání iptvBalicku
@@ -5342,7 +6103,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         multicastIp: this.multicastIp,
         stbIp: this.stbIp,
         ispMulticastId: this.ispMulticastId,
-        isp: this.isp
+        isp: this.isp,
+        dohledUrl: this.dohledUrl
       }).then(function (response) {
         currentObj.status = response.data;
         currentObj.editChannelISP = false;
@@ -5477,19 +6239,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var currentObj = this;
       currentObj.addBackupSatelit = false;
       axios.post("/api/channel/saveBackupPrijem", {
+        camodulNumber: this.camodulNumber,
+        camodulId: this.camodulId,
+        camodulChannelId: this.camodulChannelId,
         channelId: this.$route.params.id,
         kategorieId: this.kategorieId,
         deviceId: this.deviceId,
-        rfId: this.rfId
+        rfId: this.rfId,
+        ci: this.ci
       }).then(function (response) {
         currentObj.status = response.data;
-        currentObj.deviceId = "";
+        currentObj.camodulNumber = "", currentObj.camodulId = "", currentObj.camodulChannelId = "", currentObj.deviceId = "";
         currentObj.rfId = "";
         currentObj.prijemKategorie = [];
         currentObj.kategorieId = "";
         currentObj.devices = [];
         currentObj.deviceId = "";
         currentObj.rf = [];
+        currentObj.ci = "";
         axios.post("/api/channel/get/multicast", {
           id: currentObj.$route.params.id
         }).then(function (response) {
@@ -5505,19 +6272,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var currentObj = this;
       currentObj.addSatelit = false;
       axios.post("/api/channel/savePrijem", {
+        camodulNumber: this.camodulNumber,
+        camodulId: this.camodulId,
+        camodulChannelId: this.camodulChannelId,
         channelId: this.$route.params.id,
         kategorieId: this.kategorieId,
         deviceId: this.deviceId,
-        rfId: this.rfId
+        rfId: this.rfId,
+        ci: this.ci
       }).then(function (response) {
         currentObj.status = response.data;
-        currentObj.deviceId = "";
+        currentObj.camodulNumber = "", currentObj.camodulId = "", currentObj.camodulChannelId = "", currentObj.deviceId = "";
         currentObj.rfId = "";
         currentObj.prijemKategorie = [];
         currentObj.kategorieId = "";
         currentObj.devices = [];
         currentObj.deviceId = "";
         currentObj.rf = [];
+        currentObj.ci = "";
         axios.post("/api/channel/get/multicast", {
           id: currentObj.$route.params.id
         }).then(function (response) {
@@ -5641,6 +6413,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         })["catch"](function (error) {
           console.log(error);
         });
+        axios.get("/api/ca_modul/get").then(function (response) {
+          currentObj.camodul = response.data;
+        })["catch"](function (error) {
+          console.log(error);
+        });
       }
     },
     deviceId: function deviceId() {
@@ -5652,6 +6429,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           }
         }).then(function (response) {
           currentObj.rf = response.data;
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      }
+    },
+    camodulId: function camodulId() {
+      if (this.camodulId != "") {
+        var currentObj = this;
+        axios.get("/api/ca_modul/channels/get").then(function (response) {
+          currentObj.camodulChannel = response.data;
         })["catch"](function (error) {
           console.log(error);
         });
@@ -48411,409 +49198,380 @@ var render = function() {
       _vm._v(" "),
       _c("br"),
       _vm._v(" "),
-      _vm.userData.role === "1" || _vm.userData.role === "2"
-        ? _c(
-            "v-toolbar",
-            { attrs: { dense: "", flat: "", color: "transparent" } },
+      _c(
+        "v-toolbar",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.userData.role === "1" || _vm.userData.role === "2",
+              expression: "userData.role === '1' || userData.role === '2'"
+            }
+          ],
+          attrs: { dense: "", flat: "", color: "transparent" }
+        },
+        [
+          _c("v-spacer"),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "text-center d-flex align-center" },
             [
-              _c("v-spacer"),
+              _c(
+                "v-tooltip",
+                {
+                  attrs: { bottom: "" },
+                  scopedSlots: _vm._u([
+                    {
+                      key: "activator",
+                      fn: function(ref) {
+                        var on = ref.on
+                        return [
+                          _c(
+                            "v-btn",
+                            _vm._g(
+                              {
+                                staticClass: "mr-3",
+                                attrs: {
+                                  color: "primary",
+                                  fab: "",
+                                  "x-small": "",
+                                  dark: ""
+                                },
+                                on: {
+                                  click: function($event) {
+                                    _vm.modalProNovyMulticast = true
+                                  }
+                                }
+                              },
+                              on
+                            ),
+                            [_c("v-icon", [_vm._v("mdi-ip")])],
+                            1
+                          )
+                        ]
+                      }
+                    }
+                  ])
+                },
+                [
+                  _vm._v(" "),
+                  _c("span", { staticClass: "font-weight-medium" }, [
+                    _vm._v("Přidat multicastový příjem")
+                  ])
+                ]
+              ),
               _vm._v(" "),
               _c(
-                "div",
-                { staticClass: "text-center d-flex align-center" },
+                "v-tooltip",
+                {
+                  attrs: { bottom: "" },
+                  scopedSlots: _vm._u([
+                    {
+                      key: "activator",
+                      fn: function(ref) {
+                        var on = ref.on
+                        return [
+                          _c(
+                            "v-btn",
+                            _vm._g(
+                              {
+                                staticClass: "mr-3",
+                                attrs: {
+                                  color: "primary",
+                                  fab: "",
+                                  "x-small": "",
+                                  dark: ""
+                                },
+                                on: { click: _vm.takeDataForPrijem }
+                              },
+                              on
+                            ),
+                            [_c("v-icon", [_vm._v("mdi-antenna")])],
+                            1
+                          )
+                        ]
+                      }
+                    }
+                  ])
+                },
                 [
-                  _c(
-                    "v-tooltip",
-                    {
-                      attrs: { bottom: "" },
-                      scopedSlots: _vm._u(
-                        [
-                          {
-                            key: "activator",
-                            fn: function(ref) {
-                              var on = ref.on
-                              return [
-                                _c(
-                                  "v-btn",
-                                  _vm._g(
-                                    {
-                                      staticClass: "mr-3",
-                                      attrs: {
-                                        color: "primary",
-                                        fab: "",
-                                        "x-small": "",
-                                        dark: ""
-                                      },
-                                      on: {
-                                        click: function($event) {
-                                          _vm.modalProNovyMulticast = true
-                                        }
-                                      }
-                                    },
-                                    on
-                                  ),
-                                  [_c("v-icon", [_vm._v("mdi-ip")])],
-                                  1
-                                )
-                              ]
-                            }
-                          }
-                        ],
-                        null,
-                        false,
-                        3678482087
-                      )
-                    },
-                    [
-                      _vm._v(" "),
-                      _c("span", { staticClass: "font-weight-medium" }, [
-                        _vm._v("Přidat multicastový příjem")
-                      ])
-                    ]
-                  ),
                   _vm._v(" "),
-                  _c(
-                    "v-tooltip",
-                    {
-                      attrs: { bottom: "" },
-                      scopedSlots: _vm._u(
+                  _c("span", { staticClass: "font-weight-medium" }, [
+                    _vm._v("Přidat / editovat přijímač")
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.channelData.backup, function(backup) {
+                return _c("div", { key: backup.tag }, [
+                  backup.tag == "KO"
+                    ? _c(
+                        "div",
                         [
-                          {
-                            key: "activator",
-                            fn: function(ref) {
-                              var on = ref.on
-                              return [
-                                _c(
-                                  "v-btn",
-                                  _vm._g(
-                                    {
-                                      staticClass: "mr-3",
-                                      attrs: {
-                                        color: "primary",
-                                        fab: "",
-                                        "x-small": "",
-                                        dark: ""
-                                      },
-                                      on: { click: _vm.takeDataForPrijem }
-                                    },
-                                    on
-                                  ),
-                                  [_c("v-icon", [_vm._v("mdi-antenna")])],
-                                  1
-                                )
-                              ]
-                            }
-                          }
-                        ],
-                        null,
-                        false,
-                        3957100890
-                      )
-                    },
-                    [
-                      _vm._v(" "),
-                      _c("span", { staticClass: "font-weight-medium" }, [
-                        _vm._v("Přidat / editovat přijímač")
-                      ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _vm._l(_vm.channelData.backup, function(backup) {
-                    return _c("div", { key: backup.tag }, [
-                      backup.tag == "KO"
-                        ? _c(
-                            "div",
-                            [
-                              _c(
-                                "v-tooltip",
-                                {
-                                  attrs: { bottom: "" },
-                                  scopedSlots: _vm._u(
-                                    [
-                                      {
-                                        key: "activator",
-                                        fn: function(ref) {
-                                          var on = ref.on
-                                          return [
-                                            _c(
-                                              "v-btn",
-                                              _vm._g(
-                                                {
-                                                  staticClass: "mr-3",
-                                                  attrs: {
-                                                    color: "primary",
-                                                    fab: "",
-                                                    "x-small": "",
-                                                    dark: ""
-                                                  },
-                                                  on: {
-                                                    click:
-                                                      _vm.takeDataForBackupPrijem
-                                                  }
-                                                },
-                                                on
-                                              ),
-                                              [
-                                                _c("v-icon", [
-                                                  _vm._v("mdi-backup-restore")
-                                                ])
-                                              ],
-                                              1
-                                            )
-                                          ]
-                                        }
-                                      }
-                                    ],
-                                    null,
-                                    true
-                                  )
-                                },
+                          _c(
+                            "v-tooltip",
+                            {
+                              attrs: { bottom: "" },
+                              scopedSlots: _vm._u(
                                 [
-                                  _vm._v(" "),
-                                  _c(
-                                    "span",
-                                    { staticClass: "font-weight-medium" },
-                                    [
-                                      _vm._v(
-                                        "Přidat / editovat záložní přijímač"
-                                      )
-                                    ]
-                                  )
-                                ]
+                                  {
+                                    key: "activator",
+                                    fn: function(ref) {
+                                      var on = ref.on
+                                      return [
+                                        _c(
+                                          "v-btn",
+                                          _vm._g(
+                                            {
+                                              staticClass: "mr-3",
+                                              attrs: {
+                                                color: "primary",
+                                                fab: "",
+                                                "x-small": "",
+                                                dark: ""
+                                              },
+                                              on: {
+                                                click:
+                                                  _vm.takeDataForBackupPrijem
+                                              }
+                                            },
+                                            on
+                                          ),
+                                          [
+                                            _c("v-icon", [
+                                              _vm._v("mdi-backup-restore")
+                                            ])
+                                          ],
+                                          1
+                                        )
+                                      ]
+                                    }
+                                  }
+                                ],
+                                null,
+                                true
                               )
+                            },
+                            [
+                              _vm._v(" "),
+                              _c(
+                                "span",
+                                { staticClass: "font-weight-medium" },
+                                [_vm._v("Přidat / editovat záložní přijímač")]
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    : _c(
+                        "div",
+                        [
+                          _c(
+                            "v-tooltip",
+                            {
+                              attrs: { bottom: "" },
+                              scopedSlots: _vm._u(
+                                [
+                                  {
+                                    key: "activator",
+                                    fn: function(ref) {
+                                      var on = ref.on
+                                      return [
+                                        _c(
+                                          "v-btn",
+                                          _vm._g(
+                                            {
+                                              staticClass: "mr-3",
+                                              attrs: {
+                                                color: "grey",
+                                                fab: "",
+                                                "x-small": "",
+                                                dark: ""
+                                              }
+                                            },
+                                            on
+                                          ),
+                                          [
+                                            _c("v-icon", [
+                                              _vm._v("mdi-backup-restore")
+                                            ])
+                                          ],
+                                          1
+                                        )
+                                      ]
+                                    }
+                                  }
+                                ],
+                                null,
+                                true
+                              )
+                            },
+                            [
+                              _vm._v(" "),
+                              _c(
+                                "span",
+                                { staticClass: "font-weight-medium" },
+                                [_vm._v("Přidat / editovat záložní přijímač")]
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                ])
+              }),
+              _vm._v(" "),
+              _c(
+                "v-tooltip",
+                {
+                  attrs: { bottom: "" },
+                  scopedSlots: _vm._u([
+                    {
+                      key: "activator",
+                      fn: function(ref) {
+                        var on = ref.on
+                        return [
+                          _c(
+                            "v-btn",
+                            _vm._g(
+                              {
+                                staticClass: "mr-3",
+                                attrs: {
+                                  color: "primary",
+                                  fab: "",
+                                  "x-small": "",
+                                  dark: ""
+                                },
+                                on: {
+                                  click: function($event) {
+                                    _vm.editMultiplexer = true
+                                  }
+                                }
+                              },
+                              on
+                            ),
+                            [
+                              _c("v-icon", [
+                                _vm._v("mdi-file-document-box-multiple")
+                              ])
                             ],
                             1
                           )
-                        : _c(
-                            "div",
-                            [
-                              _c(
-                                "v-tooltip",
-                                {
-                                  attrs: { bottom: "" },
-                                  scopedSlots: _vm._u(
-                                    [
-                                      {
-                                        key: "activator",
-                                        fn: function(ref) {
-                                          var on = ref.on
-                                          return [
-                                            _c(
-                                              "v-btn",
-                                              _vm._g(
-                                                {
-                                                  staticClass: "mr-3",
-                                                  attrs: {
-                                                    color: "grey",
-                                                    fab: "",
-                                                    "x-small": "",
-                                                    dark: ""
-                                                  }
-                                                },
-                                                on
-                                              ),
-                                              [
-                                                _c("v-icon", [
-                                                  _vm._v("mdi-backup-restore")
-                                                ])
-                                              ],
-                                              1
-                                            )
-                                          ]
-                                        }
-                                      }
-                                    ],
-                                    null,
-                                    true
-                                  )
+                        ]
+                      }
+                    }
+                  ])
+                },
+                [
+                  _vm._v(" "),
+                  _c("span", { staticClass: "font-weight-medium" }, [
+                    _vm._v("Přidat / editovat multiplexer")
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-tooltip",
+                {
+                  attrs: { bottom: "" },
+                  scopedSlots: _vm._u([
+                    {
+                      key: "activator",
+                      fn: function(ref) {
+                        var on = ref.on
+                        return [
+                          _c(
+                            "v-btn",
+                            _vm._g(
+                              {
+                                staticClass: "mr-3",
+                                attrs: {
+                                  color: "primary",
+                                  fab: "",
+                                  "x-small": "",
+                                  dark: ""
                                 },
-                                [
-                                  _vm._v(" "),
-                                  _c(
-                                    "span",
-                                    { staticClass: "font-weight-medium" },
-                                    [
-                                      _vm._v(
-                                        "Přidat / editovat záložní přijímač"
-                                      )
-                                    ]
-                                  )
-                                ]
-                              )
+                                on: {
+                                  click: function($event) {
+                                    return _vm.getIptvPackages()
+                                  }
+                                }
+                              },
+                              on
+                            ),
+                            [_c("v-icon", [_vm._v("mdi-television-guide")])],
+                            1
+                          )
+                        ]
+                      }
+                    }
+                  ])
+                },
+                [
+                  _vm._v(" "),
+                  _c("span", { staticClass: "font-weight-medium" }, [
+                    _vm._v("Přidat / editovat programový balíček")
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-tooltip",
+                {
+                  attrs: { bottom: "" },
+                  scopedSlots: _vm._u([
+                    {
+                      key: "activator",
+                      fn: function(ref) {
+                        var on = ref.on
+                        return [
+                          _c(
+                            "v-btn",
+                            _vm._g(
+                              {
+                                staticClass: "mr-3",
+                                attrs: {
+                                  color: "primary",
+                                  fab: "",
+                                  "x-small": "",
+                                  dark: ""
+                                },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.deleteChannel()
+                                  }
+                                }
+                              },
+                              on
+                            ),
+                            [
+                              _c("v-icon", { attrs: { color: "red" } }, [
+                                _vm._v("mdi-delete")
+                              ])
                             ],
                             1
                           )
-                    ])
-                  }),
+                        ]
+                      }
+                    }
+                  ])
+                },
+                [
                   _vm._v(" "),
-                  _c(
-                    "v-tooltip",
-                    {
-                      attrs: { bottom: "" },
-                      scopedSlots: _vm._u(
-                        [
-                          {
-                            key: "activator",
-                            fn: function(ref) {
-                              var on = ref.on
-                              return [
-                                _c(
-                                  "v-btn",
-                                  _vm._g(
-                                    {
-                                      staticClass: "mr-3",
-                                      attrs: {
-                                        color: "primary",
-                                        fab: "",
-                                        "x-small": "",
-                                        dark: ""
-                                      },
-                                      on: {
-                                        click: function($event) {
-                                          _vm.editMultiplexer = true
-                                        }
-                                      }
-                                    },
-                                    on
-                                  ),
-                                  [
-                                    _c("v-icon", [
-                                      _vm._v("mdi-file-document-box-multiple")
-                                    ])
-                                  ],
-                                  1
-                                )
-                              ]
-                            }
-                          }
-                        ],
-                        null,
-                        false,
-                        1897525944
-                      )
-                    },
-                    [
-                      _vm._v(" "),
-                      _c("span", { staticClass: "font-weight-medium" }, [
-                        _vm._v("Přidat / editovat multiplexer")
-                      ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-tooltip",
-                    {
-                      attrs: { bottom: "" },
-                      scopedSlots: _vm._u(
-                        [
-                          {
-                            key: "activator",
-                            fn: function(ref) {
-                              var on = ref.on
-                              return [
-                                _c(
-                                  "v-btn",
-                                  _vm._g(
-                                    {
-                                      staticClass: "mr-3",
-                                      attrs: {
-                                        color: "primary",
-                                        fab: "",
-                                        "x-small": "",
-                                        dark: ""
-                                      },
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.getIptvPackages()
-                                        }
-                                      }
-                                    },
-                                    on
-                                  ),
-                                  [
-                                    _c("v-icon", [
-                                      _vm._v("mdi-television-guide")
-                                    ])
-                                  ],
-                                  1
-                                )
-                              ]
-                            }
-                          }
-                        ],
-                        null,
-                        false,
-                        2006887125
-                      )
-                    },
-                    [
-                      _vm._v(" "),
-                      _c("span", { staticClass: "font-weight-medium" }, [
-                        _vm._v("Přidat / editovat programový balíček")
-                      ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-tooltip",
-                    {
-                      attrs: { bottom: "" },
-                      scopedSlots: _vm._u(
-                        [
-                          {
-                            key: "activator",
-                            fn: function(ref) {
-                              var on = ref.on
-                              return [
-                                _c(
-                                  "v-btn",
-                                  _vm._g(
-                                    {
-                                      staticClass: "mr-3",
-                                      attrs: {
-                                        color: "primary",
-                                        fab: "",
-                                        "x-small": "",
-                                        dark: ""
-                                      },
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.deleteChannel()
-                                        }
-                                      }
-                                    },
-                                    on
-                                  ),
-                                  [
-                                    _c("v-icon", { attrs: { color: "red" } }, [
-                                      _vm._v("mdi-delete")
-                                    ])
-                                  ],
-                                  1
-                                )
-                              ]
-                            }
-                          }
-                        ],
-                        null,
-                        false,
-                        2695929531
-                      )
-                    },
-                    [
-                      _vm._v(" "),
-                      _c("span", { staticClass: "font-weight-medium" }, [
-                        _vm._v("Odebrat kanál")
-                      ])
-                    ]
-                  )
-                ],
-                2
+                  _c("span", { staticClass: "font-weight-medium" }, [
+                    _vm._v("Odebrat kanál")
+                  ])
+                ]
               )
             ],
-            1
+            2
           )
-        : _vm._e(),
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
         "v-card",
@@ -48829,10 +49587,67 @@ var render = function() {
                     _vm._v(_vm._s(_vm.channelData.nazev))
                   ]),
                   _vm._v(" "),
-                  _vm.userData.role === "1" || _vm.userData.role === "2"
-                    ? _c(
+                  _c(
+                    "v-btn",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value:
+                            _vm.userData.role === "1" ||
+                            _vm.userData.role === "2",
+                          expression:
+                            "userData.role === '1' || userData.role === '2'"
+                        }
+                      ],
+                      attrs: {
+                        color: "primary",
+                        "x-small": "",
+                        dark: "",
+                        text: ""
+                      },
+                      on: {
+                        click: function($event) {
+                          ;(_vm.editChannelName = true),
+                            (_vm.channelName = _vm.channelData.nazev)
+                        }
+                      }
+                    },
+                    [
+                      _c("v-icon", { attrs: { small: "" } }, [
+                        _vm._v("mdi-pencil")
+                      ])
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    [
+                      _c("span", { staticClass: "ma-3" }, [
+                        _c("strong", [_vm._v("Poznámka:")]),
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.channelData.poznamka) +
+                            "\n                    "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
                         "v-btn",
                         {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value:
+                                _vm.userData.role === "1" ||
+                                _vm.userData.role === "2",
+                              expression:
+                                "\n                            userData.role === '1' || userData.role === '2'\n                        "
+                            }
+                          ],
                           attrs: {
                             color: "primary",
                             "x-small": "",
@@ -48841,8 +49656,8 @@ var render = function() {
                           },
                           on: {
                             click: function($event) {
-                              ;(_vm.editChannelName = true),
-                                (_vm.channelName = _vm.channelData.nazev)
+                              ;(_vm.editChannelNote = true),
+                                (_vm.channelNote = _vm.channelData.poznamka)
                             }
                           }
                         },
@@ -48853,45 +49668,6 @@ var render = function() {
                         ],
                         1
                       )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c(
-                    "span",
-                    [
-                      _c("span", { staticClass: "ma-3" }, [
-                        _c("strong", [_vm._v("Poznámka:")]),
-                        _vm._v(
-                          "\n            " +
-                            _vm._s(_vm.channelData.poznamka) +
-                            "\n          "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _vm.userData.role === "1" || _vm.userData.role === "2"
-                        ? _c(
-                            "v-btn",
-                            {
-                              attrs: {
-                                color: "primary",
-                                "x-small": "",
-                                dark: "",
-                                text: ""
-                              },
-                              on: {
-                                click: function($event) {
-                                  ;(_vm.editChannelNote = true),
-                                    (_vm.channelNote = _vm.channelData.poznamka)
-                                }
-                              }
-                            },
-                            [
-                              _c("v-icon", { attrs: { small: "" } }, [
-                                _vm._v("mdi-pencil")
-                              ])
-                            ],
-                            1
-                          )
-                        : _vm._e()
                     ],
                     1
                   ),
@@ -48917,30 +49693,39 @@ var render = function() {
                             2
                           ),
                           _vm._v(" "),
-                          _vm.userData.role === "1" || _vm.userData.role === "2"
-                            ? _c(
-                                "v-btn",
+                          _c(
+                            "v-btn",
+                            {
+                              directives: [
                                 {
-                                  attrs: {
-                                    color: "red",
-                                    "x-small": "",
-                                    dark: "",
-                                    text: ""
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.packageDelete()
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("v-icon", { attrs: { small: "" } }, [
-                                    _vm._v("mdi-delete")
-                                  ])
-                                ],
-                                1
-                              )
-                            : _vm._e()
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value:
+                                    _vm.userData.role === "1" ||
+                                    _vm.userData.role === "2",
+                                  expression:
+                                    "\n                            userData.role === '1' || userData.role === '2'\n                        "
+                                }
+                              ],
+                              attrs: {
+                                color: "red",
+                                "x-small": "",
+                                dark: "",
+                                text: ""
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.packageDelete()
+                                }
+                              }
+                            },
+                            [
+                              _c("v-icon", { attrs: { small: "" } }, [
+                                _vm._v("mdi-delete")
+                              ])
+                            ],
+                            1
+                          )
                         ],
                         1
                       )
@@ -49255,64 +50040,91 @@ var render = function() {
                           _c("span", [_vm._v(_vm._s(_vm.channelData.ipKstb))])
                         ]),
                         _vm._v(" "),
-                        _vm.userData.role === "1" || _vm.userData.role === "2"
-                          ? _c(
-                              "v-btn",
-                              {
-                                attrs: {
-                                  color: "primary",
-                                  "x-small": "",
-                                  dark: "",
-                                  text: ""
-                                },
-                                on: {
-                                  click: function($event) {
-                                    ;(_vm.editChannelISP = true),
-                                      (_vm.channelIsp = multicast.isp),
-                                      (_vm.channelMulticastId = multicast.id),
-                                      (_vm.multicastIp = multicast.ip),
-                                      (_vm.stbIp = _vm.channelData.ipKstb),
-                                      (_vm.ispMulticastId = multicast.ispId)
-                                  }
-                                }
-                              },
-                              [
-                                _c("v-icon", { attrs: { small: "" } }, [
-                                  _vm._v("mdi-pencil")
-                                ])
-                              ],
-                              1
-                            )
-                          : _vm._e(),
+                        _c("span", { staticClass: "ma-3" }, [
+                          _c("strong", [_vm._v("Dohledovaná url : ")]),
+                          _vm._v(" "),
+                          _c("span", [
+                            _vm._v(_vm._s(_vm.channelData.dohledUrl))
+                          ])
+                        ]),
                         _vm._v(" "),
-                        _vm.userData.role === "1" || _vm.userData.role === "2"
-                          ? _c(
-                              "v-btn",
+                        _c(
+                          "v-btn",
+                          {
+                            directives: [
                               {
-                                attrs: {
-                                  color: "primary",
-                                  "x-small": "",
-                                  dark: "",
-                                  text: ""
-                                },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.deleteMulticastdata(
-                                      (_vm.channelMulticastId = multicast.id)
-                                    )
-                                  }
-                                }
-                              },
-                              [
-                                _c(
-                                  "v-icon",
-                                  { attrs: { color: "red", small: "" } },
-                                  [_vm._v("mdi-delete")]
+                                name: "show",
+                                rawName: "v-show",
+                                value:
+                                  _vm.userData.role === "1" ||
+                                  _vm.userData.role === "2",
+                                expression:
+                                  "\n                            userData.role === '1' || userData.role === '2'\n                        "
+                              }
+                            ],
+                            attrs: {
+                              color: "primary",
+                              "x-small": "",
+                              dark: "",
+                              text: ""
+                            },
+                            on: {
+                              click: function($event) {
+                                ;(_vm.editChannelISP = true),
+                                  (_vm.channelIsp = multicast.isp),
+                                  (_vm.channelMulticastId = multicast.id),
+                                  (_vm.multicastIp = multicast.ip),
+                                  (_vm.stbIp = _vm.channelData.ipKstb),
+                                  (_vm.ispMulticastId = multicast.ispId),
+                                  (_vm.dohledUrl = _vm.channelData.dohledUrl)
+                              }
+                            }
+                          },
+                          [
+                            _c("v-icon", { attrs: { small: "" } }, [
+                              _vm._v("mdi-pencil")
+                            ])
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-btn",
+                          {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value:
+                                  _vm.userData.role === "1" ||
+                                  _vm.userData.role === "2",
+                                expression:
+                                  "\n                            userData.role === '1' || userData.role === '2'\n                        "
+                              }
+                            ],
+                            attrs: {
+                              color: "primary",
+                              "x-small": "",
+                              dark: "",
+                              text: ""
+                            },
+                            on: {
+                              click: function($event) {
+                                _vm.deleteMulticastdata(
+                                  (_vm.channelMulticastId = multicast.id)
                                 )
-                              ],
-                              1
+                              }
+                            }
+                          },
+                          [
+                            _c(
+                              "v-icon",
+                              { attrs: { color: "red", small: "" } },
+                              [_vm._v("mdi-delete")]
                             )
-                          : _vm._e()
+                          ],
+                          1
+                        )
                       ],
                       1
                     )
@@ -49357,24 +50169,32 @@ var render = function() {
                                 [
                                   _c("v-spacer"),
                                   _vm._v(" "),
-                                  _vm.userData.role === "1" ||
-                                  _vm.userData.role === "2"
-                                    ? _c(
-                                        "v-btn",
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      directives: [
                                         {
-                                          attrs: {
-                                            color: "red darken-1",
-                                            text: ""
-                                          },
-                                          on: {
-                                            click: function($event) {
-                                              _vm.deleteChannelISP = false
-                                            }
-                                          }
-                                        },
-                                        [_vm._v("Zavřít")]
-                                      )
-                                    : _vm._e()
+                                          name: "show",
+                                          rawName: "v-show",
+                                          value:
+                                            _vm.userData.role === "1" ||
+                                            _vm.userData.role === "2",
+                                          expression:
+                                            "\n                                        userData.role === '1' ||\n                                            userData.role === '2'\n                                    "
+                                        }
+                                      ],
+                                      attrs: {
+                                        color: "red darken-1",
+                                        text: ""
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.deleteChannelISP = false
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Zavřít")]
+                                  )
                                 ],
                                 1
                               )
@@ -49511,6 +50331,36 @@ var render = function() {
                                           )
                                         ],
                                         1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-row",
+                                        [
+                                          _c(
+                                            "v-col",
+                                            {
+                                              attrs: {
+                                                cols: "12",
+                                                sm: "3",
+                                                md: "8"
+                                              }
+                                            },
+                                            [
+                                              _c("v-text-field", {
+                                                attrs: { required: "" },
+                                                model: {
+                                                  value: _vm.dohledUrl,
+                                                  callback: function($$v) {
+                                                    _vm.dohledUrl = $$v
+                                                  },
+                                                  expression: "dohledUrl"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
                                       )
                                     ],
                                     1
@@ -49630,48 +50480,57 @@ var render = function() {
                                                     fn: function(ref) {
                                                       var on = ref.on
                                                       return [
-                                                        _vm.userData.role ===
-                                                          "1" ||
-                                                        _vm.userData.role ===
-                                                          "2"
-                                                          ? _c(
-                                                              "v-btn",
-                                                              _vm._g(
+                                                        _c(
+                                                          "v-btn",
+                                                          _vm._g(
+                                                            {
+                                                              directives: [
                                                                 {
-                                                                  attrs: {
-                                                                    icon: "",
-                                                                    "x-small":
-                                                                      ""
-                                                                  },
-                                                                  on: {
-                                                                    click: function(
-                                                                      $event
-                                                                    ) {
-                                                                      return _vm.deleteMultiplexer()
-                                                                    }
-                                                                  }
-                                                                },
-                                                                on
-                                                              ),
-                                                              [
-                                                                _c(
-                                                                  "v-icon",
-                                                                  {
-                                                                    attrs: {
-                                                                      color:
-                                                                        "red"
-                                                                    }
-                                                                  },
-                                                                  [
-                                                                    _vm._v(
-                                                                      "mdi-delete"
-                                                                    )
-                                                                  ]
-                                                                )
+                                                                  name: "show",
+                                                                  rawName:
+                                                                    "v-show",
+                                                                  value:
+                                                                    _vm.userData
+                                                                      .role ===
+                                                                      "1" ||
+                                                                    _vm.userData
+                                                                      .role ===
+                                                                      "2",
+                                                                  expression:
+                                                                    "\n                                                    userData.role === '1' ||\n                                                        userData.role ===\n                                                            '2'\n                                                "
+                                                                }
                                                               ],
-                                                              1
+                                                              attrs: {
+                                                                icon: "",
+                                                                "x-small": ""
+                                                              },
+                                                              on: {
+                                                                click: function(
+                                                                  $event
+                                                                ) {
+                                                                  return _vm.deleteMultiplexer()
+                                                                }
+                                                              }
+                                                            },
+                                                            on
+                                                          ),
+                                                          [
+                                                            _c(
+                                                              "v-icon",
+                                                              {
+                                                                attrs: {
+                                                                  color: "red"
+                                                                }
+                                                              },
+                                                              [
+                                                                _vm._v(
+                                                                  "mdi-delete"
+                                                                )
+                                                              ]
                                                             )
-                                                          : _vm._e()
+                                                          ],
+                                                          1
+                                                        )
                                                       ]
                                                     }
                                                   }
@@ -49728,18 +50587,18 @@ var render = function() {
                                     _vm._v("Přihlášení do multiplexeru :")
                                   ]),
                                   _vm._v(
-                                    "\n                " +
+                                    "\n                                " +
                                       _vm._s(mux.login) +
-                                      "\n              "
+                                      "\n                            "
                                   )
                                 ]),
                                 _vm._v(" "),
                                 _c("span", { staticClass: "ma-3" }, [
                                   _c("strong", [_vm._v("Poznámka :")]),
                                   _vm._v(
-                                    "\n                " +
+                                    "\n                                " +
                                       _vm._s(mux.poznamka) +
-                                      "\n              "
+                                      "\n                            "
                                   )
                                 ])
                               ])
@@ -49824,49 +50683,62 @@ var render = function() {
                                                           fn: function(ref) {
                                                             var on = ref.on
                                                             return [
-                                                              _vm.userData
-                                                                .role === "1" ||
-                                                              _vm.userData
-                                                                .role === "2"
-                                                                ? _c(
-                                                                    "v-btn",
-                                                                    _vm._g(
+                                                              _c(
+                                                                "v-btn",
+                                                                _vm._g(
+                                                                  {
+                                                                    directives: [
                                                                       {
-                                                                        attrs: {
-                                                                          icon:
-                                                                            "",
-                                                                          "x-small":
-                                                                            ""
-                                                                        },
-                                                                        on: {
-                                                                          click: function(
-                                                                            $event
-                                                                          ) {
-                                                                            return _vm.deletePrijem()
-                                                                          }
-                                                                        }
-                                                                      },
-                                                                      on
-                                                                    ),
-                                                                    [
-                                                                      _c(
-                                                                        "v-icon",
-                                                                        {
-                                                                          attrs: {
-                                                                            color:
-                                                                              "red"
-                                                                          }
-                                                                        },
-                                                                        [
-                                                                          _vm._v(
-                                                                            "mdi-delete"
-                                                                          )
-                                                                        ]
-                                                                      )
+                                                                        name:
+                                                                          "show",
+                                                                        rawName:
+                                                                          "v-show",
+                                                                        value:
+                                                                          _vm
+                                                                            .userData
+                                                                            .role ===
+                                                                            "1" ||
+                                                                          _vm
+                                                                            .userData
+                                                                            .role ===
+                                                                            "2",
+                                                                        expression:
+                                                                          "\n                                                    userData.role === '1' ||\n                                                        userData.role ===\n                                                            '2'\n                                                "
+                                                                      }
                                                                     ],
-                                                                    1
+                                                                    attrs: {
+                                                                      icon: "",
+                                                                      "x-small":
+                                                                        ""
+                                                                    },
+                                                                    on: {
+                                                                      click: function(
+                                                                        $event
+                                                                      ) {
+                                                                        return _vm.deletePrijem()
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  on
+                                                                ),
+                                                                [
+                                                                  _c(
+                                                                    "v-icon",
+                                                                    {
+                                                                      attrs: {
+                                                                        color:
+                                                                          "red"
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        "mdi-delete"
+                                                                      )
+                                                                    ]
                                                                   )
-                                                                : _vm._e()
+                                                                ],
+                                                                1
+                                                              )
                                                             ]
                                                           }
                                                         }
@@ -49906,9 +50778,9 @@ var render = function() {
                                           _vm._v("Příjem kanálu :")
                                         ]),
                                         _vm._v(
-                                          "\n                " +
+                                          "\n                                " +
                                             _vm._s(prijem.prijem) +
-                                            "\n              "
+                                            "\n                            "
                                         )
                                       ])
                                     ])
@@ -49971,49 +50843,62 @@ var render = function() {
                                                           fn: function(ref) {
                                                             var on = ref.on
                                                             return [
-                                                              _vm.userData
-                                                                .role === "1" ||
-                                                              _vm.userData
-                                                                .role === "2"
-                                                                ? _c(
-                                                                    "v-btn",
-                                                                    _vm._g(
+                                                              _c(
+                                                                "v-btn",
+                                                                _vm._g(
+                                                                  {
+                                                                    directives: [
                                                                       {
-                                                                        attrs: {
-                                                                          icon:
-                                                                            "",
-                                                                          "x-small":
-                                                                            ""
-                                                                        },
-                                                                        on: {
-                                                                          click: function(
-                                                                            $event
-                                                                          ) {
-                                                                            return _vm.deletePrijem()
-                                                                          }
-                                                                        }
-                                                                      },
-                                                                      on
-                                                                    ),
-                                                                    [
-                                                                      _c(
-                                                                        "v-icon",
-                                                                        {
-                                                                          attrs: {
-                                                                            color:
-                                                                              "red"
-                                                                          }
-                                                                        },
-                                                                        [
-                                                                          _vm._v(
-                                                                            "mdi-delete"
-                                                                          )
-                                                                        ]
-                                                                      )
+                                                                        name:
+                                                                          "show",
+                                                                        rawName:
+                                                                          "v-show",
+                                                                        value:
+                                                                          _vm
+                                                                            .userData
+                                                                            .role ===
+                                                                            "1" ||
+                                                                          _vm
+                                                                            .userData
+                                                                            .role ===
+                                                                            "2",
+                                                                        expression:
+                                                                          "\n                                                    userData.role === '1' ||\n                                                        userData.role ===\n                                                            '2'\n                                                "
+                                                                      }
                                                                     ],
-                                                                    1
+                                                                    attrs: {
+                                                                      icon: "",
+                                                                      "x-small":
+                                                                        ""
+                                                                    },
+                                                                    on: {
+                                                                      click: function(
+                                                                        $event
+                                                                      ) {
+                                                                        return _vm.deletePrijem()
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  on
+                                                                ),
+                                                                [
+                                                                  _c(
+                                                                    "v-icon",
+                                                                    {
+                                                                      attrs: {
+                                                                        color:
+                                                                          "red"
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        "mdi-delete"
+                                                                      )
+                                                                    ]
                                                                   )
-                                                                : _vm._e()
+                                                                ],
+                                                                1
+                                                              )
                                                             ]
                                                           }
                                                         }
@@ -50095,6 +50980,23 @@ var render = function() {
                                         2
                                       ),
                                       _vm._v(" "),
+                                      _c(
+                                        "span",
+                                        { staticClass: "ma-3" },
+                                        [
+                                          _c("strong", [_vm._v("CI :")]),
+                                          _vm._v(" "),
+                                          _vm._l(_vm.channelData.ci, function(
+                                            ci
+                                          ) {
+                                            return _c("span", { key: ci.id }, [
+                                              _vm._v(_vm._s(ci))
+                                            ])
+                                          })
+                                        ],
+                                        2
+                                      ),
+                                      _vm._v(" "),
                                       _c("span", { staticClass: "ma-3" }, [
                                         _c("strong", [
                                           _vm._v("Nastavení Blankomu :")
@@ -50115,11 +51017,100 @@ var render = function() {
                                       _c("span", { staticClass: "ma-3" }, [
                                         _c("strong", [_vm._v("Přihlášení :")]),
                                         _vm._v(
-                                          "\n                " +
+                                          "\n                                " +
                                             _vm._s(prijem.login) +
-                                            "\n              "
+                                            "\n                            "
                                         )
-                                      ])
+                                      ]),
+                                      _vm._v(" "),
+                                      _c(
+                                        "span",
+                                        {
+                                          directives: [
+                                            {
+                                              name: "show",
+                                              rawName: "v-show",
+                                              value:
+                                                _vm.channelData.ca_modul !=
+                                                "false",
+                                              expression:
+                                                "channelData.ca_modul != 'false'"
+                                            }
+                                          ],
+                                          staticClass: "ma-3"
+                                        },
+                                        [
+                                          _c("strong", [
+                                            _vm._v("Typ CA Moduli :")
+                                          ]),
+                                          _vm._v(
+                                            "\n                                " +
+                                              _vm._s(_vm.channelData.ca_modul) +
+                                              "\n                            "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "span",
+                                        {
+                                          directives: [
+                                            {
+                                              name: "show",
+                                              rawName: "v-show",
+                                              value:
+                                                _vm.channelData.ca_modul !=
+                                                "false",
+                                              expression:
+                                                "channelData.ca_modul != 'false'"
+                                            }
+                                          ],
+                                          staticClass: "ma-3"
+                                        },
+                                        [
+                                          _c("strong", [
+                                            _vm._v("Maximální počet kanálů :")
+                                          ]),
+                                          _vm._v(
+                                            "\n                                " +
+                                              _vm._s(
+                                                _vm.channelData
+                                                  .max_ca_module_channels
+                                              ) +
+                                              "\n                            "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "span",
+                                        {
+                                          directives: [
+                                            {
+                                              name: "show",
+                                              rawName: "v-show",
+                                              value:
+                                                _vm.channelData.ca_modul !=
+                                                "false",
+                                              expression:
+                                                "channelData.ca_modul != 'false'"
+                                            }
+                                          ],
+                                          staticClass: "ma-3"
+                                        },
+                                        [
+                                          _c("strong", [
+                                            _vm._v("Číslo CA modulu :")
+                                          ]),
+                                          _vm._v(
+                                            "\n                                " +
+                                              _vm._s(
+                                                _vm.channelData.ca_modul_number
+                                              ) +
+                                              "\n                            "
+                                          )
+                                        ]
+                                      )
                                     ])
                                   ],
                                   1
@@ -50180,49 +51171,62 @@ var render = function() {
                                                           fn: function(ref) {
                                                             var on = ref.on
                                                             return [
-                                                              _vm.userData
-                                                                .role === "1" ||
-                                                              _vm.userData
-                                                                .role === "2"
-                                                                ? _c(
-                                                                    "v-btn",
-                                                                    _vm._g(
+                                                              _c(
+                                                                "v-btn",
+                                                                _vm._g(
+                                                                  {
+                                                                    directives: [
                                                                       {
-                                                                        attrs: {
-                                                                          icon:
-                                                                            "",
-                                                                          "x-small":
-                                                                            ""
-                                                                        },
-                                                                        on: {
-                                                                          click: function(
-                                                                            $event
-                                                                          ) {
-                                                                            return _vm.deletePrijem()
-                                                                          }
-                                                                        }
-                                                                      },
-                                                                      on
-                                                                    ),
-                                                                    [
-                                                                      _c(
-                                                                        "v-icon",
-                                                                        {
-                                                                          attrs: {
-                                                                            color:
-                                                                              "red"
-                                                                          }
-                                                                        },
-                                                                        [
-                                                                          _vm._v(
-                                                                            "mdi-delete"
-                                                                          )
-                                                                        ]
-                                                                      )
+                                                                        name:
+                                                                          "show",
+                                                                        rawName:
+                                                                          "v-show",
+                                                                        value:
+                                                                          _vm
+                                                                            .userData
+                                                                            .role ===
+                                                                            "1" ||
+                                                                          _vm
+                                                                            .userData
+                                                                            .role ===
+                                                                            "2",
+                                                                        expression:
+                                                                          "\n                                                    userData.role === '1' ||\n                                                        userData.role ===\n                                                            '2'\n                                                "
+                                                                      }
                                                                     ],
-                                                                    1
+                                                                    attrs: {
+                                                                      icon: "",
+                                                                      "x-small":
+                                                                        ""
+                                                                    },
+                                                                    on: {
+                                                                      click: function(
+                                                                        $event
+                                                                      ) {
+                                                                        return _vm.deletePrijem()
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  on
+                                                                ),
+                                                                [
+                                                                  _c(
+                                                                    "v-icon",
+                                                                    {
+                                                                      attrs: {
+                                                                        color:
+                                                                          "red"
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        "mdi-delete"
+                                                                      )
+                                                                    ]
                                                                   )
-                                                                : _vm._e()
+                                                                ],
+                                                                1
+                                                              )
                                                             ]
                                                           }
                                                         }
@@ -50290,11 +51294,100 @@ var render = function() {
                                       _c("span", { staticClass: "ma-3" }, [
                                         _c("strong", [_vm._v("IP FTE :")]),
                                         _vm._v(
-                                          "\n                " +
+                                          "\n                                " +
                                             _vm._s(prijem.ip) +
-                                            "\n              "
+                                            "\n                            "
                                         )
-                                      ])
+                                      ]),
+                                      _vm._v(" "),
+                                      _c(
+                                        "span",
+                                        {
+                                          directives: [
+                                            {
+                                              name: "show",
+                                              rawName: "v-show",
+                                              value:
+                                                _vm.channelData.ca_modul !=
+                                                "false",
+                                              expression:
+                                                "channelData.ca_modul != 'false'"
+                                            }
+                                          ],
+                                          staticClass: "ma-3"
+                                        },
+                                        [
+                                          _c("strong", [
+                                            _vm._v("Typ CA Moduli :")
+                                          ]),
+                                          _vm._v(
+                                            "\n                                " +
+                                              _vm._s(_vm.channelData.ca_modul) +
+                                              "\n                            "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "span",
+                                        {
+                                          directives: [
+                                            {
+                                              name: "show",
+                                              rawName: "v-show",
+                                              value:
+                                                _vm.channelData.ca_modul !=
+                                                "false",
+                                              expression:
+                                                "channelData.ca_modul != 'false'"
+                                            }
+                                          ],
+                                          staticClass: "ma-3"
+                                        },
+                                        [
+                                          _c("strong", [
+                                            _vm._v("Maximální počet kanálů :")
+                                          ]),
+                                          _vm._v(
+                                            "\n                                " +
+                                              _vm._s(
+                                                _vm.channelData
+                                                  .max_ca_module_channels
+                                              ) +
+                                              "\n                            "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "span",
+                                        {
+                                          directives: [
+                                            {
+                                              name: "show",
+                                              rawName: "v-show",
+                                              value:
+                                                _vm.channelData.ca_modul !=
+                                                "false",
+                                              expression:
+                                                "channelData.ca_modul != 'false'"
+                                            }
+                                          ],
+                                          staticClass: "ma-3"
+                                        },
+                                        [
+                                          _c("strong", [
+                                            _vm._v("Číslo CA modulu :")
+                                          ]),
+                                          _vm._v(
+                                            "\n                                " +
+                                              _vm._s(
+                                                _vm.channelData.ca_modul_number
+                                              ) +
+                                              "\n                            "
+                                          )
+                                        ]
+                                      )
                                     ])
                                   ],
                                   1
@@ -50355,49 +51448,62 @@ var render = function() {
                                                           fn: function(ref) {
                                                             var on = ref.on
                                                             return [
-                                                              _vm.userData
-                                                                .role === "1" ||
-                                                              _vm.userData
-                                                                .role === "2"
-                                                                ? _c(
-                                                                    "v-btn",
-                                                                    _vm._g(
+                                                              _c(
+                                                                "v-btn",
+                                                                _vm._g(
+                                                                  {
+                                                                    directives: [
                                                                       {
-                                                                        attrs: {
-                                                                          icon:
-                                                                            "",
-                                                                          "x-small":
-                                                                            ""
-                                                                        },
-                                                                        on: {
-                                                                          click: function(
-                                                                            $event
-                                                                          ) {
-                                                                            return _vm.deletePrijem()
-                                                                          }
-                                                                        }
-                                                                      },
-                                                                      on
-                                                                    ),
-                                                                    [
-                                                                      _c(
-                                                                        "v-icon",
-                                                                        {
-                                                                          attrs: {
-                                                                            color:
-                                                                              "red"
-                                                                          }
-                                                                        },
-                                                                        [
-                                                                          _vm._v(
-                                                                            "mdi-delete"
-                                                                          )
-                                                                        ]
-                                                                      )
+                                                                        name:
+                                                                          "show",
+                                                                        rawName:
+                                                                          "v-show",
+                                                                        value:
+                                                                          _vm
+                                                                            .userData
+                                                                            .role ===
+                                                                            "1" ||
+                                                                          _vm
+                                                                            .userData
+                                                                            .role ===
+                                                                            "2",
+                                                                        expression:
+                                                                          "\n                                                    userData.role === '1' ||\n                                                        userData.role ===\n                                                            '2'\n                                                "
+                                                                      }
                                                                     ],
-                                                                    1
+                                                                    attrs: {
+                                                                      icon: "",
+                                                                      "x-small":
+                                                                        ""
+                                                                    },
+                                                                    on: {
+                                                                      click: function(
+                                                                        $event
+                                                                      ) {
+                                                                        return _vm.deletePrijem()
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  on
+                                                                ),
+                                                                [
+                                                                  _c(
+                                                                    "v-icon",
+                                                                    {
+                                                                      attrs: {
+                                                                        color:
+                                                                          "red"
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        "mdi-delete"
+                                                                      )
+                                                                    ]
                                                                   )
-                                                                : _vm._e()
+                                                                ],
+                                                                1
+                                                              )
                                                             ]
                                                           }
                                                         }
@@ -50480,9 +51586,9 @@ var render = function() {
                                       _c("span", { staticClass: "ma-3" }, [
                                         _c("strong", [_vm._v("Přihlášení :")]),
                                         _vm._v(
-                                          "\n                " +
+                                          "\n                                " +
                                             _vm._s(prijem.login) +
-                                            "\n              "
+                                            "\n                            "
                                         )
                                       ])
                                     ])
@@ -50545,49 +51651,62 @@ var render = function() {
                                                           fn: function(ref) {
                                                             var on = ref.on
                                                             return [
-                                                              _vm.userData
-                                                                .role === "1" ||
-                                                              _vm.userData
-                                                                .role === "2"
-                                                                ? _c(
-                                                                    "v-btn",
-                                                                    _vm._g(
+                                                              _c(
+                                                                "v-btn",
+                                                                _vm._g(
+                                                                  {
+                                                                    directives: [
                                                                       {
-                                                                        attrs: {
-                                                                          icon:
-                                                                            "",
-                                                                          "x-small":
-                                                                            ""
-                                                                        },
-                                                                        on: {
-                                                                          click: function(
-                                                                            $event
-                                                                          ) {
-                                                                            return _vm.deletePrijem()
-                                                                          }
-                                                                        }
-                                                                      },
-                                                                      on
-                                                                    ),
-                                                                    [
-                                                                      _c(
-                                                                        "v-icon",
-                                                                        {
-                                                                          attrs: {
-                                                                            color:
-                                                                              "red"
-                                                                          }
-                                                                        },
-                                                                        [
-                                                                          _vm._v(
-                                                                            "mdi-delete"
-                                                                          )
-                                                                        ]
-                                                                      )
+                                                                        name:
+                                                                          "show",
+                                                                        rawName:
+                                                                          "v-show",
+                                                                        value:
+                                                                          _vm
+                                                                            .userData
+                                                                            .role ===
+                                                                            "1" ||
+                                                                          _vm
+                                                                            .userData
+                                                                            .role ===
+                                                                            "2",
+                                                                        expression:
+                                                                          "\n                                                    userData.role === '1' ||\n                                                        userData.role ===\n                                                            '2'\n                                                "
+                                                                      }
                                                                     ],
-                                                                    1
+                                                                    attrs: {
+                                                                      icon: "",
+                                                                      "x-small":
+                                                                        ""
+                                                                    },
+                                                                    on: {
+                                                                      click: function(
+                                                                        $event
+                                                                      ) {
+                                                                        return _vm.deletePrijem()
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  on
+                                                                ),
+                                                                [
+                                                                  _c(
+                                                                    "v-icon",
+                                                                    {
+                                                                      attrs: {
+                                                                        color:
+                                                                          "red"
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        "mdi-delete"
+                                                                      )
+                                                                    ]
                                                                   )
-                                                                : _vm._e()
+                                                                ],
+                                                                1
+                                                              )
                                                             ]
                                                           }
                                                         }
@@ -50674,9 +51793,9 @@ var render = function() {
                                       _c("span", { staticClass: "ma-3" }, [
                                         _c("strong", [_vm._v("Poznámka :")]),
                                         _vm._v(
-                                          "\n                " +
+                                          "\n                                " +
                                             _vm._s(prijem.poznamka) +
-                                            "\n              "
+                                            "\n                            "
                                         )
                                       ])
                                     ])
@@ -50759,51 +51878,63 @@ var render = function() {
                                                               ) {
                                                                 var on = ref.on
                                                                 return [
-                                                                  _vm.userData
-                                                                    .role ===
-                                                                    "1" ||
-                                                                  _vm.userData
-                                                                    .role ===
-                                                                    "2"
-                                                                    ? _c(
-                                                                        "v-btn",
-                                                                        _vm._g(
+                                                                  _c(
+                                                                    "v-btn",
+                                                                    _vm._g(
+                                                                      {
+                                                                        directives: [
                                                                           {
-                                                                            attrs: {
-                                                                              icon:
-                                                                                "",
-                                                                              "x-small":
-                                                                                ""
-                                                                            },
-                                                                            on: {
-                                                                              click: function(
-                                                                                $event
-                                                                              ) {
-                                                                                return _vm.deleteBackupPrijem()
-                                                                              }
-                                                                            }
-                                                                          },
-                                                                          on
-                                                                        ),
-                                                                        [
-                                                                          _c(
-                                                                            "v-icon",
-                                                                            {
-                                                                              attrs: {
-                                                                                color:
-                                                                                  "red"
-                                                                              }
-                                                                            },
-                                                                            [
-                                                                              _vm._v(
-                                                                                "mdi-delete"
-                                                                              )
-                                                                            ]
-                                                                          )
+                                                                            name:
+                                                                              "show",
+                                                                            rawName:
+                                                                              "v-show",
+                                                                            value:
+                                                                              _vm
+                                                                                .userData
+                                                                                .role ===
+                                                                                "1" ||
+                                                                              _vm
+                                                                                .userData
+                                                                                .role ===
+                                                                                "2",
+                                                                            expression:
+                                                                              "\n                                                        userData.role ===\n                                                            '1' ||\n                                                            userData.role ===\n                                                                '2'\n                                                    "
+                                                                          }
                                                                         ],
-                                                                        1
+                                                                        attrs: {
+                                                                          icon:
+                                                                            "",
+                                                                          "x-small":
+                                                                            ""
+                                                                        },
+                                                                        on: {
+                                                                          click: function(
+                                                                            $event
+                                                                          ) {
+                                                                            return _vm.deleteBackupPrijem()
+                                                                          }
+                                                                        }
+                                                                      },
+                                                                      on
+                                                                    ),
+                                                                    [
+                                                                      _c(
+                                                                        "v-icon",
+                                                                        {
+                                                                          attrs: {
+                                                                            color:
+                                                                              "red"
+                                                                          }
+                                                                        },
+                                                                        [
+                                                                          _vm._v(
+                                                                            "mdi-delete"
+                                                                          )
+                                                                        ]
                                                                       )
-                                                                    : _vm._e()
+                                                                    ],
+                                                                    1
+                                                                  )
                                                                 ]
                                                               }
                                                             }
@@ -50843,9 +51974,9 @@ var render = function() {
                                               _vm._v("Backup kanálu :")
                                             ]),
                                             _vm._v(
-                                              "\n                  " +
+                                              "\n                                    " +
                                                 _vm._s(backup.prijem) +
-                                                "\n                "
+                                                "\n                                "
                                             )
                                           ])
                                         ])
@@ -50910,51 +52041,63 @@ var render = function() {
                                                               ) {
                                                                 var on = ref.on
                                                                 return [
-                                                                  _vm.userData
-                                                                    .role ===
-                                                                    "1" ||
-                                                                  _vm.userData
-                                                                    .role ===
-                                                                    "2"
-                                                                    ? _c(
-                                                                        "v-btn",
-                                                                        _vm._g(
+                                                                  _c(
+                                                                    "v-btn",
+                                                                    _vm._g(
+                                                                      {
+                                                                        directives: [
                                                                           {
-                                                                            attrs: {
-                                                                              icon:
-                                                                                "",
-                                                                              "x-small":
-                                                                                ""
-                                                                            },
-                                                                            on: {
-                                                                              click: function(
-                                                                                $event
-                                                                              ) {
-                                                                                return _vm.deleteBackupPrijem()
-                                                                              }
-                                                                            }
-                                                                          },
-                                                                          on
-                                                                        ),
-                                                                        [
-                                                                          _c(
-                                                                            "v-icon",
-                                                                            {
-                                                                              attrs: {
-                                                                                color:
-                                                                                  "red"
-                                                                              }
-                                                                            },
-                                                                            [
-                                                                              _vm._v(
-                                                                                "mdi-delete"
-                                                                              )
-                                                                            ]
-                                                                          )
+                                                                            name:
+                                                                              "show",
+                                                                            rawName:
+                                                                              "v-show",
+                                                                            value:
+                                                                              _vm
+                                                                                .userData
+                                                                                .role ===
+                                                                                "1" ||
+                                                                              _vm
+                                                                                .userData
+                                                                                .role ===
+                                                                                "2",
+                                                                            expression:
+                                                                              "\n                                                        userData.role ===\n                                                            '1' ||\n                                                            userData.role ===\n                                                                '2'\n                                                    "
+                                                                          }
                                                                         ],
-                                                                        1
+                                                                        attrs: {
+                                                                          icon:
+                                                                            "",
+                                                                          "x-small":
+                                                                            ""
+                                                                        },
+                                                                        on: {
+                                                                          click: function(
+                                                                            $event
+                                                                          ) {
+                                                                            return _vm.deleteBackupPrijem()
+                                                                          }
+                                                                        }
+                                                                      },
+                                                                      on
+                                                                    ),
+                                                                    [
+                                                                      _c(
+                                                                        "v-icon",
+                                                                        {
+                                                                          attrs: {
+                                                                            color:
+                                                                              "red"
+                                                                          }
+                                                                        },
+                                                                        [
+                                                                          _vm._v(
+                                                                            "mdi-delete"
+                                                                          )
+                                                                        ]
                                                                       )
-                                                                    : _vm._e()
+                                                                    ],
+                                                                    1
+                                                                  )
                                                                 ]
                                                               }
                                                             }
@@ -51067,9 +52210,9 @@ var render = function() {
                                               _vm._v("Přihlášení :")
                                             ]),
                                             _vm._v(
-                                              "\n                  " +
+                                              "\n                                    " +
                                                 _vm._s(backup.login) +
-                                                "\n                "
+                                                "\n                                "
                                             )
                                           ])
                                         ])
@@ -51134,51 +52277,63 @@ var render = function() {
                                                               ) {
                                                                 var on = ref.on
                                                                 return [
-                                                                  _vm.userData
-                                                                    .role ===
-                                                                    "1" ||
-                                                                  _vm.userData
-                                                                    .role ===
-                                                                    "2"
-                                                                    ? _c(
-                                                                        "v-btn",
-                                                                        _vm._g(
+                                                                  _c(
+                                                                    "v-btn",
+                                                                    _vm._g(
+                                                                      {
+                                                                        directives: [
                                                                           {
-                                                                            attrs: {
-                                                                              icon:
-                                                                                "",
-                                                                              "x-small":
-                                                                                ""
-                                                                            },
-                                                                            on: {
-                                                                              click: function(
-                                                                                $event
-                                                                              ) {
-                                                                                return _vm.deleteBackupPrijem()
-                                                                              }
-                                                                            }
-                                                                          },
-                                                                          on
-                                                                        ),
-                                                                        [
-                                                                          _c(
-                                                                            "v-icon",
-                                                                            {
-                                                                              attrs: {
-                                                                                color:
-                                                                                  "red"
-                                                                              }
-                                                                            },
-                                                                            [
-                                                                              _vm._v(
-                                                                                "mdi-delete"
-                                                                              )
-                                                                            ]
-                                                                          )
+                                                                            name:
+                                                                              "show",
+                                                                            rawName:
+                                                                              "v-show",
+                                                                            value:
+                                                                              _vm
+                                                                                .userData
+                                                                                .role ===
+                                                                                "1" ||
+                                                                              _vm
+                                                                                .userData
+                                                                                .role ===
+                                                                                "2",
+                                                                            expression:
+                                                                              "\n                                                        userData.role ===\n                                                            '1' ||\n                                                            userData.role ===\n                                                                '2'\n                                                    "
+                                                                          }
                                                                         ],
-                                                                        1
+                                                                        attrs: {
+                                                                          icon:
+                                                                            "",
+                                                                          "x-small":
+                                                                            ""
+                                                                        },
+                                                                        on: {
+                                                                          click: function(
+                                                                            $event
+                                                                          ) {
+                                                                            return _vm.deleteBackupPrijem()
+                                                                          }
+                                                                        }
+                                                                      },
+                                                                      on
+                                                                    ),
+                                                                    [
+                                                                      _c(
+                                                                        "v-icon",
+                                                                        {
+                                                                          attrs: {
+                                                                            color:
+                                                                              "red"
+                                                                          }
+                                                                        },
+                                                                        [
+                                                                          _vm._v(
+                                                                            "mdi-delete"
+                                                                          )
+                                                                        ]
                                                                       )
-                                                                    : _vm._e()
+                                                                    ],
+                                                                    1
+                                                                  )
                                                                 ]
                                                               }
                                                             }
@@ -51252,9 +52407,9 @@ var render = function() {
                                           _c("span", { staticClass: "ma-3" }, [
                                             _c("strong", [_vm._v("IP FTE :")]),
                                             _vm._v(
-                                              "\n                  " +
+                                              "\n                                    " +
                                                 _vm._s(backup.ip) +
-                                                "\n                "
+                                                "\n                                "
                                             )
                                           ])
                                         ])
@@ -51319,51 +52474,63 @@ var render = function() {
                                                               ) {
                                                                 var on = ref.on
                                                                 return [
-                                                                  _vm.userData
-                                                                    .role ===
-                                                                    "1" ||
-                                                                  _vm.userData
-                                                                    .role ===
-                                                                    "2"
-                                                                    ? _c(
-                                                                        "v-btn",
-                                                                        _vm._g(
+                                                                  _c(
+                                                                    "v-btn",
+                                                                    _vm._g(
+                                                                      {
+                                                                        directives: [
                                                                           {
-                                                                            attrs: {
-                                                                              icon:
-                                                                                "",
-                                                                              "x-small":
-                                                                                ""
-                                                                            },
-                                                                            on: {
-                                                                              click: function(
-                                                                                $event
-                                                                              ) {
-                                                                                return _vm.deleteBackupPrijem()
-                                                                              }
-                                                                            }
-                                                                          },
-                                                                          on
-                                                                        ),
-                                                                        [
-                                                                          _c(
-                                                                            "v-icon",
-                                                                            {
-                                                                              attrs: {
-                                                                                color:
-                                                                                  "red"
-                                                                              }
-                                                                            },
-                                                                            [
-                                                                              _vm._v(
-                                                                                "mdi-delete"
-                                                                              )
-                                                                            ]
-                                                                          )
+                                                                            name:
+                                                                              "show",
+                                                                            rawName:
+                                                                              "v-show",
+                                                                            value:
+                                                                              _vm
+                                                                                .userData
+                                                                                .role ===
+                                                                                "1" ||
+                                                                              _vm
+                                                                                .userData
+                                                                                .role ===
+                                                                                "2",
+                                                                            expression:
+                                                                              "\n                                                        userData.role ===\n                                                            '1' ||\n                                                            userData.role ===\n                                                                '2'\n                                                    "
+                                                                          }
                                                                         ],
-                                                                        1
+                                                                        attrs: {
+                                                                          icon:
+                                                                            "",
+                                                                          "x-small":
+                                                                            ""
+                                                                        },
+                                                                        on: {
+                                                                          click: function(
+                                                                            $event
+                                                                          ) {
+                                                                            return _vm.deleteBackupPrijem()
+                                                                          }
+                                                                        }
+                                                                      },
+                                                                      on
+                                                                    ),
+                                                                    [
+                                                                      _c(
+                                                                        "v-icon",
+                                                                        {
+                                                                          attrs: {
+                                                                            color:
+                                                                              "red"
+                                                                          }
+                                                                        },
+                                                                        [
+                                                                          _vm._v(
+                                                                            "mdi-delete"
+                                                                          )
+                                                                        ]
                                                                       )
-                                                                    : _vm._e()
+                                                                    ],
+                                                                    1
+                                                                  )
                                                                 ]
                                                               }
                                                             }
@@ -51454,9 +52621,9 @@ var render = function() {
                                               _vm._v("Přihlášení :")
                                             ]),
                                             _vm._v(
-                                              "\n                  " +
+                                              "\n                                    " +
                                                 _vm._s(backup.login) +
-                                                "\n                "
+                                                "\n                                "
                                             )
                                           ])
                                         ])
@@ -51521,51 +52688,63 @@ var render = function() {
                                                               ) {
                                                                 var on = ref.on
                                                                 return [
-                                                                  _vm.userData
-                                                                    .role ===
-                                                                    "1" ||
-                                                                  _vm.userData
-                                                                    .role ===
-                                                                    "2"
-                                                                    ? _c(
-                                                                        "v-btn",
-                                                                        _vm._g(
+                                                                  _c(
+                                                                    "v-btn",
+                                                                    _vm._g(
+                                                                      {
+                                                                        directives: [
                                                                           {
-                                                                            attrs: {
-                                                                              icon:
-                                                                                "",
-                                                                              "x-small":
-                                                                                ""
-                                                                            },
-                                                                            on: {
-                                                                              click: function(
-                                                                                $event
-                                                                              ) {
-                                                                                return _vm.deleteBackupPrijem()
-                                                                              }
-                                                                            }
-                                                                          },
-                                                                          on
-                                                                        ),
-                                                                        [
-                                                                          _c(
-                                                                            "v-icon",
-                                                                            {
-                                                                              attrs: {
-                                                                                color:
-                                                                                  "red"
-                                                                              }
-                                                                            },
-                                                                            [
-                                                                              _vm._v(
-                                                                                "mdi-delete"
-                                                                              )
-                                                                            ]
-                                                                          )
+                                                                            name:
+                                                                              "show",
+                                                                            rawName:
+                                                                              "v-show",
+                                                                            value:
+                                                                              _vm
+                                                                                .userData
+                                                                                .role ===
+                                                                                "1" ||
+                                                                              _vm
+                                                                                .userData
+                                                                                .role ===
+                                                                                "2",
+                                                                            expression:
+                                                                              "\n                                                        userData.role ===\n                                                            '1' ||\n                                                            userData.role ===\n                                                                '2'\n                                                    "
+                                                                          }
                                                                         ],
-                                                                        1
+                                                                        attrs: {
+                                                                          icon:
+                                                                            "",
+                                                                          "x-small":
+                                                                            ""
+                                                                        },
+                                                                        on: {
+                                                                          click: function(
+                                                                            $event
+                                                                          ) {
+                                                                            return _vm.deleteBackupPrijem()
+                                                                          }
+                                                                        }
+                                                                      },
+                                                                      on
+                                                                    ),
+                                                                    [
+                                                                      _c(
+                                                                        "v-icon",
+                                                                        {
+                                                                          attrs: {
+                                                                            color:
+                                                                              "red"
+                                                                          }
+                                                                        },
+                                                                        [
+                                                                          _vm._v(
+                                                                            "mdi-delete"
+                                                                          )
+                                                                        ]
                                                                       )
-                                                                    : _vm._e()
+                                                                    ],
+                                                                    1
+                                                                  )
                                                                 ]
                                                               }
                                                             }
@@ -51660,9 +52839,9 @@ var render = function() {
                                               _vm._v("Poznámka :")
                                             ]),
                                             _vm._v(
-                                              "\n                  " +
+                                              "\n                                    " +
                                                 _vm._s(backup.poznamka) +
-                                                "\n                "
+                                                "\n                                "
                                             )
                                           ])
                                         ])
@@ -51691,265 +52870,7 @@ var render = function() {
               ])
             }),
             _vm._v(" "),
-            _c(
-              "v-row",
-              [
-                _vm.channelData.img !== "false"
-                  ? _c(
-                      "v-card",
-                      {
-                        staticClass: "ma-6",
-                        attrs: { width: "400", outlined: "" }
-                      },
-                      [
-                        _c(
-                          "v-list-item",
-                          [
-                            _c(
-                              "v-list-item-content",
-                              [
-                                _c("div", { staticClass: "overline mb-4" }, [
-                                  _vm._v("Náhled")
-                                ]),
-                                _vm._v(" "),
-                                _c(
-                                  "v-card-text",
-                                  [
-                                    _c("v-row", [
-                                      _c(
-                                        "span",
-                                        {
-                                          attrs: { width: "350", height: "200" }
-                                        },
-                                        [
-                                          _c("v-img", {
-                                            attrs: {
-                                              src:
-                                                "http://" + _vm.channelData.img,
-                                              width: "350",
-                                              height: "200"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      )
-                                    ])
-                                  ],
-                                  1
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  : _c(
-                      "v-card",
-                      {
-                        staticClass: "ma-6",
-                        attrs: { loading: "", width: "400", outlined: "" }
-                      },
-                      [
-                        _c(
-                          "v-list-item",
-                          [
-                            _c(
-                              "v-list-item-content",
-                              [
-                                _c("v-card-text", [
-                                  _c("p", [_vm._v("Pokouším se získat náhled")])
-                                ])
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    ),
-                _vm._v(" "),
-                _vm.history === "false"
-                  ? _c(
-                      "v-card",
-                      {
-                        staticClass: "ma-6",
-                        attrs: { width: "900", height: "300px", outlined: "" }
-                      },
-                      [
-                        _c(
-                          "v-list-item",
-                          [
-                            _c(
-                              "v-list-item-content",
-                              [
-                                _c(
-                                  "v-card-text",
-                                  [
-                                    _c("v-row", [
-                                      _c("p", [
-                                        _vm._v(
-                                          "Na kanálu nebyl za poslední měsíc žádný výpadek."
-                                        )
-                                      ])
-                                    ])
-                                  ],
-                                  1
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  : _vm.history !== ""
-                  ? _c(
-                      "v-card",
-                      {
-                        staticClass: "ma-6",
-                        attrs: { width: "900", height: "300px", outlined: "" }
-                      },
-                      [
-                        _c(
-                          "v-list-item",
-                          [
-                            _c(
-                              "v-list-item-content",
-                              [
-                                _c("div", { staticClass: "overline mb-4" }, [
-                                  _vm._v(
-                                    "Náhled za poslední měsíc, kdy měl kanál výpadek"
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _c(
-                                  "v-card-text",
-                                  [
-                                    _c("v-simple-table", {
-                                      attrs: { height: "200px" },
-                                      scopedSlots: _vm._u(
-                                        [
-                                          {
-                                            key: "default",
-                                            fn: function() {
-                                              return [
-                                                _c("thead", [
-                                                  _c("tr", [
-                                                    _c(
-                                                      "th",
-                                                      {
-                                                        staticClass: "text-left"
-                                                      },
-                                                      [_vm._v("Status")]
-                                                    ),
-                                                    _vm._v(" "),
-                                                    _c(
-                                                      "th",
-                                                      {
-                                                        staticClass: "text-left"
-                                                      },
-                                                      [_vm._v("Čas")]
-                                                    )
-                                                  ])
-                                                ]),
-                                                _vm._v(" "),
-                                                _c(
-                                                  "tbody",
-                                                  _vm._l(_vm.history, function(
-                                                    data
-                                                  ) {
-                                                    return _c(
-                                                      "tr",
-                                                      { key: data.id },
-                                                      [
-                                                        _c("td", [
-                                                          _vm._v(
-                                                            _vm._s(data.akce)
-                                                          )
-                                                        ]),
-                                                        _vm._v(" "),
-                                                        _c("td", [
-                                                          _vm._v(
-                                                            _vm._s(
-                                                              data.created_at
-                                                            )
-                                                          )
-                                                        ])
-                                                      ]
-                                                    )
-                                                  }),
-                                                  0
-                                                )
-                                              ]
-                                            },
-                                            proxy: true
-                                          }
-                                        ],
-                                        null,
-                                        true
-                                      )
-                                    })
-                                  ],
-                                  1
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  : _c(
-                      "v-card",
-                      {
-                        staticClass: "ma-6",
-                        attrs: {
-                          loading: "",
-                          width: "900",
-                          height: "300px",
-                          outlined: ""
-                        }
-                      },
-                      [
-                        _c(
-                          "v-list-item",
-                          [
-                            _c(
-                              "v-list-item-content",
-                              [
-                                _c(
-                                  "v-card-text",
-                                  [
-                                    _c("v-row", [
-                                      _c("p", [
-                                        _vm._v(
-                                          "Pokouším se načíst historii kanálu"
-                                        )
-                                      ])
-                                    ])
-                                  ],
-                                  1
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-              ],
-              1
-            ),
+            _c("v-row"),
             _vm._v(" "),
             _c(
               "v-row",
@@ -52307,7 +53228,7 @@ var render = function() {
                     attrs: {
                       persistent: "",
                       "max-height": "200px",
-                      "max-width": "500px"
+                      "max-width": "600px"
                     },
                     model: {
                       value: _vm.addSatelit,
@@ -52357,6 +53278,117 @@ var render = function() {
                                   ],
                                   1
                                 ),
+                                _vm._v(" "),
+                                _vm.kategorieId == "2"
+                                  ? _c(
+                                      "v-row",
+                                      [
+                                        _c(
+                                          "v-col",
+                                          {
+                                            attrs: {
+                                              cols: "6",
+                                              sm: "6",
+                                              md: "4"
+                                            }
+                                          },
+                                          [
+                                            _c("v-select", {
+                                              attrs: {
+                                                items: _vm.camodul,
+                                                "item-value": "id",
+                                                "item-text": "ca_modul",
+                                                label: "CA Modul"
+                                              },
+                                              model: {
+                                                value: _vm.camodulId,
+                                                callback: function($$v) {
+                                                  _vm.camodulId = $$v
+                                                },
+                                                expression: "camodulId"
+                                              }
+                                            })
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-col",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "show",
+                                                rawName: "v-show",
+                                                value: _vm.camodulId != "",
+                                                expression: "camodulId != ''"
+                                              }
+                                            ],
+                                            attrs: {
+                                              cols: "6",
+                                              sm: "6",
+                                              md: "6"
+                                            }
+                                          },
+                                          [
+                                            _c("v-select", {
+                                              attrs: {
+                                                items: _vm.camodulChannel,
+                                                "item-value": "id",
+                                                "item-text":
+                                                  "pocet_podporovanych_kanalu",
+                                                label:
+                                                  "Počet kanálů, které CA Modul podporuje"
+                                              },
+                                              model: {
+                                                value: _vm.camodulChannelId,
+                                                callback: function($$v) {
+                                                  _vm.camodulChannelId = $$v
+                                                },
+                                                expression: "camodulChannelId"
+                                              }
+                                            })
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _vm.camodulChannelId != ""
+                                  ? _c(
+                                      "v-row",
+                                      [
+                                        _c(
+                                          "v-col",
+                                          {
+                                            attrs: {
+                                              cols: "12",
+                                              sm: "3",
+                                              md: "8"
+                                            }
+                                          },
+                                          [
+                                            _c("v-text-field", {
+                                              attrs: {
+                                                type: "number",
+                                                label: "Číslo CA modulu"
+                                              },
+                                              model: {
+                                                value: _vm.camodulNumber,
+                                                callback: function($$v) {
+                                                  _vm.camodulNumber = $$v
+                                                },
+                                                expression: "camodulNumber"
+                                              }
+                                            })
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  : _vm._e(),
                                 _vm._v(" "),
                                 _vm.devices != ""
                                   ? _c(
@@ -52422,6 +53454,41 @@ var render = function() {
                                                   _vm.rfId = $$v
                                                 },
                                                 expression: "rfId"
+                                              }
+                                            })
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _vm.rfId != ""
+                                  ? _c(
+                                      "v-row",
+                                      [
+                                        _c(
+                                          "v-col",
+                                          {
+                                            attrs: {
+                                              cols: "12",
+                                              sm: "6",
+                                              md: "8"
+                                            }
+                                          },
+                                          [
+                                            _c("v-select", {
+                                              attrs: {
+                                                items: _vm.cis,
+                                                label: "CI"
+                                              },
+                                              model: {
+                                                value: _vm.ci,
+                                                callback: function($$v) {
+                                                  _vm.ci = $$v
+                                                },
+                                                expression: "ci"
                                               }
                                             })
                                           ],
@@ -52491,7 +53558,7 @@ var render = function() {
                     attrs: {
                       persistent: "",
                       "max-height": "200px",
-                      "max-width": "500px"
+                      "max-width": "600px"
                     },
                     model: {
                       value: _vm.addBackupSatelit,
@@ -52541,6 +53608,117 @@ var render = function() {
                                   ],
                                   1
                                 ),
+                                _vm._v(" "),
+                                _vm.kategorieId == "2"
+                                  ? _c(
+                                      "v-row",
+                                      [
+                                        _c(
+                                          "v-col",
+                                          {
+                                            attrs: {
+                                              cols: "6",
+                                              sm: "6",
+                                              md: "4"
+                                            }
+                                          },
+                                          [
+                                            _c("v-select", {
+                                              attrs: {
+                                                items: _vm.camodul,
+                                                "item-value": "id",
+                                                "item-text": "ca_modul",
+                                                label: "CA Modul"
+                                              },
+                                              model: {
+                                                value: _vm.camodulId,
+                                                callback: function($$v) {
+                                                  _vm.camodulId = $$v
+                                                },
+                                                expression: "camodulId"
+                                              }
+                                            })
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-col",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "show",
+                                                rawName: "v-show",
+                                                value: _vm.camodulId != "",
+                                                expression: "camodulId != ''"
+                                              }
+                                            ],
+                                            attrs: {
+                                              cols: "6",
+                                              sm: "6",
+                                              md: "6"
+                                            }
+                                          },
+                                          [
+                                            _c("v-select", {
+                                              attrs: {
+                                                items: _vm.camodulChannel,
+                                                "item-value": "id",
+                                                "item-text":
+                                                  "pocet_podporovanych_kanalu",
+                                                label:
+                                                  "Počet kanálů, které CA Modul podporuje"
+                                              },
+                                              model: {
+                                                value: _vm.camodulChannelId,
+                                                callback: function($$v) {
+                                                  _vm.camodulChannelId = $$v
+                                                },
+                                                expression: "camodulChannelId"
+                                              }
+                                            })
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _vm.camodulChannelId != ""
+                                  ? _c(
+                                      "v-row",
+                                      [
+                                        _c(
+                                          "v-col",
+                                          {
+                                            attrs: {
+                                              cols: "12",
+                                              sm: "3",
+                                              md: "8"
+                                            }
+                                          },
+                                          [
+                                            _c("v-text-field", {
+                                              attrs: {
+                                                type: "number",
+                                                label: "Číslo CA modulu"
+                                              },
+                                              model: {
+                                                value: _vm.camodulNumber,
+                                                callback: function($$v) {
+                                                  _vm.camodulNumber = $$v
+                                                },
+                                                expression: "camodulNumber"
+                                              }
+                                            })
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  : _vm._e(),
                                 _vm._v(" "),
                                 _vm.devices != ""
                                   ? _c(
@@ -52606,6 +53784,41 @@ var render = function() {
                                                   _vm.rfId = $$v
                                                 },
                                                 expression: "rfId"
+                                              }
+                                            })
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _vm.rfId != ""
+                                  ? _c(
+                                      "v-row",
+                                      [
+                                        _c(
+                                          "v-col",
+                                          {
+                                            attrs: {
+                                              cols: "12",
+                                              sm: "6",
+                                              md: "8"
+                                            }
+                                          },
+                                          [
+                                            _c("v-select", {
+                                              attrs: {
+                                                items: _vm.cis,
+                                                label: "CI"
+                                              },
+                                              model: {
+                                                value: _vm.ci,
+                                                callback: function($$v) {
+                                                  _vm.ci = $$v
+                                                },
+                                                expression: "ci"
                                               }
                                             })
                                           ],
