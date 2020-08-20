@@ -39,6 +39,8 @@ Route::post('/api/channel/save/iptvPackage', 'ChannelsController@savePackage');
 Route::post('/api/channel/package/delete', 'ChannelsController@removePackage');
 Route::post('api/channel/note/edit', 'ChannelsController@editNote');
 
+Route::post('/api/channel/get/tags', 'ChannelsController@getTags');
+
 Route::post('/api/channel/getNahled', 'ChannelsController@getNahled');
 Route::get('/api/channels/hls/kvality', 'ApiSystemUrlController@getKvalityFromTranscoder');
 

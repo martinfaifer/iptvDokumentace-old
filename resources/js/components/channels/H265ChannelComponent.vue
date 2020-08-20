@@ -78,7 +78,7 @@
             </v-tooltip>
           </div>
         </v-toolbar>
-        <v-card class="ma-3" width="1600" outlined>
+        <v-card class="ma-3" width="1500"  color="blue-grey lighten-5" outlined>
           <v-list-item>
             <v-list-item-content>
               <v-card-text>
@@ -102,7 +102,7 @@
         <!-- transcoder -->
         <div v-for="transcoder in channelData.transcoder" v-bind:key="transcoder.id">
           <!-- NSP -->
-          <v-card v-if="transcoder.tag == 'Transcoder_NSP'" class="ma-3" width="1600" outlined>
+          <v-card v-if="transcoder.tag == 'Transcoder_NSP'" class="ma-3" width="1500" color="blue-grey lighten-5" outlined>
             <v-list-item>
               <v-list-item-content>
                 <v-card-text>

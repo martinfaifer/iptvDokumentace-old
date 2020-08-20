@@ -8,6 +8,7 @@ use App\Channels;
 use App\H264;
 use App\H265;
 use App\IPTVpackage;
+use App\Tag;
 use Illuminate\Broadcasting\Channel;
 // use Barryvdh\DomPDF\PDF;
 use PDF;
@@ -19,6 +20,37 @@ class ChannelsController extends Controller
     public function get()
     {
         return Channels::all();
+    }
+
+
+    /**
+     * fn pro získání stitku zda kanal má, pokud ano return array jinak return false
+     *
+     * @param Request $request
+     * @return array
+     * @return boolean
+     */
+    public function getTags(Request $request)
+    {
+        if (Channels::where('id', $request->id)->first()) {
+            $tags = Channels::where('id', $request->id)->first()->tags;
+            if ($tags != null) {
+
+                $tags = explode(",", $tags);
+
+                foreach ($tags as $tag) {
+                    $channelTag[] = Tag::where('id', $tag)->first();
+                }
+
+                return $channelTag;
+            } else {
+
+                return "false";
+            }
+        } else {
+
+            return "false";
+        }
     }
 
 
@@ -471,7 +503,16 @@ class ChannelsController extends Controller
     {
 
         if (H264Controller::countChannels("id_channel", $request->channelId) == 0 && H265Controller::countChannels("id_channel", $request->channelId) == 0) {
+            $channel = Channels::find($request->channelId);
             Channels::find($request->channelId)->delete();
+
+            // pokus o odebrání z dohledu
+            try {
+                ApiSystemUrlController::removeFromDohled($channel->url);
+            } catch (\Throwable $th) {
+                // nepodarilo se kanal odebrat z dohledu
+            }
+
             return [
                 'isAlert' => "isAlert",
                 'stat' => "success",

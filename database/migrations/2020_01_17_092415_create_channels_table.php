@@ -29,6 +29,7 @@ class CreateChannelsTable extends Migration
             $table->integer('ca_modul_number')->index();
             $table->string('max_ca_module_channels')->index();
             $table->string('poznamka');
+            $table->string('tags')->nullable();
             $table->string('isActive')->index();
             $table->timestamps();
         });

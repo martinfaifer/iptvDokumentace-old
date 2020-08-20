@@ -147,7 +147,7 @@
                 </v-tooltip>
 
                 <!-- založení kanálu na dohledu -->
-                <v-tooltip bottom v-if="dohledData === 'false'">
+                <v-tooltip bottom v-if="dohledData === false">
                     <template v-slot:activator="{ on }">
                         <v-btn
                             class="mr-3"
@@ -166,7 +166,7 @@
                     >
                 </v-tooltip>
 
-                <v-tooltip bottom v-else>
+                <!-- <v-tooltip bottom v-else>
                     <template v-slot:activator="{ on }">
                         <v-btn
                             class="mr-3"
@@ -183,7 +183,7 @@
                     <span class="font-weight-medium"
                         >Editovat dohledovaný kanál</span
                     >
-                </v-tooltip>
+                </v-tooltip> -->
 
                 <!-- odebrání kanálu -->
                 <v-tooltip bottom>
@@ -204,7 +204,7 @@
                 </v-tooltip>
             </div>
         </v-toolbar>
-        <v-card class="ma-3" width="1600" outlined>
+        <v-card class="ma-3" width="1500" color="blue-grey lighten-5" outlined>
             <v-list-item>
                 <v-card-text>
                     <span class="ma-3">{{ channelData.nazev }}</span>
@@ -409,7 +409,7 @@
 
         <!-- end modal pro editaci zdroje ISP, Multicast ...  -->
 
-        <v-card class="ma-3" width="1600" outlined>
+        <v-card class="ma-3" width="1500" color="blue-grey lighten-5" outlined>
             <v-list-item>
                 <v-list-item-content>
                     <v-card-text
@@ -583,7 +583,7 @@
         <!-- multiplexer -->
         <div v-for="mux in channelData.multiplexer" v-bind:key="mux.id">
             <div v-if="mux.status != 'KO'">
-                <v-card class="ma-3" width="1600" outlined>
+                <v-card class="ma-3" width="1500" color="blue-grey lighten-5" outlined>
                     <v-list-item>
                         <v-list-item-content>
                             <v-toolbar
@@ -649,7 +649,7 @@
                 </v-card>
             </div>
             <div v-else>
-                <v-alert type="warning">
+                <v-alert type="warning" width="1500">
                     <strong>Není evidován multiplexer</strong>
                 </v-alert>
             </div>
@@ -662,7 +662,8 @@
                 <v-card
                     v-if="prijem.tag === 'PoIP'"
                     class="ma-3"
-                    width="1600"
+                    width="1500"
+                    color="blue-grey lighten-5"
                     outlined
                 >
                     <v-list-item>
@@ -715,7 +716,8 @@
                 <v-card
                     v-if="prijem.tag === 'Blankom'"
                     class="ma-3"
-                    width="1600"
+                    width="1500"
+                    color="blue-grey lighten-5"
                     outlined
                 >
                     <v-list-item>
@@ -812,13 +814,15 @@
                                     <strong>Maximální počet kanálů :</strong>
                                     {{ channelData.max_ca_module_channels }}
                                 </span>
-                                <span
-                                    v-show="channelData.ca_modul != 'false'"
-                                    class="ma-3"
-                                >
-                                    <strong>Číslo CA modulu :</strong>
-                                    {{ channelData.ca_modul_number }}
-                                </span>
+                                <v-row class="ml-1">
+                                    <span
+                                        v-show="channelData.ca_modul != 'false'"
+                                        class="ma-3"
+                                    >
+                                        <strong>Číslo CA modulu :</strong>
+                                        {{ channelData.ca_modul_number }}
+                                    </span>
+                                </v-row>
 
                                 <!-- konec CA modulu -->
                             </v-card-text>
@@ -830,7 +834,8 @@
                 <v-card
                     v-if="prijem.tag === 'FTE'"
                     class="ma-3"
-                    width="1600"
+                    width="1500"
+                    color="blue-grey lighten-5"
                     outlined
                 >
                     <v-list-item>
@@ -922,7 +927,8 @@
                 <v-card
                     v-if="prijem.tag === 'PowerVu'"
                     class="ma-3"
-                    width="1600"
+                    width="1500"
+                    color="blue-grey lighten-5"
                     outlined
                 >
                     <v-list-item>
@@ -997,7 +1003,8 @@
                 <v-card
                     v-if="prijem.tag === 'Linux'"
                     class="ma-3"
-                    width="1600"
+                    width="1500"
+                    color="blue-grey lighten-5"
                     outlined
                 >
                     <v-list-item>
@@ -1075,7 +1082,7 @@
             </div>
 
             <div v-else>
-                <v-alert type="warning">
+                <v-alert type="warning" width="1500">
                     <strong>Není evidován přijímač</strong>
                 </v-alert>
             </div>
@@ -1087,7 +1094,8 @@
                     <v-card
                         v-if="backup.tag === 'PoIP'"
                         class="ma-3"
-                        width="1600"
+                        width="1500"
+                        color="blue-grey lighten-5"
                         outlined
                     >
                         <v-list-item>
@@ -1147,7 +1155,8 @@
                     <v-card
                         v-if="backup.tag === 'Blankom'"
                         class="ma-3"
-                        width="1600"
+                        width="1500"
+                        color="blue-grey lighten-5"
                         outlined
                     >
                         <v-list-item>
@@ -1236,7 +1245,8 @@
                     <v-card
                         v-if="backup.tag === 'FTE'"
                         class="ma-3"
-                        width="1600"
+                        width="1500"
+                        color="blue-grey lighten-5"
                         outlined
                     >
                         <v-list-item>
@@ -1309,7 +1319,8 @@
                     <v-card
                         v-if="backup.tag === 'PowerVu'"
                         class="ma-3"
-                        width="1600"
+                        width="1500"
+                        color="blue-grey lighten-5"
                         outlined
                     >
                         <v-list-item>
@@ -1391,7 +1402,8 @@
                     <v-card
                         v-if="backup.tag === 'Linux'"
                         class="ma-3"
-                        width="1600"
+                        width="1500"
+                        color="blue-grey lighten-5"
                         outlined
                     >
                         <v-list-item>
@@ -1476,7 +1488,7 @@
                 </div>
 
                 <div v-else>
-                    <v-alert type="warning">
+                    <v-alert type="warning" width="1500">
                         <strong>Není evidován backup</strong>
                     </v-alert>
                 </div>
@@ -1489,7 +1501,8 @@
                 <v-row>
                     <v-card
                         class="ma-3 ml-6"
-                        width="1600"
+                        width="1500"
+                        color="blue-grey lighten-5"
                         outlined
                         v-for="dohledovaData in dohledData"
                         :key="dohledovaData.id"
@@ -1549,6 +1562,7 @@
             <!-- vykreslení grafu z dohledu -->
             <div v-show="volumeChart != false" class=" ma-3 mr-12">
                 <line-chart
+                    width="1500"
                     class="mr-12"
                     label="úroveň hlasitosti v dB"
                     ytitle="dB"
@@ -1558,6 +1572,7 @@
 
             <div v-show="birateChart != false" class=" ma-3 mr-12">
                 <line-chart
+                    width="1500"
                     label="bitrate v Mbps"
                     ytitle="Bitrate v Mbps"
                     :data="birateChart"
@@ -2054,7 +2069,7 @@
                     max-height="200px"
                     max-width="600px"
                 >
-                    <v-card>
+                    <v-card v-if="channelData.dohledUrl != null">
                         <v-card-text>
                             <v-container>
                                 <v-row>
@@ -2125,6 +2140,24 @@
                                 text
                                 @click="saveStoreChannelToDohled()"
                                 >Uložit</v-btn
+                            >
+                        </v-card-actions>
+                    </v-card>
+                    <v-card v-else>
+                        <v-card-text>
+                            <br />
+
+                            <h2 class="red--text" justify="center">
+                                Není vyplněna dohledová URL!!!
+                            </h2>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                                color="blue darken-1"
+                                text
+                                @click="closeDohledDialog()"
+                                >Zavřít</v-btn
                             >
                         </v-card-actions>
                     </v-card>
@@ -2206,26 +2239,29 @@ export default {
 
     created() {
         try {
-            this.loadDataFromDohled();
-            this.loadVolumeChartFromDohled();
-            this.loadBitrateChartFromDohled();
+            this.loadMulticastData();
+
+            setTimeout(
+                function() {
+                    try {
+                        this.loadDataFromDohled();
+                        this.loadVolumeChartFromDohled();
+                        this.loadBitrateChartFromDohled();
+                    } catch (error) {
+                        (this.dohledData = false),
+                            (this.volumeChart = false),
+                            (this.birateChart = false);
+                    }
+                }.bind(this),
+                1000
+            );
         } catch (error) {
-            console.log(error);
+            console.log("nepodařilo se načíst multicast");
         }
         axios
             .get("/api/getUser")
             .then(response => (this.userData = response.data));
         let currentObj = this;
-        axios
-            .post("/api/channel/get/multicast", {
-                id: this.$route.params.id
-            })
-            .then(function(response) {
-                currentObj.channelData = response.data;
-            })
-            .catch(function(error) {
-                console.log("chyba" + error);
-            });
 
         axios
             .get("/api/isps/get")
@@ -2247,9 +2283,22 @@ export default {
             .catch(function(error) {
                 console.log("chyba" + error);
             });
-
     },
     methods: {
+        loadMulticastData() {
+            let currentObj = this;
+            axios
+                .post("/api/channel/get/multicast", {
+                    id: this.$route.params.id
+                })
+                .then(function(response) {
+                    currentObj.channelData = response.data;
+                })
+                .catch(function(error) {
+                    console.log("chyba" + error);
+                });
+        },
+
         saveStoreChannelToDohled() {
             let currentObj = this;
             axios
@@ -2262,8 +2311,7 @@ export default {
                     sendMailAlert: this.sendMailAlert,
                     dohledBitrate: this.dohledBitrate,
                     dohledovatStream: this.dohledovatStream,
-                    dohledVolume: this.dohledVolume,
-
+                    dohledVolume: this.dohledVolume
                 })
                 .then(function(response) {
                     currentObj.status = response.data;
@@ -2810,14 +2858,20 @@ export default {
         }
     },
 
-    // mounted() {
-    //     this.interval = setInterval(
-    //         function() {
-    //             this.loadDataFromDohled();
-    //         }.bind(this),
-    //         10000
-    //     );
-    // },
+    mounted() {
+        this.interval = setInterval(
+            function() {
+                try {
+                    this.loadDataFromDohled();
+                    this.loadVolumeChartFromDohled();
+                    this.loadBitrateChartFromDohled();
+                } catch (error) {
+                    console.log(error);
+                }
+            }.bind(this),
+            10000
+        );
+    },
 
     watch: {
         history: function() {
@@ -2841,14 +2895,11 @@ export default {
         channelData: function() {
             setTimeout(
                 function() {
-                    let currentObj = this;
-                    axios
-                        .post("/api/channel/get/multicast", {
-                            id: this.$route.params.id
-                        })
-                        .then(function(response) {
-                            currentObj.channelData = response.data;
-                        });
+                    try {
+                        this.loadMulticastData();
+                    } catch (error) {
+                        console.log("nepodarilo se obnovit multicastová data");
+                    }
                 }.bind(this),
                 30000
             );
@@ -2859,33 +2910,35 @@ export default {
         },
 
         $route(to, from) {
-            let currentObj = this;
-            axios
-                .post("/api/channel/get/multicast", {
-                    id: this.$route.params.id
-                })
-                .then(function(response) {
-                    currentObj.channelData = response.data;
-                    currentObj.history = "";
-                    currentObj.image = "";
-                })
-                .catch(function(error) {
-                    console.log("chyba" + error);
-                });
+            this.dohledData = false;
+            this.volumeChart = false;
 
-            this.loadDataFromDohled();
-            this.loadVolumeChartFromDohled();
-            this.loadBitrateChartFromDohled();
-            // axios
-            //     .post("/api/channelHistory", {
-            //         id: this.$route.params.id
-            //     })
-            //     .then(function(response) {
-            //         currentObj.history = response.data;
-            //     })
-            //     .catch(function(error) {
-            //         console.log("chyba" + error);
-            //     });
+            this.birateChart = false;
+            this.channelData = false;
+
+            let currentObj = this;
+
+            try {
+                this.loadMulticastData();
+
+                setTimeout(
+                    function() {
+                        try {
+                            this.loadDataFromDohled();
+                            this.loadVolumeChartFromDohled();
+                            this.loadBitrateChartFromDohled();
+                        } catch (error) {
+                            (currentObj.dohledData = false),
+                                (currentObj.volumeChart = false),
+                                (currentObj.birateChart = false);
+                        }
+                    }.bind(this),
+                    2000
+                );
+            } catch (error) {
+                currentObj.channelData = false;
+                console.log("nepodařilo se načíst multicast");
+            }
         },
 
         kategorieId: function() {
@@ -2947,10 +3000,5 @@ export default {
             }
         }
     }
-    //   beforeDestroy: function() {
-    //     this.channelData.destroy();
-    //     this.status.destroy();
-    //     this.deleted.destroy();
-    //   }
 };
 </script>

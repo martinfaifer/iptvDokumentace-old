@@ -253,4 +253,22 @@ class ApiSystemUrlController extends Controller
             echo $res->getBody();
         }
     }
+
+
+    /**
+     * fn pro odebrání kanálu z dohledu pri odebrání kanálu z dokumentace
+     *
+     * @param [type] $channelUrl
+     * @return void
+     */
+    public static function removeFromDohled($channelUrl)
+    {
+        if (!ApiSystemUrl::where('type', "dohled")->first()) {
+            return "false";
+        } else {
+            $client = new Client();
+            $res = $client->get("10.255.255.51/api/removeChannelFromDohled?channelUrl=" . trim($channelUrl));
+            echo $res->getBody();
+        }
+    }
 }

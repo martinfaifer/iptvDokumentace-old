@@ -25,7 +25,7 @@
           <!-- MULTIPLEXERY -->
           <v-row>
             <div v-if="device.tag === 'Multiplexer'">
-              <v-card class="ma-3" width="1400" outlined>
+              <v-card class="ma-3" width="1400" color="blue-grey lighten-5" outlined>
                 <v-list-item>
                   <v-list-item-content>
                     <v-toolbar dense flat height="10" color="transparent">
@@ -109,6 +109,7 @@
                     ></v-text-field>
                   </v-card-title>
                   <v-data-table
+                    dense
                     :headers="headers"
                     :items="device.channels"
                     :search="search"
@@ -171,7 +172,7 @@
           <!-- Blankom -->
           <div v-if="device.tag === 'Blankom'">
             <v-row>
-              <v-card class="ma-3" width="1500" outlined>
+              <v-card class="ma-3" width="1400" color="blue-grey lighten-5" outlined>
                 <v-list-item>
                   <v-list-item-content>
                     <v-toolbar dense flat height="10" color="transparent">
@@ -357,7 +358,7 @@
             <!-- Blankom Nastavení jednotlivých inputu -->
             <v-row>
               <!-- 1. input -->
-              <v-card class="ma-3" max-width="356" min-width="300" outlined>
+              <v-card class="ma-3 ml-12" max-width="356" min-width="300" outlined>
                 <v-list-item>
                   <v-list-item-content>
                     <v-toolbar dense flat height="10" color="transparent">
@@ -733,7 +734,7 @@
           <!-- FTE -->
           <div v-if="device.tag === 'FTE'">
             <v-row>
-              <v-card class="ma-3" width="1500" outlined>
+              <v-card class="ma-3" width="1400" color="blue-grey lighten-5" outlined>
                 <v-list-item>
                   <v-list-item-content>
                     <v-toolbar dense flat height="10" color="transparent">
@@ -794,7 +795,7 @@
               </v-card>
             </v-row>
             <v-row>
-              <v-card class="ma-3" width="1500" outlined>
+              <v-card class="ma-3" width="1400" color="blue-grey lighten-5" outlined>
                 <v-list-item>
                   <v-list-item-content>
                     <v-toolbar dense flat height="10" color="transparent">
@@ -864,7 +865,7 @@
               </v-card>
             </v-row>
             <v-row>
-              <v-card class="ma-3" width="1500" outlined>
+              <v-card class="ma-3" width="1400" outlined>
                 <v-list-item>
                   <v-list-item-content>
                     <v-card-text>
@@ -872,7 +873,7 @@
                         <v-list-item-title class="title text-center">Kanály na přijímači</v-list-item-title>
                       </v-row>
                       <template>
-                        <v-simple-table fixed-header min-width="1500">
+                        <v-simple-table fixed-header dense color="transparent" min-width="1400">
                           <template v-slot:default>
                             <thead>
                               <tr>
@@ -1018,7 +1019,7 @@
           <!-- tag Transcoder_NSP -->
           <div v-if="device.tag === 'Transcoder_NSP'">
             <v-row>
-              <v-card class="ma-3" width="1500" outlined>
+              <v-card class="ma-3" width="1400" color="blue-grey lighten-5" outlined>
                 <v-list-item>
                   <v-list-item-content>
                     <v-toolbar dense flat height="10" color="transparent">
@@ -1084,7 +1085,7 @@
             </v-row>
             <v-row>
               <template>
-                <v-card class="ma-3" width="1500" outlined>
+                <v-card class="ma-3" width="1400" outlined>
                   <v-card-title>
                     Kanály na Transcodéru
                     <v-spacer></v-spacer>
@@ -1097,6 +1098,7 @@
                     ></v-text-field>
                   </v-card-title>
                   <v-data-table
+                    dense
                     :headers="headers"
                     :items="device.channels"
                     :search="search"
@@ -1163,7 +1165,7 @@
           <!-- tag Transcoder_Grape -->
           <div v-if="device.tag === 'Transcoder_Grape'">
             <v-row>
-              <v-card class="ma-3" width="1500" outlined>
+              <v-card class="ma-3" width="1400" color="blue-grey lighten-5" outlined>
                 <v-list-item>
                   <v-list-item-content>
                     <v-toolbar dense flat height="10" color="transparent">
@@ -1238,6 +1240,7 @@
                     ></v-text-field>
                   </v-card-title>
                   <v-data-table
+                    dense
                     :headers="headers"
                     :items="device.channels"
                     :search="search"
@@ -1304,7 +1307,7 @@
           <!-- tag Linux -->
           <div v-if="device.tag === 'Linux'">
             <v-row>
-              <v-card class="ma-3" width="1500" outlined>
+              <v-card class="ma-3" width="1400" color="blue-grey lighten-5" outlined>
                 <v-list-item>
                   <v-list-item-content>
                     <v-toolbar dense flat height="10" color="transparent">
@@ -1373,7 +1376,7 @@
             </v-row>
             <v-row>
               <template>
-                <v-card class="ma-3" width="1500" outlined>
+                <v-card class="ma-3" width="1400" outlined>
                   <v-card-title>
                     Přijímané kanály
                     <v-spacer></v-spacer>
@@ -1386,6 +1389,7 @@
                     ></v-text-field>
                   </v-card-title>
                   <v-data-table
+                    dense
                     :headers="headers"
                     :items="device.channels"
                     :search="search"
@@ -1446,7 +1450,7 @@
           <!-- Po IP  -->
           <div v-if="device.tag === 'PoIP'">
             <v-row>
-              <v-card class="ma-3" width="1500" outlined>
+              <v-card class="ma-3" width="1400" color="blue-grey lighten-5" outlined>
                 <v-list-item>
                   <v-list-item-content>
                     <v-toolbar dense flat height="10" color="transparent">
@@ -1503,7 +1507,7 @@
             </v-row>
             <v-row>
               <template>
-                <v-card class="ma-3" width="1500" outlined>
+                <v-card class="ma-3" width="1400" outlined>
                   <v-card-title>
                     Přijímané kanály
                     <v-spacer></v-spacer>
@@ -1516,6 +1520,7 @@
                     ></v-text-field>
                   </v-card-title>
                   <v-data-table
+                    dense
                     :headers="headers"
                     :items="device.channels"
                     :search="search"
@@ -1562,7 +1567,7 @@
           <!-- PowerVu -->
           <div v-if="device.tag === 'PowerVu'">
             <v-row>
-              <v-card class="ma-3" width="1500" outlined>
+              <v-card class="ma-3" width="1400" color="blue-grey lighten-5" outlined>
                 <v-list-item>
                   <v-list-item-content>
                     <v-toolbar dense flat height="10" color="transparent">
@@ -1628,7 +1633,7 @@
             </v-row>
             <v-row>
               <template>
-                <v-card class="ma-3" width="1500" outlined>
+                <v-card class="ma-3" width="1400" outlined>
                   <v-card-title>
                     Přijímané kanály
                     <v-spacer></v-spacer>
@@ -1641,6 +1646,7 @@
                     ></v-text-field>
                   </v-card-title>
                   <v-data-table
+                    dense
                     :headers="headers"
                     :items="device.channels"
                     :search="search"
