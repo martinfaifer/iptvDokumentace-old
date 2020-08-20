@@ -531,6 +531,7 @@
                                             <v-col cols="12" sm="3" md="8">
                                                 <v-text-field
                                                     required
+                                                    label="Multicastová IP"
                                                     v-model="multicastIp"
                                                 ></v-text-field>
                                             </v-col>
@@ -539,6 +540,7 @@
                                             <v-col cols="12" sm="3" md="8">
                                                 <v-text-field
                                                     required
+                                                    label="IP k STB"
                                                     v-model="stbIp"
                                                 ></v-text-field>
                                             </v-col>
@@ -547,6 +549,7 @@
                                             <v-col cols="12" sm="3" md="8">
                                                 <v-text-field
                                                     required
+                                                    label="Dohledová URL"
                                                     v-model="dohledUrl"
                                                 ></v-text-field>
                                             </v-col>
@@ -2117,7 +2120,10 @@
                                 @click="closeDohledDialog()"
                                 >Zavřít</v-btn
                             >
-                            <v-btn color="green darken-1" text @click=""
+                            <v-btn
+                                color="green darken-1"
+                                text
+                                @click="saveStoreChannelToDohled()"
                                 >Uložit</v-btn
                             >
                         </v-card-actions>
@@ -2204,7 +2210,7 @@ export default {
             this.loadVolumeChartFromDohled();
             this.loadBitrateChartFromDohled();
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
         axios
             .get("/api/getUser")
@@ -2242,20 +2248,31 @@ export default {
                 console.log("chyba" + error);
             });
 
-        // získání dat z dohledu
-
-        // axios
-        //     .post("/api/channelHistory", {
-        //         id: this.$route.params.id
-        //     })
-        //     .then(function(response) {
-        //         currentObj.history = response.data;
-        //     })
-        //     .catch(function(error) {
-        //         console.log("chyba" + error);
-        //     });
     },
     methods: {
+        saveStoreChannelToDohled() {
+            let currentObj = this;
+            axios
+                .post("/api/storeChannelToDohled", {
+                    id: this.$route.params.id,
+                    url: this.channelData.dohledUrl,
+                    nazev: this.channelData.nazev,
+                    vytvoritNahled: this.vytvoritNahled,
+                    sendSMS: this.sendSMS,
+                    sendMailAlert: this.sendMailAlert,
+                    dohledBitrate: this.dohledBitrate,
+                    dohledovatStream: this.dohledovatStream,
+                    dohledVolume: this.dohledVolume,
+
+                })
+                .then(function(response) {
+                    currentObj.status = response.data;
+                    currentObj.dohledDialog = false;
+                })
+                .catch(function(error) {
+                    console.log("chyba" + error);
+                });
+        },
         loadBitrateChartFromDohled() {
             let currentObj = this;
             axios

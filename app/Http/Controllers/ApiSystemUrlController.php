@@ -217,4 +217,40 @@ class ApiSystemUrlController extends Controller
             echo $res->getBody();
         }
     }
+
+
+    /**
+     * fn pro uložení nového kanálu do dohledu
+     *
+     * 'api/channel/create'
+     *
+     * POST REQ
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function storeChannelToDohled(Request $request)
+    {
+
+        if (!ApiSystemUrl::where('type', "dohled")->first()) {
+            return "false";
+        } else {
+            $client = new Client();
+            $res = $client->request('POST', "10.255.255.51/api/channel/create", [
+                'form_params' => [
+                    'url' => $request->url,
+                    'channelName' => $request->nazev,
+                    'dohledovat' => $request->dohledovatStream,
+                    'dohledVolume' => $request->dohledVolume,
+                    'dohledBitrate' => $request->dohledBitrate,
+                    'sendAlert' => $request->sendMailAlert,
+                    'createImg' => $request->vytvoritNahled,
+                    'apiUrl' => null,
+                    'api' => null
+                ]
+            ]);
+            // echo $res->getStatusCode();
+            echo $res->getBody();
+        }
+    }
 }

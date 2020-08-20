@@ -165,3 +165,4 @@ Route::get('/api/get_img_from_dohled', 'ApiSystemUrlController@getImgFromDohled'
 Route::post('/api/getChannelDataFromDohled', 'ApiSystemUrlController@checkIfChannelExistAndReturnChannelDataOrFalseStatus');
 Route::post('/api/getVolumeDataFromDohledForChart', 'ApiSystemUrlController@checkIfChannelExistAndReturnChartVolumeDataOrFalseStatus');
 Route::post('/api/getBitrateDataFromDohledForChart', 'ApiSystemUrlController@checkIfChannelExistAndReturnChartBitrateDataOrFalseStatus');
+Route::post('/api/storeChannelToDohled', 'ApiSystemUrlController@storeChannelToDohled');
