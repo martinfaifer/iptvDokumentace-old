@@ -1543,6 +1543,26 @@
                 </v-row>
             </div>
 
+            <!-- vykreslení grafu z dohledu -->
+            <div v-show="volumeChart != false" class=" ma-3 mr-12">
+                <line-chart
+                    class="mr-12"
+                    label="úroveň hlasitosti v dB"
+                    ytitle="dB"
+                    :data="volumeChart"
+                ></line-chart>
+            </div>
+
+            <div v-show="birateChart != false" class=" ma-3 mr-12">
+                <line-chart
+                    label="bitrate v Mbps"
+                    ytitle="Bitrate v Mbps"
+                    :data="birateChart"
+                ></line-chart>
+            </div>
+
+            <!-- konec vyreslení grafu z dohledu -->
+
             <!-- náhled -->
             <v-row>
                 <!-- <v-card
@@ -2172,12 +2192,20 @@ export default {
             addIPTVPackage: false,
             dohledUrl: "",
             dohledDialog: false,
-            dohledData: false
+            dohledData: false,
+            volumeChart: false,
+            birateChart: false
         };
     },
 
     created() {
-        this.loadDataFromDohled();
+        try {
+            this.loadDataFromDohled();
+            this.loadVolumeChartFromDohled();
+            this.loadBitrateChartFromDohled();
+        } catch (error) {
+            console.log(error)
+        }
         axios
             .get("/api/getUser")
             .then(response => (this.userData = response.data));
@@ -2228,6 +2256,34 @@ export default {
         //     });
     },
     methods: {
+        loadBitrateChartFromDohled() {
+            let currentObj = this;
+            axios
+                .post("/api/getBitrateDataFromDohledForChart", {
+                    id: this.$route.params.id
+                })
+                .then(function(response) {
+                    currentObj.birateChart = response.data;
+                })
+                .catch(function(error) {
+                    console.log("chyba" + error);
+                });
+        },
+
+        loadVolumeChartFromDohled() {
+            let currentObj = this;
+            axios
+                .post("/api/getVolumeDataFromDohledForChart", {
+                    id: this.$route.params.id
+                })
+                .then(function(response) {
+                    currentObj.volumeChart = response.data;
+                })
+                .catch(function(error) {
+                    console.log("chyba" + error);
+                });
+        },
+
         loadDataFromDohled() {
             let currentObj = this;
             axios
@@ -2800,7 +2856,9 @@ export default {
                     console.log("chyba" + error);
                 });
 
-                this.loadDataFromDohled();
+            this.loadDataFromDohled();
+            this.loadVolumeChartFromDohled();
+            this.loadBitrateChartFromDohled();
             // axios
             //     .post("/api/channelHistory", {
             //         id: this.$route.params.id

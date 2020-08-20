@@ -199,7 +199,20 @@ class ApiSystemUrlController extends Controller
             return "false";
         } else {
             $client = new Client();
-            $res = $client->get("10.255.255.51/api/channel/get_data_if_exist_or_return_false?channelUrl=" . trim(Channels::where('id', $request->id)->first()->dohledUrl));
+            $res = $client->get("10.255.255.51/api/getVolumeDataFromDohledForChart?channelUrl=" . trim(Channels::where('id', $request->id)->first()->dohledUrl));
+            // echo $res->getStatusCode();
+            echo $res->getBody();
+        }
+    }
+
+
+    public function checkIfChannelExistAndReturnChartBitrateDataOrFalseStatus(Request $request)
+    {
+        if (!ApiSystemUrl::where('type', "dohled")->first()) {
+            return "false";
+        } else {
+            $client = new Client();
+            $res = $client->get("10.255.255.51/api/getBitrateDataFromDohledForChart?channelUrl=" . trim(Channels::where('id', $request->id)->first()->dohledUrl));
             // echo $res->getStatusCode();
             echo $res->getBody();
         }
