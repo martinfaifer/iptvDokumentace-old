@@ -49,7 +49,8 @@ class Device extends Model
         'FTE_Symbol',
         'FEC_fec',
         'CI_A',
-        'CI_B'
+        'CI_B',
+        'remoteAccess'
 
     ];
 }

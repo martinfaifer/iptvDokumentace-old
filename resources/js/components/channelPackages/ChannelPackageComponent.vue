@@ -3,7 +3,7 @@
     <br />
     <br />
     <br />
-    <v-card>
+    <v-card elevation="0">
       <v-card-title>
         <v-spacer></v-spacer>
         <v-text-field

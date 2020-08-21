@@ -17,7 +17,7 @@ class CreateTagsTable extends Migration
             $table->bigIncrements('id');
             $table->string('tagName');
             $table->string('color');
-            $table->string('action');
+            $table->string('action')->nullable();
             $table->timestamps();
         });
     }

@@ -648,4 +648,47 @@ class ChannelsController extends Controller
             'msg' => "Poznámka byla změněna"
         ];
     }
+
+
+
+    /**
+     * fn pro zjisteni zda kanal ma na sebe vazaný jakýkoliv stitek a vyvolání logiky, která vede k TagControlleru
+     *
+     * @param Request $request->dohledUrl
+     * @return void
+     */
+    public function checkIfChannelHaveTagForActions(Request $request)
+    {
+
+        // primarne fn slouzi pro komunikaci s dohledem na iptvdohled.grapesc.cz , diky api je mozne akci vyvolat i z jineho systemu, podminkou je znat dohledUrl
+
+        // overeni zda kanal vubec existuje
+        if (Channels::where('dohledUrl', $request->dohledUrl)->first()) {
+
+            // kanál existuje, zjistuje se nyni zda existuje nejaky stitek u kanálu, tags != null
+            $channel = Channels::where('dohledUrl', $request->dohledUrl)->first();
+            // overeni tag != null
+            if ($channel->tags != null) {
+                $tags = explode(",", $channel->tags);
+                foreach ($tags as $tag) {
+                    // zavolaní tagControlleru pro dalsi akce
+                    TagController::checkIfTagHasAction($tag, $channel->id);
+                }
+            } else {
+                echo "channelController";
+            }
+        }
+    }
+
+
+    /**
+     * fn pro přidání nového tagu ke kanálu
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function addTag(Request $request)
+    {
+        return $this->updateChannel('tags', $request->tagId, $request->id);
+    }
 }

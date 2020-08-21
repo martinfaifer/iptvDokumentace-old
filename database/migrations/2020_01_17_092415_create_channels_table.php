@@ -31,6 +31,7 @@ class CreateChannelsTable extends Migration
             $table->string('poznamka');
             $table->string('tags')->nullable();
             $table->string('isActive')->index();
+            $table->longText('pathToReboot')->nullable();
             $table->timestamps();
         });
     }

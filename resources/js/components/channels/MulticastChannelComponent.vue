@@ -583,7 +583,12 @@
         <!-- multiplexer -->
         <div v-for="mux in channelData.multiplexer" v-bind:key="mux.id">
             <div v-if="mux.status != 'KO'">
-                <v-card class="ma-3" width="1500" color="blue-grey lighten-5" outlined>
+                <v-card
+                    class="ma-3"
+                    width="1500"
+                    color="blue-grey lighten-5"
+                    outlined
+                >
                     <v-list-item>
                         <v-list-item-content>
                             <v-toolbar
@@ -2243,15 +2248,20 @@ export default {
 
             setTimeout(
                 function() {
-                    try {
-                        this.loadDataFromDohled();
-                        this.loadVolumeChartFromDohled();
-                        this.loadBitrateChartFromDohled();
-                    } catch (error) {
-                        (this.dohledData = false),
-                            (this.volumeChart = false),
-                            (this.birateChart = false);
-                    }
+                    this.loadDataFromDohled();
+                }.bind(this),
+                1000
+            );
+            setTimeout(
+                function() {
+                    this.loadVolumeChartFromDohled();
+                }.bind(this),
+                1000
+            );
+
+            setTimeout(
+                function() {
+                    this.loadBitrateChartFromDohled();
                 }.bind(this),
                 1000
             );
@@ -2869,7 +2879,7 @@ export default {
                     console.log(error);
                 }
             }.bind(this),
-            10000
+            20000
         );
     },
 
@@ -2892,18 +2902,18 @@ export default {
             }
         },
 
-        channelData: function() {
-            setTimeout(
-                function() {
-                    try {
-                        this.loadMulticastData();
-                    } catch (error) {
-                        console.log("nepodarilo se obnovit multicastová data");
-                    }
-                }.bind(this),
-                30000
-            );
-        },
+        // channelData: function() {
+        //     setTimeout(
+        //         function() {
+        //             try {
+        //                 this.loadMulticastData();
+        //             } catch (error) {
+        //                 console.log("nepodarilo se obnovit multicastová data");
+        //             }
+        //         }.bind(this),
+        //         30000
+        //     );
+        // },
 
         status: function() {
             setTimeout(() => (this.status = false), 3000);

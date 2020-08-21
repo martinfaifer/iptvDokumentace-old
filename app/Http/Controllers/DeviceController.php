@@ -2,15 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use App\Tag;
+use App\H264;
+use App\Device;
+use App\Channels;
 use App\Blankom_port;
 use App\CAModulChannel;
-use App\Channels;
-use App\Device;
-use App\H264;
+use App\H265;
 use Illuminate\Http\Request;
 
 class DeviceController extends Controller
 {
+
+
+    /**
+     * fn pro získání stitku zda kanal má, pokud ano return array jinak return false
+     *
+     * @param Request $request
+     * @return array
+     * @return boolean
+     */
+    public function getTags(Request $request)
+    {
+        if (Device::where('id', $request->id)->first()) {
+            $tags = Device::where('id', $request->id)->first()->tags;
+            if ($tags != null) {
+
+                $tags = explode(",", $tags);
+
+                foreach ($tags as $tag) {
+                    $channelTag[] = Tag::where('id', $tag)->first();
+                }
+
+                return $channelTag;
+            } else {
+
+                return "false";
+            }
+        } else {
+
+            return "false";
+        }
+    }
 
     /**
      * sort dat dle specifikací prijimaců
@@ -1244,5 +1277,73 @@ class DeviceController extends Controller
                 'msg' => "Zařízení s touto IP je již založeno",
             ];
         }
+    }
+
+
+
+    /**
+     * fn pro vyhledání zda kanál uložený u zařízení má možnost automatického restartu
+     *
+     * $channelId
+     */
+    public static function checkIfDeviceHaveTagForActions($channelId)
+    {
+        // prohledání channels -> satelit / linux
+        $device = Device::find(Channels::where('id', $channelId)->first()->device_id);
+        if ($device->tags != null) {
+
+            // overení, že kanál má vytvorenou cestu k restartu
+
+            if (Channels::find($channelId)->pathToReboot != null) {
+                $login = explode("/", $device->login);
+                $outputData[] = [
+                    'user' => trim($login[0]),
+                    'password' => trim($login[1]),
+                    'ip' => $device->ip,
+                    'path' => Channels::find($channelId)->pathToReboot,
+                    'transcoder' => "false"
+                ];
+            } else {
+                $outputData[] = "false";
+            }
+        }
+        unset($device);
+        // prohledání H264 -> transcoding
+        if (H264::where('id_channel', $channelId)->first()) {
+            $device = Device::find(H264::where('id_channel', $channelId)->first()->id_device);
+            if ($device->tags != null) {
+
+                $outputData[] = [
+                    'ip' => $device->ip,
+                    'transcoder' => "true",
+                    'channelUrl' => Channels::find($channelId)->ipKstb
+                ];
+            } else {
+                $outputData[] = "false";
+            }
+
+            unset($device);
+        } else {
+            $outputData[] = "false";
+        }
+        // prohledání H265 -> transcoding
+        if (H265::where('id_channel', $channelId)->first()) {
+            $device = Device::find(H265::where('id_channel', $channelId)->first()->id_device);
+            if ($device->tags != null) {
+
+                $outputData[] = [
+                    'ip' => $device->ip,
+                    'transcoder' => "true",
+                    'channelUrl' => Channels::find($channelId)->ipKstb
+                ];
+            } else {
+
+                $outputData[] = "false";
+            }
+        } else {
+            $outputData[] = "false";
+        }
+
+        return $outputData;
     }
 }

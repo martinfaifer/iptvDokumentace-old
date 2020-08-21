@@ -43,14 +43,36 @@ class UserController extends Controller
         return User::all();
     }
 
+
+    /**
+     * fn pro prihlasení uzivatele s automatickým zapamatováním prohlížeče, coz umoznuje automaticke prihlaseni bez dodatecneho zadavani prihlasovacich udaju
+     *
+     * @param Request $request
+     * @return void
+     */
     public function logIn(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        // $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            return "true";
+        // if (Auth::attempt($credentials)) {
+        //     return "true";
+        // } else {
+        //     return "false";
+        // }
+
+
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], true)) {
+            return [
+                'isAlert' => "isAlert",
+                'stat' => "success",
+                'msg' => "Úspěšně přihlášeno",
+            ];
         } else {
-            return "false";
+            return [
+                'isAlert' => "isAlert",
+                'stat' => "error",
+                'msg' => "Nesprávné údaje!",
+            ];
         }
     }
 

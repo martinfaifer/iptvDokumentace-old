@@ -1,13 +1,14 @@
 <template>
-  <div>
-    <br />
-    <br />
-    <br />
     <div>
-      <div class="rightFromSIdePanelDefault">
-        <span class="display-1">Vyberte kanál z menu vlevo...</span>
-      </div>
+        <br />
+        <br />
+        <br />
+        <div>
+            <div class="rightFromSIdePanelDefault">
+                <v-alert type="info" class="body-1" width="60%">
+                    Vyberte kanál z menu vlevo...
+                </v-alert>
+            </div>
+        </div>
     </div>
-  </div>
 </template>
-

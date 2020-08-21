@@ -64,6 +64,8 @@ Route::get('/api/rf/get', 'BlankomPortController@getPorts');
 Route::get('/api/device/transcoder', 'DeviceCategorieController@getTranscoder');
 Route::post('/api/device/create', 'DeviceController@create');
 
+Route::post('/api/device/get/tags', 'DeviceController@getTags');
+
 
 // Prirazení multiplexeru ke kanálu
 Route::post('/api/channel/multiplexer/set', 'ChannelsController@setMultiplexer');
@@ -168,3 +170,17 @@ Route::post('/api/getChannelDataFromDohled', 'ApiSystemUrlController@checkIfChan
 Route::post('/api/getVolumeDataFromDohledForChart', 'ApiSystemUrlController@checkIfChannelExistAndReturnChartVolumeDataOrFalseStatus');
 Route::post('/api/getBitrateDataFromDohledForChart', 'ApiSystemUrlController@checkIfChannelExistAndReturnChartBitrateDataOrFalseStatus');
 Route::post('/api/storeChannelToDohled', 'ApiSystemUrlController@storeChannelToDohled');
+
+
+/**
+ * TAGS
+ */
+Route::get('/api/tags/get', 'TagController@show');
+// ulozeni tagu ke kanálu
+Route::post('/api/channel/tag/add', 'ChannelsController@addTag');
+
+
+//AUTOMATICKE RESTARTOVÁNÍ KANÁLŮ
+Route::post('/api/channel/tryToRestartChannel', 'ChannelsController@checkIfChannelHaveTagForActions');
+
+// http://iptvdokumentace.test/api/channel/tryToRestartChannel?dohledUrl=http://93.91.154.54:10224/udp/239.251.21.17:1234

@@ -19,6 +19,6 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        '/api/communacation/channel', '/api/communication/channels/monitor'
+        '/api/communacation/channel', '/api/communication/channels/monitor', '/api/channel/tryToRestartChannel'
     ];
 }
