@@ -360,6 +360,7 @@ class DeviceController extends Controller
      *  $request->camodulNumber -> zasílá se číslo modulu, není nutné aby existovalo, ne vždy jsou evidodavné, takže primárně se jedná o nové kanály
      *  $request->camodulId -> zasílá se ID výrobce CA modulu
      *  $request->camodulChannelId -> maximální počet dekryptovaných kanálů v modulu
+     *  $request->linuxPath -> může i nemusí existovat
      *
      * Při založení se zjištuje zda je jiz maodul použit, pokud je, zjištuje se maximální počet kanálů a porovnává se s aktuálním stavem, kdy je do toho již započítám tento nový kanál
      *
@@ -380,6 +381,7 @@ class DeviceController extends Controller
                 break;
             case 5:
                 ChannelsController::updateChannel($column, $request->deviceId, $request->channelId);
+                ChannelsController::updateChannel("pathToReboot", $request->deviceId, $request->linuxPath);
                 break;
             case 2:
                 $vendor = Device::where('id', $request->deviceId)->first();
@@ -462,6 +464,7 @@ class DeviceController extends Controller
                 break;
             case 5:
                 ChannelsController::updateChannel($column, $request->deviceId, $request->channelId);
+                ChannelsController::updateChannel("pathToReboot", $request->deviceId, $request->linuxPath);
                 break;
             case 2:
                 $vendor = Device::where('id', $request->deviceId)->first();
@@ -1345,5 +1348,51 @@ class DeviceController extends Controller
         }
 
         return $outputData;
+    }
+
+
+    /**
+     * fn pro přidání nového tagu ke kanálu
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function addTag(Request $request)
+    {
+        $update = Device::find($request->id);
+
+        $update->tags = $request->tagId;
+
+
+        $update->save();
+
+        return [
+            'isAlert' => "isAlert",
+            'stat' => "success",
+            'msg' => "Zařízení bylo aktualizováno"
+        ];
+    }
+
+
+    /**
+     * fn pro odebrání stitku od zarizeni
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function removeTag(Request $request)
+    {
+        $update = Device::find($request->id);
+
+        $update->tags = null;
+
+
+        $update->save();
+
+        return [
+            'isAlert' => "isAlert",
+            'stat' => "success",
+            'msg' => "Zařízení bylo aktualizováno"
+        ];
     }
 }

@@ -219,6 +219,20 @@ class ApiSystemUrlController extends Controller
     }
 
 
+    public function checkIfChannelExistAndReturnChannelHistory(Request $request)
+    {
+
+        if (!ApiSystemUrl::where('type', "dohled")->first()) {
+            return "false";
+        } else {
+            $client = new Client();
+            $res = $client->get("10.255.255.51/api/show_channel_history?channelUrl=" . trim(Channels::where('id', $request->id)->first()->dohledUrl));
+            // echo $res->getStatusCode();
+            echo $res->getBody();
+        }
+    }
+
+
     /**
      * fn pro uložení nového kanálu do dohledu
      *

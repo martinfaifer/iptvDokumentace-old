@@ -19,7 +19,48 @@ class ChannelsController extends Controller
     // získání vše kanálů včetně nastavení tabulky
     public function get()
     {
-        return Channels::all();
+        // return Channels::all();
+
+        foreach (Channels::get() as $channel) {
+
+            if ($channel->tags != null) {
+                $tag = Tag::where('id', $channel->tags)->first()->tagName;
+            } else {
+                $tag = "false";
+            }
+
+
+            if ($channel->ca_modul_number != null) {
+                $ca = $channel->ca_modul_number;
+            } else {
+                $ca = "false";
+            }
+
+            if ($channel->dohledUrl != null) {
+                $dohledUrl = $channel->dohledUrl;
+            } else {
+                $dohledUrl = "false";
+            }
+
+            if ($channel->pathToReboot != null) {
+                $pathToReboot = $channel->pathToReboot;
+            } else {
+                $pathToReboot = "null";
+            }
+
+
+            $output[] = array(
+                'id' => $channel->id,
+                'nazev' => $channel->nazev,
+                'ipKstb' => $channel->ipKstb,
+                'dohledUrl' => $dohledUrl,
+                'ca_modul_number' => $ca,
+                'pathToReboot' => $pathToReboot,
+                'tag' => $tag
+            );
+        }
+
+        return $output;
     }
 
 
@@ -317,7 +358,8 @@ class ChannelsController extends Controller
             'ca_modul' => $ca_modul,
             'ca_modul_number' => $channel->ca_modul_number,
             'max_ca_module_channels' => $ca_modul_max_channels,
-            'dohledUrl' => $channel->dohledUrl
+            'dohledUrl' => $channel->dohledUrl,
+            'pathToReboot' => $channel->pathToReboot
         ];
     }
 
@@ -690,5 +732,16 @@ class ChannelsController extends Controller
     public function addTag(Request $request)
     {
         return $this->updateChannel('tags', $request->tagId, $request->id);
+    }
+
+    /**
+     * fn pro odebrání tagu od kanalu
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function removeTag(Request $request)
+    {
+        return $this->updateChannel('tags', null, $request->id);
     }
 }

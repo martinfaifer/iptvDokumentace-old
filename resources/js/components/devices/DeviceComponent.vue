@@ -23,25 +23,46 @@
             <br />
             <div class="rightFromSIdePanel">
                 <!-- tags -->
-                <v-row v-if="tags != false" end>
+                <v-row end>
                     <v-toolbar dense flat color="transparent" class="body-1">
                         <v-spacer></v-spacer>
-                        <span v-for="tag in tags" :key="tag.id">
-                            <!-- zobrazení jednotlibých tagů pro daný kanál -->
+                        <div v-if="tags != false">
+                            <span v-for="tag in tags" :key="tag.id">
+                                <!-- zobrazení jednotlibých tagů pro daný kanál -->
 
-                            <v-chip
-                                small
-                                class="ma-2"
-                                close
-                                :color="tag.color"
-                                text-color="white"
-                                @click:close="closeDialog(tag.id)"
+                                <v-chip
+                                    small
+                                    class="ma-2"
+                                    close
+                                    :color="tag.color"
+                                    text-color="white"
+                                    @click:close="closeDialog(tag.id)"
+                                >
+                                    {{ tag.tagName }}
+                                </v-chip>
+
+                                <!-- end zobrazení jednotlibých tagů pro daný kanál -->
+                            </span>
+                        </div>
+
+                        <v-tooltip bottom v-if="tags === false">
+                            <template v-slot:activator="{ on }">
+                                <v-btn
+                                    class="ma-2"
+                                    tile
+                                    small
+                                    color="teal"
+                                    icon
+                                    @click="showDialogForAddNewTag()"
+                                    v-on="on"
+                                >
+                                    <v-icon>mdi-plus</v-icon>
+                                </v-btn>
+                            </template>
+                            <span class="font-weight-medium"
+                                >Přidat štítek</span
                             >
-                                {{ tag.tagName }}
-                            </v-chip>
-
-                            <!-- end zobrazení jednotlibých tagů pro daný kanál -->
-                        </span>
+                        </v-tooltip>
                     </v-toolbar>
                 </v-row>
                 <!-- modal pro odebrání tagu -->
@@ -77,6 +98,48 @@
                 </v-row>
 
                 <!-- konec modalu pro odebrani tagu -->
+
+                <!-- dialog pro nový štítek -->
+
+                <v-row justify="center">
+                    <v-dialog v-model="newTagDialog" persistent max-width="290">
+                        <v-card>
+                            <v-card-text>
+                                <v-container>
+                                    <v-row>
+                                        <v-col cols="12" sm="12">
+                                            <v-autocomplete
+                                                v-model="tagId"
+                                                class="body-1"
+                                                :items="allTags"
+                                                item-text="tagName"
+                                                item-value="id"
+                                                label="Štítek"
+                                            ></v-autocomplete>
+                                        </v-col>
+                                    </v-row>
+                                </v-container>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn
+                                    color="red darken-1"
+                                    text
+                                    @click="newTagDialog = false"
+                                    >Zavřít</v-btn
+                                >
+                                <v-btn
+                                    color="green darken-1"
+                                    text
+                                    @click="saveNewTag()"
+                                    >Uložit</v-btn
+                                >
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
+                </v-row>
+
+                <!-- konec dialogu pro nový štítek -->
                 <!-- tags -->
                 <div v-for="device in deviceData" v-bind:key="device.ip">
                     <!-- MULTIPLEXERY -->
@@ -221,7 +284,7 @@
                             </v-card>
 
                             <template>
-                                <v-card class="ma-3" width="1400" outlined>
+                                <v-card class="ma-3" width="1400" elevation="0">
                                     <v-card-title>
                                         Kanály na multiplexeru
                                         <v-spacer></v-spacer>
@@ -718,190 +781,324 @@
                         <!-- Blankom Nastavení jednotlivých inputu -->
                         <v-row>
                             <!-- 1. input -->
-                            <v-card
-                                class="ma-3 ml-12"
-                                max-width="356"
-                                min-width="300"
-                                outlined
-                            >
-                                <v-list-item>
-                                    <v-list-item-content>
-                                        <v-toolbar
-                                            dense
-                                            flat
-                                            height="10"
-                                            color="transparent"
-                                        >
-                                            <v-spacer></v-spacer>
-                                            <div
-                                                class="text-center d-flex align-center"
+                            <v-hover v-slot:default="{ hover }">
+                                <v-card
+                                    :elevation="hover ? 2 : 0"
+                                    class="ma-3 ml-12"
+                                    max-width="356"
+                                    min-width="300"
+                                >
+                                    <v-list-item>
+                                        <v-list-item-content>
+                                            <v-toolbar
+                                                dense
+                                                flat
+                                                height="10"
+                                                color="transparent"
                                             >
-                                                <span>
-                                                    <v-tooltip bottom>
-                                                        <template
-                                                            v-slot:activator="{
-                                                                on
-                                                            }"
+                                                <v-spacer></v-spacer>
+                                                <div
+                                                    class="text-center d-flex align-center"
+                                                >
+                                                    <span>
+                                                        <v-tooltip bottom>
+                                                            <template
+                                                                v-slot:activator="{
+                                                                    on
+                                                                }"
+                                                            >
+                                                                <v-btn
+                                                                    v-show="
+                                                                        userData.role ===
+                                                                            '1' ||
+                                                                            userData.role ===
+                                                                                '2'
+                                                                    "
+                                                                    icon
+                                                                    x-small
+                                                                    v-on="on"
+                                                                    @click="
+                                                                        (rf =
+                                                                            'RF1'),
+                                                                            (rfPolarizace =
+                                                                                device.RF1_polarizace),
+                                                                            (deviceId =
+                                                                                device.id),
+                                                                            (rfDVB =
+                                                                                device.RF1_dvb),
+                                                                            (rfSatelit =
+                                                                                device.RF1_satelit),
+                                                                            (rfFreq =
+                                                                                device.RF1_freq),
+                                                                            (rfSymbol =
+                                                                                device.RF1_Symbol),
+                                                                            (rfFec =
+                                                                                device.RF1_fec),
+                                                                            (rfCI =
+                                                                                device.CI_1),
+                                                                            (modalEditRF = true)
+                                                                    "
+                                                                >
+                                                                    <v-icon
+                                                                        color="primary"
+                                                                        >mdi-pencil</v-icon
+                                                                    >
+                                                                </v-btn>
+                                                            </template>
+                                                            <span
+                                                                class="font-weight-medium"
+                                                                >editovat
+                                                                RF1</span
+                                                            >
+                                                        </v-tooltip>
+                                                    </span>
+                                                </div>
+                                            </v-toolbar>
+                                            <v-card-text>
+                                                <v-row>
+                                                    <v-list-item-title
+                                                        class="title text-center"
+                                                        >RF 1</v-list-item-title
+                                                    >
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong>DVB:</strong>
+                                                        {{ device.RF1_dvb }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong
+                                                            >Satelit:</strong
+                                                        >
+                                                        {{ device.RF1_satelit }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong
+                                                            >Frekvence:</strong
+                                                        >
+                                                        {{ device.RF1_freq }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong
+                                                            >Polarizace:</strong
+                                                        >
+                                                        {{
+                                                            device.RF1_polarizace
+                                                        }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong
+                                                            >Symbol
+                                                            rate:</strong
+                                                        >
+                                                        {{ device.RF1_Symbol }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong>FEC:</strong>
+                                                        {{ device.RF1_fec }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong>CI 1:</strong>
+                                                        {{ device.CI_1 }}
+                                                    </span>
+                                                </v-row>
+
+                                                <v-divider></v-divider>
+
+                                                <div
+                                                    v-for="channel in device.channels"
+                                                    v-bind:key="channel.id"
+                                                >
+                                                    <div>
+                                                        <v-row
+                                                            v-if="
+                                                                channel.rf ===
+                                                                    'RF1'
+                                                            "
                                                         >
                                                             <v-btn
-                                                                v-show="
-                                                                    userData.role ===
-                                                                        '1' ||
-                                                                        userData.role ===
-                                                                            '2'
+                                                                v-bind:to="
+                                                                    '/channel/' +
+                                                                        channel.channelId
                                                                 "
-                                                                icon
-                                                                x-small
-                                                                v-on="on"
-                                                                @click="
-                                                                    (rf =
-                                                                        'RF1'),
-                                                                        (rfPolarizace =
-                                                                            device.RF1_polarizace),
-                                                                        (deviceId =
-                                                                            device.id),
-                                                                        (rfDVB =
-                                                                            device.RF1_dvb),
-                                                                        (rfSatelit =
-                                                                            device.RF1_satelit),
-                                                                        (rfFreq =
-                                                                            device.RF1_freq),
-                                                                        (rfSymbol =
-                                                                            device.RF1_Symbol),
-                                                                        (rfFec =
-                                                                            device.RF1_fec),
-                                                                        (rfCI =
-                                                                            device.CI_1),
-                                                                        (modalEditRF = true)
-                                                                "
+                                                                target="_blank"
+                                                                dark
+                                                                text
+                                                                small
                                                             >
-                                                                <v-icon
-                                                                    color="primary"
-                                                                    >mdi-pencil</v-icon
+                                                                <span
+                                                                    class="blue--text"
+                                                                    >{{
+                                                                        channel.nazev
+                                                                    }}</span
                                                                 >
                                                             </v-btn>
-                                                        </template>
-                                                        <span
-                                                            class="font-weight-medium"
-                                                            >editovat RF1</span
-                                                        >
-                                                    </v-tooltip>
-                                                </span>
-                                            </div>
-                                        </v-toolbar>
-                                        <v-card-text>
-                                            <v-row>
-                                                <v-list-item-title
-                                                    class="title text-center"
-                                                    >RF 1</v-list-item-title
-                                                >
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>DVB:</strong>
-                                                    {{ device.RF1_dvb }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>Satelit:</strong>
-                                                    {{ device.RF1_satelit }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>Frekvence:</strong>
-                                                    {{ device.RF1_freq }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>Polarizace:</strong>
-                                                    {{ device.RF1_polarizace }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong
-                                                        >Symbol rate:</strong
-                                                    >
-                                                    {{ device.RF1_Symbol }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>FEC:</strong>
-                                                    {{ device.RF1_fec }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>CI 1:</strong>
-                                                    {{ device.CI_1 }}
-                                                </span>
-                                            </v-row>
-
-                                            <v-divider></v-divider>
-
-                                            <div
-                                                v-for="channel in device.channels"
-                                                v-bind:key="channel.id"
-                                            >
-                                                <div>
-                                                    <v-row
-                                                        v-if="
-                                                            channel.rf === 'RF1'
-                                                        "
-                                                    >
-                                                        <v-btn
-                                                            v-bind:to="
-                                                                '/channel/' +
-                                                                    channel.channelId
-                                                            "
-                                                            target="_blank"
-                                                            dark
-                                                            text
-                                                            small
-                                                        >
-                                                            <span
-                                                                class="blue--text"
-                                                                >{{
-                                                                    channel.nazev
-                                                                }}</span
-                                                            >
-                                                        </v-btn>
-                                                    </v-row>
+                                                        </v-row>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </v-card-text>
-                                    </v-list-item-content>
-                                </v-list-item>
-                            </v-card>
+                                            </v-card-text>
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                </v-card>
+                            </v-hover>
                             <!-- 2. input -->
-                            <v-card
-                                class="ma-3"
-                                max-width="356"
-                                min-width="300"
-                                outlined
-                            >
-                                <v-list-item>
-                                    <v-list-item-content>
-                                        <v-toolbar
-                                            dense
-                                            flat
-                                            height="10"
-                                            color="transparent"
-                                        >
-                                            <v-spacer></v-spacer>
-                                            <div
-                                                class="text-center d-flex align-center"
+                            <v-hover v-slot:default="{ hover }">
+                                <v-card
+                                    :elevation="hover ? 2 : 0"
+                                    class="ma-3 ml-12"
+                                    max-width="356"
+                                    min-width="300"
+                                >
+                                    <v-list-item>
+                                        <v-list-item-content>
+                                            <v-toolbar
+                                                dense
+                                                flat
+                                                height="10"
+                                                color="transparent"
                                             >
-                                                <span>
-                                                    <v-tooltip bottom>
-                                                        <template
-                                                            v-slot:activator="{
-                                                                on
-                                                            }"
+                                                <v-spacer></v-spacer>
+                                                <div
+                                                    class="text-center d-flex align-center"
+                                                >
+                                                    <span>
+                                                        <v-tooltip bottom>
+                                                            <template
+                                                                v-slot:activator="{
+                                                                    on
+                                                                }"
+                                                            >
+                                                                <v-btn
+                                                                    v-show="
+                                                                        userData.role ===
+                                                                            '1' ||
+                                                                            userData.role ===
+                                                                                '2'
+                                                                    "
+                                                                    @click="
+                                                                        (rf =
+                                                                            'RF2'),
+                                                                            (rfPolarizace =
+                                                                                device.RF2_polarizace),
+                                                                            (deviceId =
+                                                                                device.id),
+                                                                            (rfDVB =
+                                                                                device.RF2_dvb),
+                                                                            (rfSatelit =
+                                                                                device.RF2_satelit),
+                                                                            (rfFreq =
+                                                                                device.RF2_freq),
+                                                                            (rfSymbol =
+                                                                                device.RF2_Symbol),
+                                                                            (rfFec =
+                                                                                device.RF2_fec),
+                                                                            (rfCI =
+                                                                                device.CI_2),
+                                                                            (modalEditRF = true)
+                                                                    "
+                                                                    icon
+                                                                    x-small
+                                                                    v-on="on"
+                                                                >
+                                                                    <v-icon
+                                                                        color="primary"
+                                                                        >mdi-pencil</v-icon
+                                                                    >
+                                                                </v-btn>
+                                                            </template>
+                                                            <span
+                                                                class="font-weight-medium"
+                                                                >editovat
+                                                                RF2</span
+                                                            >
+                                                        </v-tooltip>
+                                                    </span>
+                                                </div>
+                                            </v-toolbar>
+                                            <v-card-text>
+                                                <v-row>
+                                                    <v-list-item-title
+                                                        class="title text-center"
+                                                        >RF 2</v-list-item-title
+                                                    >
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong>DVB:</strong>
+                                                        {{ device.RF2_dvb }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong
+                                                            >Satelit:</strong
+                                                        >
+                                                        {{ device.RF2_satelit }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong
+                                                            >Frekvence:</strong
+                                                        >
+                                                        {{ device.RF2_freq }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong
+                                                            >Polarizace:</strong
+                                                        >
+                                                        {{
+                                                            device.RF2_polarizace
+                                                        }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong
+                                                            >Symbol
+                                                            rate:</strong
+                                                        >
+                                                        {{ device.RF2_Symbol }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong>FEC:</strong>
+                                                        {{ device.RF2_fec }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong>CI 2:</strong>
+                                                        {{ device.CI_2 }}
+                                                    </span>
+                                                </v-row>
+                                                <v-divider></v-divider>
+
+                                                <div
+                                                    v-for="channel in device.channels"
+                                                    v-bind:key="channel.id"
+                                                >
+                                                    <div>
+                                                        <v-row
+                                                            v-if="
+                                                                channel.rf ===
+                                                                    'RF2'
+                                                            "
                                                         >
                                                             <v-btn
                                                                 v-show="
@@ -910,458 +1107,376 @@
                                                                         userData.role ===
                                                                             '2'
                                                                 "
-                                                                @click="
-                                                                    (rf =
-                                                                        'RF2'),
-                                                                        (rfPolarizace =
-                                                                            device.RF2_polarizace),
-                                                                        (deviceId =
-                                                                            device.id),
-                                                                        (rfDVB =
-                                                                            device.RF2_dvb),
-                                                                        (rfSatelit =
-                                                                            device.RF2_satelit),
-                                                                        (rfFreq =
-                                                                            device.RF2_freq),
-                                                                        (rfSymbol =
-                                                                            device.RF2_Symbol),
-                                                                        (rfFec =
-                                                                            device.RF2_fec),
-                                                                        (rfCI =
-                                                                            device.CI_2),
-                                                                        (modalEditRF = true)
+                                                                v-bind:to="
+                                                                    '/channel/' +
+                                                                        channel.channelId
                                                                 "
-                                                                icon
-                                                                x-small
-                                                                v-on="on"
+                                                                target="_blank"
+                                                                dark
+                                                                text
+                                                                small
                                                             >
-                                                                <v-icon
-                                                                    color="primary"
-                                                                    >mdi-pencil</v-icon
+                                                                <span
+                                                                    class="blue--text"
+                                                                    >{{
+                                                                        channel.nazev
+                                                                    }}</span
                                                                 >
                                                             </v-btn>
-                                                        </template>
-                                                        <span
-                                                            class="font-weight-medium"
-                                                            >editovat RF2</span
-                                                        >
-                                                    </v-tooltip>
-                                                </span>
-                                            </div>
-                                        </v-toolbar>
-                                        <v-card-text>
-                                            <v-row>
-                                                <v-list-item-title
-                                                    class="title text-center"
-                                                    >RF 2</v-list-item-title
-                                                >
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>DVB:</strong>
-                                                    {{ device.RF2_dvb }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>Satelit:</strong>
-                                                    {{ device.RF2_satelit }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>Frekvence:</strong>
-                                                    {{ device.RF2_freq }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>Polarizace:</strong>
-                                                    {{ device.RF2_polarizace }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong
-                                                        >Symbol rate:</strong
-                                                    >
-                                                    {{ device.RF2_Symbol }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>FEC:</strong>
-                                                    {{ device.RF2_fec }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>CI 2:</strong>
-                                                    {{ device.CI_2 }}
-                                                </span>
-                                            </v-row>
-                                            <v-divider></v-divider>
-
-                                            <div
-                                                v-for="channel in device.channels"
-                                                v-bind:key="channel.id"
-                                            >
-                                                <div>
-                                                    <v-row
-                                                        v-if="
-                                                            channel.rf === 'RF2'
-                                                        "
-                                                    >
-                                                        <v-btn
-                                                            v-show="
-                                                                userData.role ===
-                                                                    '1' ||
-                                                                    userData.role ===
-                                                                        '2'
-                                                            "
-                                                            v-bind:to="
-                                                                '/channel/' +
-                                                                    channel.channelId
-                                                            "
-                                                            target="_blank"
-                                                            dark
-                                                            text
-                                                            small
-                                                        >
-                                                            <span
-                                                                class="blue--text"
-                                                                >{{
-                                                                    channel.nazev
-                                                                }}</span
-                                                            >
-                                                        </v-btn>
-                                                    </v-row>
+                                                        </v-row>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </v-card-text>
-                                    </v-list-item-content>
-                                </v-list-item>
-                            </v-card>
+                                            </v-card-text>
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                </v-card>
+                            </v-hover>
                             <!-- 3. input -->
-                            <v-card
-                                class="ma-3"
-                                max-width="356"
-                                min-width="300"
-                                outlined
-                            >
-                                <v-list-item>
-                                    <v-list-item-content>
-                                        <v-toolbar
-                                            dense
-                                            flat
-                                            height="10"
-                                            color="transparent"
-                                        >
-                                            <v-spacer></v-spacer>
-                                            <div
-                                                class="text-center d-flex align-center"
+                            <v-hover v-slot:default="{ hover }">
+                                <v-card
+                                    :elevation="hover ? 2 : 0"
+                                    class="ma-3 ml-12"
+                                    max-width="356"
+                                    min-width="300"
+                                >
+                                    <v-list-item>
+                                        <v-list-item-content>
+                                            <v-toolbar
+                                                dense
+                                                flat
+                                                height="10"
+                                                color="transparent"
                                             >
-                                                <span>
-                                                    <v-tooltip bottom>
-                                                        <template
-                                                            v-slot:activator="{
-                                                                on
-                                                            }"
+                                                <v-spacer></v-spacer>
+                                                <div
+                                                    class="text-center d-flex align-center"
+                                                >
+                                                    <span>
+                                                        <v-tooltip bottom>
+                                                            <template
+                                                                v-slot:activator="{
+                                                                    on
+                                                                }"
+                                                            >
+                                                                <v-btn
+                                                                    v-show="
+                                                                        userData.role ===
+                                                                            '1' ||
+                                                                            userData.role ===
+                                                                                '2'
+                                                                    "
+                                                                    @click="
+                                                                        (rf =
+                                                                            'RF3'),
+                                                                            (rfPolarizace =
+                                                                                device.RF3_polarizace),
+                                                                            (deviceId =
+                                                                                device.id),
+                                                                            (rfDVB =
+                                                                                device.RF3_dvb),
+                                                                            (rfSatelit =
+                                                                                device.RF3_satelit),
+                                                                            (rfFreq =
+                                                                                device.RF3_freq),
+                                                                            (rfSymbol =
+                                                                                device.RF3_Symbol),
+                                                                            (rfFec =
+                                                                                device.RF3_fec),
+                                                                            (rfCI =
+                                                                                device.CI_3),
+                                                                            (modalEditRF = true)
+                                                                    "
+                                                                    icon
+                                                                    x-small
+                                                                    v-on="on"
+                                                                >
+                                                                    <v-icon
+                                                                        color="primary"
+                                                                        >mdi-pencil</v-icon
+                                                                    >
+                                                                </v-btn>
+                                                            </template>
+                                                            <span
+                                                                class="font-weight-medium"
+                                                                >editovat
+                                                                RF3</span
+                                                            >
+                                                        </v-tooltip>
+                                                    </span>
+                                                </div>
+                                            </v-toolbar>
+                                            <v-card-text>
+                                                <v-row>
+                                                    <v-list-item-title
+                                                        class="title text-center"
+                                                        >RF 3</v-list-item-title
+                                                    >
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong>DVB:</strong>
+                                                        {{ device.RF3_dvb }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong
+                                                            >Satelit:</strong
+                                                        >
+                                                        {{ device.RF3_satelit }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong
+                                                            >Frekvence:</strong
+                                                        >
+                                                        {{ device.RF3_freq }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong
+                                                            >Polarizace:</strong
+                                                        >
+                                                        {{
+                                                            device.RF3_polarizace
+                                                        }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong
+                                                            >Symbol
+                                                            rate:</strong
+                                                        >
+                                                        {{ device.RF3_Symbol }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong>FEC:</strong>
+                                                        {{ device.RF3_fec }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong>CI 3:</strong>
+                                                        {{ device.CI_3 }}
+                                                    </span>
+                                                </v-row>
+
+                                                <v-divider></v-divider>
+
+                                                <div
+                                                    v-for="channel in device.channels"
+                                                    v-bind:key="channel.id"
+                                                >
+                                                    <div>
+                                                        <v-row
+                                                            v-if="
+                                                                channel.rf ===
+                                                                    'RF3'
+                                                            "
                                                         >
                                                             <v-btn
-                                                                v-show="
-                                                                    userData.role ===
-                                                                        '1' ||
-                                                                        userData.role ===
-                                                                            '2'
+                                                                v-bind:to="
+                                                                    '/channel/' +
+                                                                        channel.channelId
                                                                 "
-                                                                @click="
-                                                                    (rf =
-                                                                        'RF3'),
-                                                                        (rfPolarizace =
-                                                                            device.RF3_polarizace),
-                                                                        (deviceId =
-                                                                            device.id),
-                                                                        (rfDVB =
-                                                                            device.RF3_dvb),
-                                                                        (rfSatelit =
-                                                                            device.RF3_satelit),
-                                                                        (rfFreq =
-                                                                            device.RF3_freq),
-                                                                        (rfSymbol =
-                                                                            device.RF3_Symbol),
-                                                                        (rfFec =
-                                                                            device.RF3_fec),
-                                                                        (rfCI =
-                                                                            device.CI_3),
-                                                                        (modalEditRF = true)
-                                                                "
-                                                                icon
-                                                                x-small
-                                                                v-on="on"
+                                                                target="_blank"
+                                                                dark
+                                                                text
+                                                                small
                                                             >
-                                                                <v-icon
-                                                                    color="primary"
-                                                                    >mdi-pencil</v-icon
+                                                                <span
+                                                                    class="blue--text"
+                                                                    >{{
+                                                                        channel.nazev
+                                                                    }}</span
                                                                 >
                                                             </v-btn>
-                                                        </template>
-                                                        <span
-                                                            class="font-weight-medium"
-                                                            >editovat RF3</span
-                                                        >
-                                                    </v-tooltip>
-                                                </span>
-                                            </div>
-                                        </v-toolbar>
-                                        <v-card-text>
-                                            <v-row>
-                                                <v-list-item-title
-                                                    class="title text-center"
-                                                    >RF 3</v-list-item-title
-                                                >
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>DVB:</strong>
-                                                    {{ device.RF3_dvb }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>Satelit:</strong>
-                                                    {{ device.RF3_satelit }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>Frekvence:</strong>
-                                                    {{ device.RF3_freq }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>Polarizace:</strong>
-                                                    {{ device.RF3_polarizace }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong
-                                                        >Symbol rate:</strong
-                                                    >
-                                                    {{ device.RF3_Symbol }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>FEC:</strong>
-                                                    {{ device.RF3_fec }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>CI 3:</strong>
-                                                    {{ device.CI_3 }}
-                                                </span>
-                                            </v-row>
-
-                                            <v-divider></v-divider>
-
-                                            <div
-                                                v-for="channel in device.channels"
-                                                v-bind:key="channel.id"
-                                            >
-                                                <div>
-                                                    <v-row
-                                                        v-if="
-                                                            channel.rf === 'RF3'
-                                                        "
-                                                    >
-                                                        <v-btn
-                                                            v-bind:to="
-                                                                '/channel/' +
-                                                                    channel.channelId
-                                                            "
-                                                            target="_blank"
-                                                            dark
-                                                            text
-                                                            small
-                                                        >
-                                                            <span
-                                                                class="blue--text"
-                                                                >{{
-                                                                    channel.nazev
-                                                                }}</span
-                                                            >
-                                                        </v-btn>
-                                                    </v-row>
+                                                        </v-row>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </v-card-text>
-                                    </v-list-item-content>
-                                </v-list-item>
-                            </v-card>
+                                            </v-card-text>
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                </v-card></v-hover
+                            >
                             <!-- 4. input -->
-                            <v-card
-                                class="ma-3"
-                                max-width="356"
-                                min-width="300"
-                                outlined
-                            >
-                                <v-list-item>
-                                    <v-list-item-content>
-                                        <v-toolbar
-                                            dense
-                                            flat
-                                            height="10"
-                                            color="transparent"
-                                        >
-                                            <v-spacer></v-spacer>
-                                            <div
-                                                class="text-center d-flex align-center"
+                            <v-hover v-slot:default="{ hover }">
+                                <v-card
+                                    :elevation="hover ? 2 : 0"
+                                    class="ma-3 ml-12"
+                                    max-width="356"
+                                    min-width="300"
+                                >
+                                    <v-list-item>
+                                        <v-list-item-content>
+                                            <v-toolbar
+                                                dense
+                                                flat
+                                                height="10"
+                                                color="transparent"
                                             >
-                                                <span>
-                                                    <v-tooltip bottom>
-                                                        <template
-                                                            v-slot:activator="{
-                                                                on
-                                                            }"
+                                                <v-spacer></v-spacer>
+                                                <div
+                                                    class="text-center d-flex align-center"
+                                                >
+                                                    <span>
+                                                        <v-tooltip bottom>
+                                                            <template
+                                                                v-slot:activator="{
+                                                                    on
+                                                                }"
+                                                            >
+                                                                <v-btn
+                                                                    v-show="
+                                                                        userData.role ===
+                                                                            '1' ||
+                                                                            userData.role ===
+                                                                                '2'
+                                                                    "
+                                                                    @click="
+                                                                        (rf =
+                                                                            'RF4'),
+                                                                            (rfPolarizace =
+                                                                                device.RF4_polarizace),
+                                                                            (deviceId =
+                                                                                device.id),
+                                                                            (rfDVB =
+                                                                                device.RF4_dvb),
+                                                                            (rfSatelit =
+                                                                                device.RF4_satelit),
+                                                                            (rfFreq =
+                                                                                device.RF4_freq),
+                                                                            (rfSymbol =
+                                                                                device.RF4_symbol),
+                                                                            (rfFec =
+                                                                                device.RF4_fec),
+                                                                            (rfCI =
+                                                                                device.CI_4),
+                                                                            (modalEditRF = true)
+                                                                    "
+                                                                    icon
+                                                                    x-small
+                                                                    v-on="on"
+                                                                >
+                                                                    <v-icon
+                                                                        color="primary"
+                                                                        >mdi-pencil</v-icon
+                                                                    >
+                                                                </v-btn>
+                                                            </template>
+                                                            <span
+                                                                class="font-weight-medium"
+                                                                >editovat
+                                                                RF4</span
+                                                            >
+                                                        </v-tooltip>
+                                                    </span>
+                                                </div>
+                                            </v-toolbar>
+                                            <v-card-text>
+                                                <v-row>
+                                                    <v-list-item-title
+                                                        class="title text-center"
+                                                        >RF 4</v-list-item-title
+                                                    >
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong>DVB:</strong>
+                                                        {{ device.RF4_dvb }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong
+                                                            >Satelit:</strong
+                                                        >
+                                                        {{ device.RF4_satelit }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong
+                                                            >Frekvence:</strong
+                                                        >
+                                                        {{ device.RF4_freq }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong
+                                                            >Polarizace:</strong
+                                                        >
+                                                        {{
+                                                            device.RF4_polarizace
+                                                        }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong
+                                                            >Symbol
+                                                            rate:</strong
+                                                        >
+                                                        {{ device.RF4_symbol }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong>FEC:</strong>
+                                                        {{ device.RF4_fec }}
+                                                    </span>
+                                                </v-row>
+                                                <v-row>
+                                                    <span class="ma-3">
+                                                        <strong>CI 4:</strong>
+                                                        {{ device.CI_4 }}
+                                                    </span>
+                                                </v-row>
+
+                                                <v-divider></v-divider>
+
+                                                <div
+                                                    v-for="channel in device.channels"
+                                                    v-bind:key="channel.id"
+                                                >
+                                                    <div>
+                                                        <v-row
+                                                            v-if="
+                                                                channel.rf ===
+                                                                    'RF4'
+                                                            "
                                                         >
                                                             <v-btn
-                                                                v-show="
-                                                                    userData.role ===
-                                                                        '1' ||
-                                                                        userData.role ===
-                                                                            '2'
+                                                                v-bind:to="
+                                                                    '/channel/' +
+                                                                        channel.channelId
                                                                 "
-                                                                @click="
-                                                                    (rf =
-                                                                        'RF4'),
-                                                                        (rfPolarizace =
-                                                                            device.RF4_polarizace),
-                                                                        (deviceId =
-                                                                            device.id),
-                                                                        (rfDVB =
-                                                                            device.RF4_dvb),
-                                                                        (rfSatelit =
-                                                                            device.RF4_satelit),
-                                                                        (rfFreq =
-                                                                            device.RF4_freq),
-                                                                        (rfSymbol =
-                                                                            device.RF4_symbol),
-                                                                        (rfFec =
-                                                                            device.RF4_fec),
-                                                                        (rfCI =
-                                                                            device.CI_4),
-                                                                        (modalEditRF = true)
-                                                                "
-                                                                icon
-                                                                x-small
-                                                                v-on="on"
+                                                                target="_blank"
+                                                                dark
+                                                                text
+                                                                small
                                                             >
-                                                                <v-icon
-                                                                    color="primary"
-                                                                    >mdi-pencil</v-icon
+                                                                <span
+                                                                    class="blue--text"
+                                                                    >{{
+                                                                        channel.nazev
+                                                                    }}</span
                                                                 >
                                                             </v-btn>
-                                                        </template>
-                                                        <span
-                                                            class="font-weight-medium"
-                                                            >editovat RF4</span
-                                                        >
-                                                    </v-tooltip>
-                                                </span>
-                                            </div>
-                                        </v-toolbar>
-                                        <v-card-text>
-                                            <v-row>
-                                                <v-list-item-title
-                                                    class="title text-center"
-                                                    >RF 4</v-list-item-title
-                                                >
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>DVB:</strong>
-                                                    {{ device.RF4_dvb }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>Satelit:</strong>
-                                                    {{ device.RF4_satelit }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>Frekvence:</strong>
-                                                    {{ device.RF4_freq }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>Polarizace:</strong>
-                                                    {{ device.RF4_polarizace }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong
-                                                        >Symbol rate:</strong
-                                                    >
-                                                    {{ device.RF4_symbol }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>FEC:</strong>
-                                                    {{ device.RF4_fec }}
-                                                </span>
-                                            </v-row>
-                                            <v-row>
-                                                <span class="ma-3">
-                                                    <strong>CI 4:</strong>
-                                                    {{ device.CI_4 }}
-                                                </span>
-                                            </v-row>
-
-                                            <v-divider></v-divider>
-
-                                            <div
-                                                v-for="channel in device.channels"
-                                                v-bind:key="channel.id"
-                                            >
-                                                <div>
-                                                    <v-row
-                                                        v-if="
-                                                            channel.rf === 'RF4'
-                                                        "
-                                                    >
-                                                        <v-btn
-                                                            v-bind:to="
-                                                                '/channel/' +
-                                                                    channel.channelId
-                                                            "
-                                                            target="_blank"
-                                                            dark
-                                                            text
-                                                            small
-                                                        >
-                                                            <span
-                                                                class="blue--text"
-                                                                >{{
-                                                                    channel.nazev
-                                                                }}</span
-                                                            >
-                                                        </v-btn>
-                                                    </v-row>
+                                                        </v-row>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </v-card-text>
-                                    </v-list-item-content>
-                                </v-list-item>
-                            </v-card>
+                                            </v-card-text>
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                </v-card>
+                            </v-hover>
                         </v-row>
                     </div>
                     <!-- FTE -->
@@ -1605,7 +1720,7 @@
                             </v-card>
                         </v-row>
                         <v-row>
-                            <v-card class="ma-3" width="1400" outlined>
+                            <v-card class="ma-3" width="1400" elevation="0">
                                 <v-list-item>
                                     <v-list-item-content>
                                         <v-card-text>
@@ -1979,7 +2094,7 @@
                         </v-row>
                         <v-row>
                             <template>
-                                <v-card class="ma-3" width="1400" outlined>
+                                <v-card class="ma-3" width="1400" elevation="0">
                                     <v-card-title>
                                         Kanály na Transcodéru
                                         <v-spacer></v-spacer>
@@ -2223,7 +2338,7 @@
                         </v-row>
                         <v-row>
                             <template>
-                                <v-card class="ma-3" width="1400" outlined>
+                                <v-card class="ma-3" width="1400" elevation="0">
                                     <v-card-title>
                                         Kanály na Transcodéru
                                         <v-spacer></v-spacer>
@@ -2470,7 +2585,7 @@
                         </v-row>
                         <v-row>
                             <template>
-                                <v-card class="ma-3" width="1400" outlined>
+                                <v-card class="ma-3" width="1400" elevation="0">
                                     <v-card-title>
                                         Přijímané kanály
                                         <v-spacer></v-spacer>
@@ -2694,7 +2809,7 @@
                         </v-row>
                         <v-row>
                             <template>
-                                <v-card class="ma-3" width="1400" outlined>
+                                <v-card class="ma-3" width="1400" elevation="0">
                                     <v-card-title>
                                         Přijímané kanály
                                         <v-spacer></v-spacer>
@@ -2916,7 +3031,7 @@
                         </v-row>
                         <v-row>
                             <template>
-                                <v-card class="ma-3" width="1400" outlined>
+                                <v-card class="ma-3" width="1400" elevation="0">
                                     <v-card-title>
                                         Přijímané kanály
                                         <v-spacer></v-spacer>
@@ -3036,8 +3151,11 @@
 export default {
     data() {
         return {
-            tagDialogRemove: false,
             tags: false,
+            tagDialogRemove: false,
+            newTagDialog: false,
+            allTags: false,
+            tagId: "",
             userData: "",
             deviceData: "",
             deviceName: "",
@@ -3084,14 +3202,14 @@ export default {
                 { name: "Astra 4A" },
                 { name: "Astra 23,5" },
                 { name: "Astra 19,2E" },
-                { name: " Eutelsat 9A" },
-                { name: " Eutelsat 9B at 9" },
+                { name: "Eutelsat 9A" },
+                { name: "Eutelsat 9B at 9" },
                 { name: "Hotbird 9 13E" },
                 { name: "Hotbird 13C" },
-                { name: " Hotbird13 13E" },
+                { name: "Hotbird13 13E" },
                 { name: "Telstar 12 15W" },
-                { name: "Thor 5 " },
-                { name: "Thor6 " },
+                { name: "Thor 5" },
+                { name: "Thor6" },
                 { name: "Eutelsat 16A 16°East" }
             ],
             dvbs: [
@@ -3123,6 +3241,28 @@ export default {
     },
 
     methods: {
+        showDialogForAddNewTag() {
+            axios
+                .get("/api/tags/get")
+                .then(response => (this.allTags = response.data));
+            this.newTagDialog = true;
+        },
+        saveNewTag() {
+            let currentObj = this;
+            axios
+                .post("/api/device/tag/add", {
+                    id: this.$route.params.id,
+                    tagId: this.tagId
+                })
+                .then(function(response) {
+                    currentObj.status = response.data;
+                    currentObj.loadTags();
+                    currentObj.newTagDialog = false;
+                })
+                .catch(function(error) {
+                    console.log("chyba" + error);
+                });
+        },
         loadTags() {
             let currentObj = this;
             axios
@@ -3137,9 +3277,21 @@ export default {
                 });
         },
         closeDialog(id) {
-            // odebrání tagu od kanálu
-            this.tagDialogRemove = true;
-            console.log(id);
+            let currentObj = this;
+
+            axios
+                .post("/api/device/delete/tag", {
+                    id: this.$route.params.id,
+                    tagId: id
+                })
+                .then(function(response) {
+                    currentObj.tags = response.data;
+                    currentObj.loadTags();
+                    currentObj.tagDialogRemove = false;
+                })
+                .catch(function(error) {
+                    console.log("chyba" + error);
+                });
         },
         RemoveDevice() {
             let currentObj = this;

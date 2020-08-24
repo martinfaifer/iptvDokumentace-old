@@ -59,7 +59,11 @@ export default {
             .every(
               v =>
                 item.nazev.toLowerCase().includes(v) ||
-                item.ipKstb.toLowerCase().includes(v)
+                item.ipKstb.toLowerCase().includes(v) ||
+                item.dohledUrl.toLowerCase().includes(v) ||
+                item.ca_modul_number.toLowerCase().includes(v) ||
+                item.pathToReboot.toLowerCase().includes(v) ||
+                item.tag.toLowerCase().includes(v)
             );
         });
       } else {

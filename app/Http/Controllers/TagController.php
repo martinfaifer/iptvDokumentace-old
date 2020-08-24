@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Channels;
+use App\Device;
 use App\Tag;
 use Illuminate\Http\Request;
 
@@ -25,7 +27,25 @@ class TagController extends Controller
      */
     public function createTagForChannel(Request $request)
     {
-        // some code here...
+
+        if ($request->tagName == "" || $request->color == "") {
+            return [
+                'isAlert' => "isAlert",
+                'stat' => "error",
+                'msg' => "Štítek se nepodařilo vytvořit!"
+            ];
+        }
+
+        Tag::create([
+            'tagName' => $request->tagName,
+            'color' => $request->color
+        ]);
+
+        return [
+            'isAlert' => "isAlert",
+            'stat' => "success",
+            'msg' => "Štítek vytvořen"
+        ];
     }
 
 
@@ -49,7 +69,21 @@ class TagController extends Controller
      */
     public function remove(Request $request)
     {
-        // somde code here ...
+        Tag::find($request->tagId)->delete();
+
+
+        if (Channels::where('tags', $request->tagId)->first()) {
+            Channels::where('tags', $request->tagId)->update(['tags', null]);
+        }
+        if (Device::where('tags', $request->tagId)->first()) {
+            Device::where('tags', $request->tagId)->update(['tags', null]);
+        }
+
+        return [
+            'isAlert' => "isAlert",
+            'stat' => "success",
+            'msg' => "Štítek byl smazán"
+        ];
     }
 
 

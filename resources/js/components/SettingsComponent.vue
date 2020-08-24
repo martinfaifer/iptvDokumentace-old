@@ -47,10 +47,15 @@ export default {
           url: "users"
         },
         {
+            id: "5",
+            nazev: "Štítky",
+            url: "tags"
+        },
+        {
           id: "4",
           nazev: "API",
           url: "api_connection"
-        }
+        },
       ]
     };
   },

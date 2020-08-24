@@ -28,6 +28,10 @@ import DevicesDefaultComponent from './components/devices/DevicesDefaultComponen
 import UserComponent from './components/settings/UserComponent.vue';
 import WikiComponent from './components/wiki/WikiComponent.vue';
 import WikiTopicComponent from './components/wiki/WikiTopicComponent.vue';
+import WikiDefaultComponent from './components/wiki/WikiDefaultComponent';
+import ChannelPackageDefaultComponent from './components/channelPackages/ChannelPackageDefaultComponent';
+import SettingsDefaultComponent from './components/SettingsDefaultComponent';
+import TagComponent from './components/settings/TagComponent';
 
 // midleware
 Vue.use(Vuetify);
@@ -78,6 +82,10 @@ let routes = [
                 component: WikiComponent,
                 children: [
                     {
+                        path: '',
+                        component: WikiDefaultComponent
+                    },
+                    {
                         path: '/wiki/:id',
                         component: WikiTopicComponent
                     },
@@ -87,6 +95,10 @@ let routes = [
                 path: 'channelPackages',
                 component: ChannelPackagesComonent,
                 children: [
+                    {
+                        path: '',
+                        component: ChannelPackageDefaultComponent
+                    },
                     {
                         path: '/channelPackages/:nazev',
                         component: ChannelPackage
@@ -112,11 +124,23 @@ let routes = [
                 component: SettingsComponent,
                 children: [
                     {
+                        path: '',
+                        component: SettingsDefaultComponent
+                    },
+                    {
                         path: "users",
                         component: UserComponent
+                    },
+                    {
+                        path: "tags",
+                        component: TagComponent
                     }
                 ]
             },
+            {
+                path: 'calendar',
+                component: CalendarComponent
+            }
 
         ]
     },

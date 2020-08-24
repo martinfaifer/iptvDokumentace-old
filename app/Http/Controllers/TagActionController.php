@@ -76,7 +76,7 @@ class TagActionController extends Controller
                     $client = new Client();
                     $res = $client->get($device['ip'] . "/api/findStreamAndTryToReboot?src=" . $device['channelUrl']);
                     // echo $res->getStatusCode();
-                    echo $res->getBody();
+                    // echo $res->getBody();
                 }
             }
         }

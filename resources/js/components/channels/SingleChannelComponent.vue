@@ -45,7 +45,7 @@
                             </span>
                         </div>
 
-                        <v-tooltip bottom>
+                        <v-tooltip bottom v-if="tags === false">
                             <template v-slot:activator="{ on }">
                                 <v-btn
                                     class="ma-2"
@@ -98,37 +98,6 @@
 
                 <!-- modal pro odebrání tagu -->
 
-                <v-row justify="center">
-                    <v-dialog
-                        v-model="tagDialogRemove"
-                        persistent
-                        max-width="290"
-                    >
-                        <v-card>
-                            <v-card-text class="body-1 pt-6 pl-12 black--text"
-                                >Odebrat štítek??</v-card-text
-                            >
-
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn
-                                    color="red darken-1"
-                                    text
-                                    @click="tagDialogRemove = false"
-                                    >Ne</v-btn
-                                >
-                                <v-btn
-                                    color="green darken-1"
-                                    text
-                                    @click="tagDialogRemove = false"
-                                    >Odebrat</v-btn
-                                >
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
-                </v-row>
-
-                <!-- konec modalu pro odebrani tagu -->
 
                 <!-- dialog pro nový štítek -->
 
@@ -138,10 +107,9 @@
                             <v-card-text>
                                 <v-container>
                                     <v-row>
-                                        <v-col cols="12" sm="12">
+                                        <v-col cols="12" sm="12" class="body-1">
                                             <v-autocomplete
                                                 v-model="tagId"
-                                                class="body-1"
                                                 :items="allTags"
                                                 item-text="tagName"
                                                 item-value="id"
@@ -149,6 +117,9 @@
                                             ></v-autocomplete>
                                         </v-col>
                                     </v-row>
+                                    <!-- zobrazení okna pro pripadne doplneni informaci pro uspesne pridani stitku -->
+
+                                    <!-- konec doplnkoveho okna -->
                                 </v-container>
                             </v-card-text>
                             <v-card-actions>
@@ -232,10 +203,40 @@ export default {
                 });
         },
         closeDialog(id) {
-            // odebrání tagu od kanálu
-            this.tagDialogRemove = true;
-            console.log(id);
-        }
+            let currentObj = this;
+
+            axios
+                .post("/api/channel/delete/tag", {
+                    id: this.$route.params.id,
+                    tagId: id
+                })
+                .then(function(response) {
+                    currentObj.tags = response.data;
+                    currentObj.loadTags();
+                    currentObj.tagDialogRemove = false;
+                })
+                .catch(function(error) {
+                    console.log("chyba" + error);
+                });
+        },
+
+        // deleteTag() {
+        //     let currentObj = this;
+
+        //     axios
+        //         .post("/api/channel/delete/tag", {
+        //             id: this.$route.params.id,
+        //             tagId: id
+        //         })
+        //         .then(function(response) {
+        //             currentObj.tags = response.data;
+        //             currentObj.loadTags();
+        //             currentObj.tagDialogRemove = false;
+        //         })
+        //         .catch(function(error) {
+        //             console.log("chyba" + error);
+        //         });
+        // }
     },
 
     watch: {

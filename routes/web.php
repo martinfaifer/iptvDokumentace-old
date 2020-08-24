@@ -169,6 +169,7 @@ Route::get('/api/get_img_from_dohled', 'ApiSystemUrlController@getImgFromDohled'
 Route::post('/api/getChannelDataFromDohled', 'ApiSystemUrlController@checkIfChannelExistAndReturnChannelDataOrFalseStatus');
 Route::post('/api/getVolumeDataFromDohledForChart', 'ApiSystemUrlController@checkIfChannelExistAndReturnChartVolumeDataOrFalseStatus');
 Route::post('/api/getBitrateDataFromDohledForChart', 'ApiSystemUrlController@checkIfChannelExistAndReturnChartBitrateDataOrFalseStatus');
+Route::post('/api/getChannelHistoryFromDohled', 'ApiSystemUrlController@checkIfChannelExistAndReturnChannelHistory');
 Route::post('/api/storeChannelToDohled', 'ApiSystemUrlController@storeChannelToDohled');
 
 
@@ -178,9 +179,21 @@ Route::post('/api/storeChannelToDohled', 'ApiSystemUrlController@storeChannelToD
 Route::get('/api/tags/get', 'TagController@show');
 // ulozeni tagu ke kanálu
 Route::post('/api/channel/tag/add', 'ChannelsController@addTag');
+// ulozeni tagu k zarizeni
+Route::post('/api/device/tag/add', 'DeviceController@addTag');
+// odebrani tagu od kanalu
+Route::post('/api/channel/delete/tag', 'ChannelsController@removeTag');
+// odebrání tagu od zarizeni
+Route::post('/api/device/delete/tag', 'DeviceController@removeTag');
 
-
+// vytvoreni noveho stitku do systemu
+Route::post('/api/settings/tag/create', 'TagController@createTagForChannel');
+// odebrání stítku ze systému
+Route::post('/api/settings/tag/remove', 'TagController@remove');
 //AUTOMATICKE RESTARTOVÁNÍ KANÁLŮ
 Route::post('/api/channel/tryToRestartChannel', 'ChannelsController@checkIfChannelHaveTagForActions');
 
 // http://iptvdokumentace.test/api/channel/tryToRestartChannel?dohledUrl=http://93.91.154.54:10224/udp/239.251.21.17:1234
+
+
+Route::get('/api/search', 'SearchController@search');

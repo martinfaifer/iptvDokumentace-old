@@ -166,25 +166,6 @@
                     >
                 </v-tooltip>
 
-                <!-- <v-tooltip bottom v-else>
-                    <template v-slot:activator="{ on }">
-                        <v-btn
-                            class="mr-3"
-                            color="primary"
-                            fab
-                            x-small
-                            dark
-                            v-on="on"
-                            @click="openDialogForCreateDohledChannel()"
-                        >
-                            <v-icon color="green">mdi-monitor-multiple</v-icon>
-                        </v-btn>
-                    </template>
-                    <span class="font-weight-medium"
-                        >Editovat dohledovaný kanál</span
-                    >
-                </v-tooltip> -->
-
                 <!-- odebrání kanálu -->
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on }">
@@ -1079,6 +1060,12 @@
                                     <strong>Poznámka :</strong>
                                     {{ prijem.poznamka }}
                                 </span>
+                                <span class="ma-3">
+                                    <strong>
+                                        Příkaz pro spuštění:
+                                    </strong>
+                                    {{ channelData.pathToReboot }}
+                                </span>
                             </v-card-text>
                         </v-list-item-content>
                     </v-list-item>
@@ -1564,6 +1551,35 @@
                 </v-row>
             </div>
 
+            <!-- výpis historie  -->
+            <div v-show="channelHistory != 'false'" class=" ma-3 mr-12">
+                <v-row>
+                    <v-card
+                        class="ma-3 ml-6 body-1 elevation-0"
+                        width="1500"
+                        v-for="dohledovaData in dohledData"
+                        :key="dohledovaData.id"
+                    >
+                        <v-data-table
+                            no-data-text="nejsou evidované výpadky"
+                            :headers="headerHistory"
+                            :items="channelHistory"
+                            :items-per-page="5"
+                            class="elevation-0"
+                            dense
+                        >
+                            <template v-slot:item.ko_time="{ item }">
+                                <span class="red--text" dark>{{
+                                    item.ko_time
+                                }}</span>
+                            </template>
+                        </v-data-table>
+                    </v-card>
+                </v-row>
+            </div>
+
+            <!-- konec historie -->
+
             <!-- vykreslení grafu z dohledu -->
             <div v-show="volumeChart != false" class=" ma-3 mr-12">
                 <line-chart
@@ -1898,6 +1914,16 @@
                                 </v-row>
                                 <!-- konec CA modulu -->
 
+                                <v-row v-if="kategorieId == '5'">
+                                    <v-col cols="12" sm="6" md="8">
+                                        <v-text-field
+                                            v-model="linuxPath"
+                                            label="Příkaz pro spuštění kanálu"
+                                            required
+                                        ></v-text-field>
+                                    </v-col>
+                                </v-row>
+
                                 <v-row v-if="devices != ''">
                                     <v-col cols="12" sm="6" md="8">
                                         <v-select
@@ -2011,7 +2037,15 @@
                                     </v-col>
                                 </v-row>
                                 <!-- konec CA modulu -->
-
+                                <v-row v-if="kategorieId == '5'">
+                                    <v-col cols="12" sm="6" md="8">
+                                        <v-text-field
+                                            v-model="linuxPath"
+                                            label="Příkaz pro spuštění kanálu"
+                                            required
+                                        ></v-text-field>
+                                    </v-col>
+                                </v-row>
                                 <v-row v-if="devices != ''">
                                     <v-col cols="12" sm="6" md="8">
                                         <v-select
@@ -2176,7 +2210,16 @@
 export default {
     data() {
         return {
+            headerHistory: [
+                {
+                    text: "Výpadek",
+                    align: "start",
+                    value: "ko_time"
+                }
+            ],
+            linuxPath: "",
             vytvoritNahled: true,
+            channelHistory: [],
             sendSMS: false,
             sendMailAlert: true,
             dohledBitrate: true,
@@ -2238,7 +2281,8 @@ export default {
             dohledDialog: false,
             dohledData: false,
             volumeChart: false,
-            birateChart: false
+            birateChart: false,
+            interval: null
         };
     },
 
@@ -2255,6 +2299,13 @@ export default {
             setTimeout(
                 function() {
                     this.loadVolumeChartFromDohled();
+                }.bind(this),
+                1000
+            );
+
+            setTimeout(
+                function() {
+                    this.loadChannelHistory();
                 }.bind(this),
                 1000
             );
@@ -2339,6 +2390,20 @@ export default {
                 })
                 .then(function(response) {
                     currentObj.birateChart = response.data;
+                })
+                .catch(function(error) {
+                    console.log("chyba" + error);
+                });
+        },
+
+        loadChannelHistory() {
+            let currentObj = this;
+            axios
+                .post("/api/getChannelHistoryFromDohled", {
+                    id: this.$route.params.id
+                })
+                .then(function(response) {
+                    currentObj.channelHistory = response.data;
                 })
                 .catch(function(error) {
                     console.log("chyba" + error);
@@ -2724,7 +2789,8 @@ export default {
                     kategorieId: this.kategorieId,
                     deviceId: this.deviceId,
                     rfId: this.rfId,
-                    ci: this.ci
+                    ci: this.ci,
+                    linuxPath: this.linuxPath
                 })
                 .then(function(response) {
                     currentObj.status = response.data;
@@ -2768,7 +2834,8 @@ export default {
                     kategorieId: this.kategorieId,
                     deviceId: this.deviceId,
                     rfId: this.rfId,
-                    ci: this.ci
+                    ci: this.ci,
+                    linuxPath: this.linuxPath
                 })
                 .then(function(response) {
                     currentObj.status = response.data;
@@ -2875,6 +2942,7 @@ export default {
                     this.loadDataFromDohled();
                     this.loadVolumeChartFromDohled();
                     this.loadBitrateChartFromDohled();
+                    this.loadChannelHistory();
                 } catch (error) {
                     console.log(error);
                 }
@@ -2902,19 +2970,6 @@ export default {
             }
         },
 
-        // channelData: function() {
-        //     setTimeout(
-        //         function() {
-        //             try {
-        //                 this.loadMulticastData();
-        //             } catch (error) {
-        //                 console.log("nepodarilo se obnovit multicastová data");
-        //             }
-        //         }.bind(this),
-        //         30000
-        //     );
-        // },
-
         status: function() {
             setTimeout(() => (this.status = false), 3000);
         },
@@ -2937,6 +2992,7 @@ export default {
                             this.loadDataFromDohled();
                             this.loadVolumeChartFromDohled();
                             this.loadBitrateChartFromDohled();
+                            this.loadChannelHistory();
                         } catch (error) {
                             (currentObj.dohledData = false),
                                 (currentObj.volumeChart = false),
@@ -3009,6 +3065,10 @@ export default {
                     });
             }
         }
-    }
+    },
+
+    beforeDestroy: function() {
+        clearInterval(this.interval);
+    },
 };
 </script>
