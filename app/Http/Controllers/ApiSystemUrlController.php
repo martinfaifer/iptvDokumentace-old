@@ -181,7 +181,7 @@ class ApiSystemUrlController extends Controller
             return "false";
         } else {
             $client = new Client();
-            $res = $client->get("10.255.255.51/api/channel/get_data_if_exist_or_return_false?channelUrl=" . trim(Channels::where('id', $request->id)->first()->dohledUrl));
+            $res = $client->get(ApiSystemUrl::where('type', "dohled")->first()->url . "/api/channel/get_data_if_exist_or_return_false?channelUrl=" . trim(Channels::where('id', $request->id)->first()->dohledUrl));
             // echo $res->getStatusCode();
             echo $res->getBody();
         }
@@ -199,7 +199,7 @@ class ApiSystemUrlController extends Controller
             return "false";
         } else {
             $client = new Client();
-            $res = $client->get("10.255.255.51/api/getVolumeDataFromDohledForChart?channelUrl=" . trim(Channels::where('id', $request->id)->first()->dohledUrl));
+            $res = $client->get(ApiSystemUrl::where('type', "dohled")->first()->url . "/api/getVolumeDataFromDohledForChart?channelUrl=" . trim(Channels::where('id', $request->id)->first()->dohledUrl));
             // echo $res->getStatusCode();
             echo $res->getBody();
         }
@@ -212,7 +212,7 @@ class ApiSystemUrlController extends Controller
             return "false";
         } else {
             $client = new Client();
-            $res = $client->get("10.255.255.51/api/getBitrateDataFromDohledForChart?channelUrl=" . trim(Channels::where('id', $request->id)->first()->dohledUrl));
+            $res = $client->get(ApiSystemUrl::where('type', "dohled")->first()->url . "/api/getBitrateDataFromDohledForChart?channelUrl=" . trim(Channels::where('id', $request->id)->first()->dohledUrl));
             // echo $res->getStatusCode();
             echo $res->getBody();
         }
@@ -226,7 +226,7 @@ class ApiSystemUrlController extends Controller
             return "false";
         } else {
             $client = new Client();
-            $res = $client->get("10.255.255.51/api/show_channel_history?channelUrl=" . trim(Channels::where('id', $request->id)->first()->dohledUrl));
+            $res = $client->get(ApiSystemUrl::where('type', "dohled")->first()->url . "/api/show_channel_history?channelUrl=" . trim(Channels::where('id', $request->id)->first()->dohledUrl));
             // echo $res->getStatusCode();
             echo $res->getBody();
         }
@@ -250,7 +250,7 @@ class ApiSystemUrlController extends Controller
             return "false";
         } else {
             $client = new Client();
-            $res = $client->request('POST', "10.255.255.51/api/channel/create", [
+            $res = $client->request('POST', ApiSystemUrl::where('type', "dohled")->first()->url . "api/channel/create", [
                 'form_params' => [
                     'url' => $request->url,
                     'channelName' => $request->nazev,
@@ -281,7 +281,7 @@ class ApiSystemUrlController extends Controller
             return "false";
         } else {
             $client = new Client();
-            $res = $client->get("10.255.255.51/api/removeChannelFromDohled?channelUrl=" . trim($channelUrl));
+            $res = $client->get(ApiSystemUrl::where('type', "dohled")->first()->url . "/api/removeChannelFromDohled?channelUrl=" . trim($channelUrl));
             echo $res->getBody();
         }
     }

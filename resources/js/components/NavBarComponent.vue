@@ -86,14 +86,14 @@
                     to="/settings"
                     >Nastavení</v-btn
                 >
-                <v-btn
+                <!-- <v-btn
                     v-if="userData.role === '1'"
                     class="white--text"
                     text
                     router
                     to="/calendar"
                     >Kalendář</v-btn
-                >
+                > -->
             </v-toolbar-items>
 
             <v-spacer></v-spacer>
