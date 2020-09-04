@@ -380,8 +380,9 @@ class DeviceController extends Controller
                 ChannelsController::updateChannel($column, $request->deviceId, $request->channelId);
                 break;
             case 5:
+                ChannelsController::updateChannel("pathToReboot", $request->linuxPath, $request->channelId);
+
                 ChannelsController::updateChannel($column, $request->deviceId, $request->channelId);
-                ChannelsController::updateChannel("pathToReboot", $request->deviceId, $request->linuxPath);
                 break;
             case 2:
                 $vendor = Device::where('id', $request->deviceId)->first();
@@ -988,15 +989,15 @@ class DeviceController extends Controller
     public function editTranscoder(Request $request)
     {
 
-        $validation = ValidationController::validateIfIsNull($request->deviceName);
-        if ($validation != "true") {
-            return $validation;
-        }
+        // $validation = ValidationController::validateIfIsNull($request->deviceName);
+        // if ($validation != "true") {
+        //     return $validation;
+        // }
 
-        $validation = ValidationController::validateIPv4($request->deviceIp);
-        if ($validation != "true") {
-            return $validation;
-        }
+        // $validation = ValidationController::validateIPv4($request->deviceIp);
+        // if ($validation != "true") {
+        //     return $validation;
+        // }
 
         $data = array(
             'name' => $request->deviceName,

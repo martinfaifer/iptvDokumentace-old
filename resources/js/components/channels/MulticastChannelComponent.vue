@@ -2838,6 +2838,7 @@ export default {
                     linuxPath: this.linuxPath
                 })
                 .then(function(response) {
+                    console.log(response.data);
                     currentObj.status = response.data;
 
                     (currentObj.camodulNumber = ""),
