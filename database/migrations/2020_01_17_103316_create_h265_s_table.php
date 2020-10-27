@@ -19,6 +19,7 @@ class CreateH265STable extends Migration
             $table->string('id_device');
             $table->string('K1080');
             $table->string('K720');
+            $table->string('udpxy');
             $table->timestamps();
         });
     }

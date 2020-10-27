@@ -60,6 +60,16 @@ class CreateDevicesTable extends Migration
             $table->string('FEC_fec')->nullable();
             $table->string('CI_A')->nullable();
             $table->string('CI_B')->nullable();
+
+            $table->string('titan_mode')->nullable();
+            $table->string('titan_constelation')->nullable();
+            $table->string('titan_freq')->nullable();
+            $table->string('titan_tuner')->nullable();
+            $table->string('titan_lnc')->nullable();
+            $table->string('titan_SymbolRate')->nullable();
+            $table->string('titan_spektrum')->nullable();
+            $table->string('titan_satelit')->nullable();
+
             $table->string('remoteAccess')->nullable();
             $table->string('tags')->nullable();
             $table->timestamps();

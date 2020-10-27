@@ -1957,6 +1957,307 @@
                         <!-- end modal fte prijem -->
                         <!-- end modal -->
                     </div>
+
+                    <!-- TAG TITAN -->
+
+                    <div v-if="device.tag === 'Titan'">
+                        <v-row>
+                            <v-card
+                                class="ma-3"
+                                width="1400"
+                                color="blue-grey lighten-5"
+                                outlined
+                            >
+                                <v-list-item>
+                                    <v-list-item-content>
+                                        <v-toolbar
+                                            dense
+                                            flat
+                                            height="10"
+                                            color="transparent"
+                                        >
+                                            <v-spacer></v-spacer>
+                                            <div
+                                                class="text-center d-flex align-center"
+                                            >
+                                                <!-- <span>
+                                                    <v-tooltip bottom>
+                                                        <template
+                                                            v-slot:activator="{
+                                                                on
+                                                            }"
+                                                        >
+                                                            <v-btn
+                                                                v-show="
+                                                                    userData.role ===
+                                                                        '1' ||
+                                                                        userData.role ===
+                                                                            '2'
+                                                                "
+                                                                @click="
+                                                                    (modalEditFte = true),
+                                                                        (deviceIp =
+                                                                            device.ip),
+                                                                        (deviceNote =
+                                                                            device.poznamka),
+                                                                        (deviceName =
+                                                                            device.nazev),
+                                                                        (deviceId =
+                                                                            device.id)
+                                                                "
+                                                                icon
+                                                                x-small
+                                                                v-on="on"
+                                                            >
+                                                                <v-icon
+                                                                    color="primary"
+                                                                    >mdi-pencil</v-icon
+                                                                >
+                                                            </v-btn>
+                                                        </template>
+                                                        <span
+                                                            class="font-weight-medium"
+                                                            >editovat FTE</span
+                                                        >
+                                                    </v-tooltip>
+                                                </span> -->
+                                                <!-- <span>
+                                                    <v-tooltip bottom>
+                                                        <template
+                                                            v-slot:activator="{
+                                                                on
+                                                            }"
+                                                        >
+                                                            <v-btn
+                                                                v-show="
+                                                                    userData.role ===
+                                                                        '1' ||
+                                                                        userData.role ===
+                                                                            '2'
+                                                                "
+                                                                @click="
+                                                                    RemoveDevice(
+                                                                        (deviceId =
+                                                                            device.id)
+                                                                    )
+                                                                "
+                                                                icon
+                                                                x-small
+                                                                v-on="on"
+                                                            >
+                                                                <v-icon
+                                                                    color="red"
+                                                                    >mdi-delete</v-icon
+                                                                >
+                                                            </v-btn>
+                                                        </template>
+                                                        <span
+                                                            class="font-weight-medium"
+                                                            >smazat FTE</span
+                                                        >
+                                                    </v-tooltip>
+                                                </span> -->
+                                            </div>
+                                        </v-toolbar>
+                                        <v-card-text>
+                                            <v-row>
+                                                <span class="ma-3">
+                                                    <strong>Název</strong>
+                                                    {{ device.nazev }}
+                                                </span>
+                                                <span class="ma-3">
+                                                    <strong>IP:</strong>
+                                                    {{ device.ip }}
+                                                </span>
+                                                <span class="ma-3">
+                                                    <strong>Poznámka :</strong>
+                                                    {{ device.poznamka }}
+                                                </span>
+                                            </v-row>
+                                        </v-card-text>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-card>
+                        </v-row>
+                        <v-row>
+                            <v-card
+                                class="ma-3"
+                                width="1400"
+                                color="blue-grey lighten-5"
+                                outlined
+                            >
+                                <v-list-item>
+                                    <v-list-item-content>
+                                        <v-toolbar
+                                            dense
+                                            flat
+                                            height="10"
+                                            color="transparent"
+                                        >
+                                            <v-spacer></v-spacer>
+                                            <div
+                                                class="text-center d-flex align-center"
+                                            >
+                                                <!-- <span>
+                                                    <v-tooltip bottom>
+                                                        <template
+                                                            v-slot:activator="{
+                                                                on
+                                                            }"
+                                                        >
+                                                            <v-btn
+                                                                v-show="
+                                                                    userData.role ===
+                                                                        '1' ||
+                                                                        userData.role ===
+                                                                            '2'
+                                                                "
+                                                                @click="
+                                                                    (modalEditFteSat = true),
+                                                                        (deviceId =
+                                                                            device.id),
+                                                                        (FteDVB =
+                                                                            device.FTE_dvb),
+                                                                        (FteFreq =
+                                                                            device.FTE_freq),
+                                                                        (FteSatelit =
+                                                                            device.FTE_satelit),
+                                                                        (FteSymbol =
+                                                                            device.FTE_Symbol),
+                                                                        (FteFec =
+                                                                            device.FEC_fec),
+                                                                        (FteCI_A =
+                                                                            device.CI_A),
+                                                                        (FteCI_B =
+                                                                            device.CI_B),
+                                                                        (FtePolarizace =
+                                                                            device.FTE_polarizace)
+                                                                "
+                                                                icon
+                                                                x-small
+                                                                v-on="on"
+                                                            >
+                                                                <v-icon
+                                                                    color="primary"
+                                                                    >mdi-pencil</v-icon
+                                                                >
+                                                            </v-btn>
+                                                        </template>
+                                                        <span
+                                                            class="font-weight-medium"
+                                                            >editovat
+                                                            přijímač</span
+                                                        >
+                                                    </v-tooltip>
+                                                </span> -->
+                                            </div>
+                                        </v-toolbar>
+                                        <v-card-text>
+                                            <v-row>
+                                                <span class="ma-3">
+                                                    <strong>DVB:</strong>
+                                                    {{ device.titan_mode }}
+                                                </span>
+                                                <span class="ma-3">
+                                                    <strong>Satelit:</strong>
+                                                    {{ device.titan_satelit }}
+                                                </span>
+                                                <span class="ma-3">
+                                                    <strong>Frekvence:</strong>
+                                                    {{ device.titan_freq }}
+                                                </span>
+                                                <span class="ma-3">
+                                                    <strong>Tuner:</strong>
+                                                    {{ device.titan_tuner }}
+                                                </span>
+                                                <span class="ma-3">
+                                                    <strong
+                                                        >LNC:</strong
+                                                    >
+                                                    {{ device.titan_lnc }}
+                                                </span>
+                                                <span class="ma-3">
+                                                    <strong>Symbol Rate:</strong>
+                                                    {{ device.titan_SymbolRate }}
+                                                </span>
+                                                 <span class="ma-3">
+                                                    <strong>Spektrum:</strong>
+                                                    {{ device.titan_spektrum }}
+                                                </span>
+                                            </v-row>
+                                            <v-divider></v-divider>
+                                        </v-card-text>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-card>
+                        </v-row>
+                        <v-row>
+                            <v-card class="ma-3" width="1400" elevation="0">
+                                <v-list-item>
+                                    <v-list-item-content>
+                                        <v-card-text>
+                                            <v-row>
+                                                <v-list-item-title
+                                                    class="title text-center"
+                                                    >Kanály na
+                                                    přijímači</v-list-item-title
+                                                >
+                                            </v-row>
+                                            <template>
+                                                <v-simple-table
+                                                    fixed-header
+                                                    dense
+                                                    color="transparent"
+                                                    min-width="1400"
+                                                >
+                                                    <template v-slot:default>
+                                                        <thead>
+                                                            <tr>
+                                                                <th
+                                                                    class="text-left"
+                                                                >
+                                                                    Název
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr
+                                                                v-for="item in device.channels"
+                                                                :key="item.name"
+                                                            >
+                                                                <td>
+                                                                    <v-btn
+                                                                        v-bind:to="
+                                                                            '/channel/' +
+                                                                                item.id
+                                                                        "
+                                                                        target="_blank"
+                                                                        dark
+                                                                        text
+                                                                        small
+                                                                    >
+                                                                        <span
+                                                                            class="blue--text"
+                                                                            >{{
+                                                                                item.nazev
+                                                                            }}</span
+                                                                        >
+                                                                    </v-btn>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </template>
+                                                </v-simple-table>
+                                            </template>
+                                        </v-card-text>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-card>
+                        </v-row>
+                    </div>
+
+                    <!-- KONEC TAGU TITAN -->
+
                     <!-- tag Transcoder_NSP -->
                     <div v-if="device.tag === 'Transcoder_NSP'">
                         <v-row>

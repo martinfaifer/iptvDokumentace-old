@@ -198,6 +198,30 @@ class DeviceController extends Controller
                             ]
                         ];
                         break;
+
+                    case 7:
+                        $channels = ChannelsController::showChannelsByDevice($prijimac->id);
+                        return [
+                            [
+                                'id' => $prijimac->id,
+                                'tag' => "Titan",
+                                'nazev' => $prijimac->name,
+                                'ip' => $prijimac->ip,
+                                'poznamka' => $prijimac->poznamka,
+                                'login' => $prijimac->login,
+                                'channels' => $channels,
+                                'titan_mode' => $prijimac->titan_mode,
+                                'titan_constelation' => $prijimac->titan_constelation,
+                                'titan_freq' => $prijimac->titan_freq,
+                                'titan_tuner' => $prijimac->titan_tuner,
+                                'titan_lnc' => $prijimac->titan_lnc,
+                                'titan_SymbolRate' => $prijimac->titan_SymbolRate,
+                                'titan_spektrum' => $prijimac->titan_spektrum,
+                                'titan_spektrum' => $prijimac->titan_satelit,
+                                'disabled' => $prijimac->isActiv,
+                            ]
+                        ];
+                        break;
                     default:
                         return [
                             [
@@ -381,7 +405,6 @@ class DeviceController extends Controller
                 break;
             case 5:
                 ChannelsController::updateChannel("pathToReboot", $request->linuxPath, $request->channelId);
-
                 ChannelsController::updateChannel($column, $request->deviceId, $request->channelId);
                 break;
             case 2:
@@ -989,15 +1012,15 @@ class DeviceController extends Controller
     public function editTranscoder(Request $request)
     {
 
-        // $validation = ValidationController::validateIfIsNull($request->deviceName);
-        // if ($validation != "true") {
-        //     return $validation;
-        // }
+        $validation = ValidationController::validateIfIsNull($request->deviceName);
+        if ($validation != "true") {
+            return $validation;
+        }
 
-        // $validation = ValidationController::validateIPv4($request->deviceIp);
-        // if ($validation != "true") {
-        //     return $validation;
-        // }
+        $validation = ValidationController::validateIPv4($request->deviceIp);
+        if ($validation != "true") {
+            return $validation;
+        }
 
         $data = array(
             'name' => $request->deviceName,
@@ -1236,29 +1259,29 @@ class DeviceController extends Controller
     public function create(Request $request)
     {
 
-        $validation = ValidationController::validateIfIsNull($request->deviceName);
-        if ($validation != "true") {
-            return $validation;
-        }
-
-        $validation = ValidationController::validateIfIsNull($request->deviceVendor);
-        if ($validation != "true") {
-            return $validation;
-        }
-
-        $validation = ValidationController::validateIfIsNull($request->deviceKategorie);
-        if ($validation != "true") {
-            return $validation;
-        }
-
-        $validation = ValidationController::validateIPv4($request->deviceIp);
-        if ($validation != "true") {
-            return $validation;
-        }
+        // $validation = ValidationController::validateIfIsNull($request->deviceName);
+        // if ($validation != "true") {
+        //     return $validation;
+        // }
+        //
+        // $validation = ValidationController::validateIfIsNull($request->deviceVendor);
+        // if ($validation != "true") {
+        //     return $validation;
+        // }
+        //
+        // $validation = ValidationController::validateIfIsNull($request->deviceKategorie);
+        // if ($validation != "true") {
+        //     return $validation;
+        // }
+        //
+        // $validation = ValidationController::validateIPv4($request->deviceIp);
+        // if ($validation != "true") {
+        //     return $validation;
+        // }
 
         // overeni zda jiz zarizeni s danou IP neexistuje
-        $checkIfExist = Device::where('ip', $request->deviceIp)->first();
-        if ($checkIfExist == "false") {
+
+        if (!Device::where('ip', $request->deviceIp)->first()) {
             Device::create([
                 'name' => $request->deviceName,
                 'vendor_id' => $request->deviceVendor,

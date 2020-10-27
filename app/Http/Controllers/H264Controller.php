@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\H264;
+use App\Channels;
 use Illuminate\Http\Request;
 
 class H264Controller extends Controller
@@ -254,5 +255,21 @@ class H264Controller extends Controller
     public static function countChannels($column, $data)
     {
         return H264::where($column, $data)->count();
+    }
+
+
+    /**
+     * funkce na vyhledání záznamů v tabulce channels a update záznamu v tabulce h264 do pole udpxy
+     *
+     * @return void
+     */
+    public static function get_dohledUrl_from_channels_add_to_udpxy_in_this(): void
+    {
+        foreach (Channels::get() as $channel) {
+            if (H264::where('id_channel', $channel->id)->first()) {
+                // update záznamu
+                H264::where('id_channel', $channel->id)->update(['udpxy' => $channel->dohledUrl]);
+            }
+        }
     }
 }

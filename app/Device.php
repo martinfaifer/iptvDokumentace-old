@@ -50,7 +50,15 @@ class Device extends Model
         'FEC_fec',
         'CI_A',
         'CI_B',
-        'remoteAccess'
+        'remoteAccess',
+        'titan_mode',
+        'titan_constelation',
+        'titan_freq',
+        'titan_tuner',
+        'titan_lnc',
+        'titan_SymbolRate',
+        'titan_spektrum',
+        'titan_satelit',
 
     ];
 }

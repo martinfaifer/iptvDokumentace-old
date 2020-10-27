@@ -27,6 +27,7 @@ class CreateH264STable extends Migration
             $table->string('m3u8_stb');
             $table->string('m3u8_HLS_kdekoliv');
             $table->string('m3u8_mobile');
+            $table->string('udpxy');
             $table->timestamps();
         });
     }

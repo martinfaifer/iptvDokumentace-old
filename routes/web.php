@@ -163,7 +163,8 @@ Route::get('/api/ca_modul/channels/get', 'CAModulChannelController@get');
 // API
 Route::get('/api/communacation/channel', 'ApiController@getChannelDataForExternalSystem');
 Route::get('/api/communication/channels/monitor', 'ApiController@getChannelDataForDohled');
-
+// overení ze se dohled pripojil do dokumentace
+Route::get('/api/connectionTest', 'ApiController@connectionTest_dohled');
 
 Route::get('/api/get_img_from_dohled', 'ApiSystemUrlController@getImgFromDohled');
 Route::post('/api/getChannelDataFromDohled', 'ApiSystemUrlController@checkIfChannelExistAndReturnChannelDataOrFalseStatus');
@@ -171,6 +172,10 @@ Route::post('/api/getVolumeDataFromDohledForChart', 'ApiSystemUrlController@chec
 Route::post('/api/getBitrateDataFromDohledForChart', 'ApiSystemUrlController@checkIfChannelExistAndReturnChartBitrateDataOrFalseStatus');
 Route::post('/api/getChannelHistoryFromDohled', 'ApiSystemUrlController@checkIfChannelExistAndReturnChannelHistory');
 Route::post('/api/storeChannelToDohled', 'ApiSystemUrlController@storeChannelToDohled');
+// Výpis informací o streamu
+Route::get('/api/channel/search', 'ApiController@get_information_about_channel');
+// Výpis všech kanálu pro založení do dohledu
+Route::get('/api/channel/return', 'ApiController@return_channels_for_adding_to_dohled');
 
 
 /**
@@ -192,6 +197,7 @@ Route::post('/api/settings/tag/create', 'TagController@createTagForChannel');
 Route::post('/api/settings/tag/remove', 'TagController@remove');
 //AUTOMATICKE RESTARTOVÁNÍ KANÁLŮ
 Route::post('/api/channel/tryToRestartChannel', 'ChannelsController@checkIfChannelHaveTagForActions');
+
 
 // http://iptvdokumentace.test/api/channel/tryToRestartChannel?dohledUrl=http://93.91.154.54:10224/udp/239.251.21.17:1234
 
