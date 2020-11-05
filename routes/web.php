@@ -29,7 +29,7 @@ Route::get('/api/getAlerts', 'ApiSystemUrlController@getIPTVAlert');
 Route::get('/api/roles/get', 'UserRoleController@getRoles');
 
 // dnesni datum
-Route::get('/api/calendar/currDate', 'CalendarController@currDate');
+// Route::get('/api/calendar/currDate', 'CalendarController@currDate');
 
 Route::get('/api/channels/get', 'ChannelsController@get');
 Route::post('/api/channel/get/multicast', 'ChannelsController@getChannelMulticastInfo');
@@ -38,6 +38,11 @@ Route::post('/api/channel/get/h265', 'ChannelsController@getChannelH265Info');
 Route::post('/api/channel/save/iptvPackage', 'ChannelsController@savePackage');
 Route::post('/api/channel/package/delete', 'ChannelsController@removePackage');
 Route::post('api/channel/note/edit', 'ChannelsController@editNote');
+Route::post('/api/channel/get/event', 'ChannelSchedulerController@return_events_for_channel');
+// Channel Přidání události do kalendáře a následně odeslání do Dohledu
+Route::post('channel/newEvent', 'ChannelSchedulerController@create_new_event');
+// odebrání události z kanálu
+Route::post('channel/event/delete', 'ChannelSchedulerController@delete_event');
 
 Route::post('/api/channel/get/tags', 'ChannelsController@getTags');
 
@@ -203,3 +208,12 @@ Route::post('/api/channel/tryToRestartChannel', 'ChannelsController@checkIfChann
 
 
 Route::get('/api/search', 'SearchController@search');
+
+/**
+ *
+ * NAPOJENÍ NA DOHLED POMOCÍ API
+ *
+ */
+Route::get('/api/testConnectionToDohled', 'ApiController@test_connection_to_dohled');
+Route::get('/api/getAlertsFromDohled', 'ApiController@get_alerts_from_fohled');
+Route::post('/api/getInformationsFromDohled', 'ApiController@getInformation_about_stream_multicast_and_unicasts');

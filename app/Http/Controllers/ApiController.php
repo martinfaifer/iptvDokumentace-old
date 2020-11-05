@@ -7,11 +7,19 @@ use App\Device;
 use App\H264;
 use App\H265;
 use Illuminate\Http\Request;
+use GuzzleHttp\Client;
 
 class ApiController extends Controller
 {
     // hello request
     public $hello = "d4c3ed93-3768-48c0-98b6-1717108157e9";
+
+    public $hello_dohled = "873134d5-6324-4555-aa6d-fcdb1f7a9f4f";
+    public $iptvdohledUriApiConnectionTest = "http://10.255.255.51/api/connectionTest";
+    public $iptvdohledUriApiAlerts = "http://10.255.255.51/api/streamAlerts";
+    public $iptvdohledUriApiNewEventCreate = "http://10.255.255.51/api/new_event";
+    public $iptvdohledUriApiEventDelete = "http://10.255.255.51/api/delete_event";
+    public $iptvdohledUriApiStreamInformation = "http://10.255.255.51/api/getInformationAboutStream";
 
     /**
      * fn pro získání souhrnných informací o kanálu, informace se zasílají dle id kanálu
@@ -147,11 +155,18 @@ class ApiController extends Controller
         foreach (Channels::get() as $channel) {
             // $channel->nazev
             // vyhledání h264
+            if (!is_null($channel->dohledUrl)) {
+                $output[] = array(
+                    'nazev' => $channel->nazev . " Multicast",
+                    'url' => $channel->dohledUrl
+                );
+            }
+
             if ($h264ChannelData = H264::where('id_channel', $channel->id)->first()) {
                 if (!is_null($h264ChannelData->udpxy)) {
                     // overeno, ze hodnota udpxy není null
                     $output[] = array(
-                        'nazev' => $channel->nazev,
+                        'nazev' => $channel->nazev . " H264",
                         'url' => $h264ChannelData->udpxy
                     );
                 }
@@ -171,5 +186,204 @@ class ApiController extends Controller
         }
 
         return $output;
+    }
+
+
+
+    /**
+     *
+     *
+     * NAPOJENÍ NA DOHLED
+     *
+     * API TOKEN $hello_dohled
+     *
+     */
+
+    /**
+     * funkce na otestování připojení do dohledu
+     *
+     * @return void
+     */
+    public function test_connection_to_dohled()
+    {
+
+        $client = new Client;
+
+        $response = $client->post($this->iptvdohledUriApiConnectionTest, [
+
+            'form_params' => [
+                'hello' => $this->hello_dohled,
+            ]
+        ]);
+
+        if ($body = $response->getBody()->getContents()) {
+            return $body;
+        }
+    }
+
+
+    /**
+     * funkce na získání alertů z dohledu
+     *
+     * @return array
+     */
+    public function get_alerts_from_fohled()
+    {
+        if ($this->test_connection_to_dohled() != "success") {
+            return [
+                'status' => "not_connect"
+            ];
+        }
+
+        $client = new Client;
+
+        $response = $client->post($this->iptvdohledUriApiAlerts, [
+
+            'form_params' => [
+                'hello' => $this->hello_dohled,
+            ]
+        ]);
+
+        if ($body = $response->getBody()->getContents()) {
+            return json_decode($body, true);
+        }
+    }
+
+
+    /**
+     * funkce na zalození nove udalosti z doku do dohledu, bez návratové hodnoty
+     *
+     * @return void
+     */
+    public static function new_event(
+        $start_time,
+        $end_time,
+        $start_day,
+        $end_day,
+        $repeatEveryDay,
+        $h264Uri,
+        $h265Uri,
+        $multicastUri
+    ) {
+        if ((new self())->test_connection_to_dohled() != "success") {
+            return [
+                'status' => "not_connect"
+            ];
+        }
+
+        $client = new Client;
+
+        $response = $client->post((new self())->iptvdohledUriApiNewEventCreate, [
+
+            'form_params' => [
+                'hello' => (new self())->hello_dohled,
+                'start_day' => $start_day,
+                'start_time' => $start_time,
+                'end_day' => $end_day,
+                'end_time' => $end_time,
+                'every_day' => $repeatEveryDay,
+                'multicastUri' => $multicastUri,
+                'h264Uri' => $h264Uri,
+                'h265Uri' => $h265Uri
+            ]
+        ]);
+
+        if ($body = $response->getBody()->getContents()) {
+            return json_decode($body, true);
+        }
+    }
+
+    /**
+     * funknce na odebrání události z dohledu
+     *
+     * @param string $h264Uri
+     * @param string $h265Uri
+     * @param string $multicastUri
+     * @return void
+     */
+    public static function delete_event(
+        $h264Uri,
+        $h265Uri,
+        $multicastUri,
+        $start_time,
+        $end_time
+    ) {
+
+        if ((new self())->test_connection_to_dohled() != "success") {
+            return [
+                'status' => "not_connect"
+            ];
+        }
+
+
+        $client = new Client;
+
+        $response = $client->post((new self())->iptvdohledUriApiEventDelete, [
+
+            'form_params' => [
+                'hello' => (new self())->hello_dohled,
+                'multicastUri' => $multicastUri,
+                'h264Uri' => $h264Uri,
+                'h265Uri' => $h265Uri,
+                'start_time' => $start_time,
+                'end_time' => $end_time
+            ]
+        ]);
+
+        if ($body = $response->getBody()->getContents()) {
+            return json_decode($body, true);
+        }
+    }
+
+
+    /**
+     * funkce na získání celkových informací o streamu
+     *
+     * vrací pole o klících status, multicast, H264, H265
+     *
+     * @param Request $request->channelId
+     * @return void
+     */
+    public static function getInformation_about_stream_multicast_and_unicasts(Request $request)
+    {
+        if ((new self())->test_connection_to_dohled() != "success") {
+            return [
+                'status' => "not_connect"
+            ];
+        }
+
+        if (Channels::where('id', $request->channelId)->first()) {
+            $multicastUri = Channels::where('id', $request->channelId)->first()->dohledUrl;
+        } else {
+            $multicastUri = null;
+        }
+
+        if ($h264 = H264::where('id_channel', $request->channelId)->first()) {
+            $h264Uri = $h264->udpxy;
+        } else {
+            $h264Uri = null;
+        }
+
+        if ($h265 = H265::where('id_channel', $request->channelId)->first()) {
+            $h265Uri = $h265->udpxy;
+        } else {
+            $h265Uri = null;
+        }
+
+        $client = new Client;
+
+        $response = $client->post((new self())->iptvdohledUriApiStreamInformation, [
+
+            'form_params' => [
+                'hello' => (new self())->hello_dohled,
+                'multicastUri' => $multicastUri,
+                'h264Uri' => $h264Uri,
+                'h265Uri' => $h265Uri,
+            ]
+        ]);
+
+        if ($body = $response->getBody()->getContents()) {
+            return json_decode($body, true);
+        }
     }
 }

@@ -86,37 +86,11 @@
                     to="/settings"
                     >Nastavení</v-btn
                 >
-                <!-- <v-btn
-                    v-if="userData.role === '1'"
-                    class="white--text"
-                    text
-                    router
-                    to="/calendar"
-                    >Kalendář</v-btn
-                > -->
             </v-toolbar-items>
 
             <v-spacer></v-spacer>
             <!-- alerting -->
 
-            <!-- <template v-if="$vuetify.breakpoint.smAndUp">
-        <v-menu offset-y>
-          <template v-slot:activator="{ on }">
-            <v-btn class="white--text" icon v-on="on">
-              <v-icon v-if="iptvErrs !== ''" color="red">mdi-alert-circle</v-icon>
-              <v-icon v-else>mdi-alert-circle</v-icon>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item v-for="iptvErr in iptvErrs" v-bind:key="iptvErr.id">
-              <v-btn text small>{{iptvErr.nazev}}</v-btn>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </template>-->
-            <!-- <v-btn icon @click="searchModalOpen()">
-                <v-icon>mdi-magnify</v-icon>
-            </v-btn> -->
             <!-- end of alerts -->
             <!-- User cast -->
             <template v-if="$vuetify.breakpoint.smAndUp">
@@ -141,7 +115,57 @@
                 </v-menu>
             </template>
             <!-- Konec User casti -->
+            <v-badge
+                bordered
+                bottom
+                color="red"
+                :content="alertCount"
+                offset-x="10"
+                offset-y="10"
+            >
+                <v-icon @click="drawer = !drawer">mdi-bell-outline</v-icon>
+            </v-badge>
         </v-app-bar>
+
+        <!-- stream alerting -->
+        <v-navigation-drawer
+            v-model="drawer"
+            class="mt-12"
+            right
+            fixed
+            temporary
+            color="transparent"
+        >
+            <div
+                id="alerty"
+                class="pl-2 pr-2"
+                v-for="alert in alerts"
+                :key="alert.id"
+            >
+                <v-alert
+                    dense
+                    border="left"
+                    :type="alert.status"
+                    class="body-2 mt-2"
+                >
+                    <strong>{{ alert.msg }}</strong>
+                    <div v-show="alert.data">
+                        <v-row
+                            class="ml-3"
+                            v-for="issueData in alert.data"
+                            :key="issueData.id"
+                        >
+                            <small>
+                                <strong>
+                                    {{ issueData.message }}
+                                </strong>
+                            </small>
+                        </v-row>
+                    </div>
+                </v-alert>
+            </div>
+        </v-navigation-drawer>
+        <!-- konec alertingu -->
 
         <!-- end test -->
         <!-- modal  -->
@@ -157,7 +181,7 @@
                     <v-card-text>
                         <v-container>
                             <v-row>
-                                <v-col cols="12" sm="6" md="10">
+                                <v-col cols="12" sm="12" md="12">
                                     <v-text-field
                                         required
                                         label="Název kanálu"
@@ -166,7 +190,7 @@
                                 </v-col>
                             </v-row>
                             <v-row>
-                                <v-col cols="12" sm="6" md="10">
+                                <v-col cols="12" sm="12" md="12">
                                     <v-select
                                         v-model="channelIsp"
                                         :items="channelIsps"
@@ -177,14 +201,14 @@
                                 </v-col>
                             </v-row>
                             <v-row>
-                                <v-col cols="12" sm="2" md="5">
+                                <v-col cols="12" sm="12" md="6">
                                     <v-text-field
                                         required
                                         label="Multicastová adresa"
                                         v-model="channelMulticast"
                                     ></v-text-field>
                                 </v-col>
-                                <v-col cols="12" sm="2" md="5">
+                                <v-col cols="12" sm="12" md="6">
                                     <v-text-field
                                         required
                                         label="Multicast k STB"
@@ -348,13 +372,8 @@
                             <v-autocomplete
                                 :items="searchData"
                                 item-text="description"
-
                                 label="hledejte v dokumentaci"
                             ></v-autocomplete>
-                            <!-- <v-text-field
-                                label="Hledejte v dokumentaci"
-                                prepend-inner-icon="mdi-magnify"
-                            ></v-text-field> -->
                         </v-col>
                     </v-card-text>
                     <v-card-actions>
@@ -415,12 +434,35 @@
         <transition name="fade" mode="out-in">
             <router-view />
         </transition>
+
+        <!-- iptv dohled -->
+        <v-snackbar
+            class="mt-12"
+            v-if="dohledConnection != null"
+            :value="dohledConnection"
+            color="primary"
+            absolute
+            rounded="pill"
+            top
+        >
+            <span class="ml-12" v-if="dohledConnectionStatus == 'success'">
+                Připojeno k IPTV dohledu
+            </span>
+            <span class="ml-12" v-if="dohledConnectionStatus == 'error'">
+                Nepodařilo se připojit k IPTV dohledu
+            </span>
+        </v-snackbar>
     </div>
 </template>
 <script>
 export default {
     data() {
         return {
+            alerts: [],
+            alertCount: "",
+            drawer: null,
+            dohledConnectionStatus: null,
+            dohledConnection: null,
             searchData: null,
             searchModal: false,
             iptvErrs: [],
@@ -448,6 +490,8 @@ export default {
         };
     },
     created() {
+        this.loadAlerts();
+        this.testConnectionToDohled();
         axios
             .get("/api/getUser")
             .then(response => (this.userData = response.data));
@@ -456,6 +500,26 @@ export default {
             .then(response => (this.iptvErrs = response.data));
     },
     methods: {
+        loadAlerts() {
+            window.axios.get("/api/getAlertsFromDohled").then(response => {
+                this.alerts = response.data;
+                // this.$store.commit("updateAlert", response.data);
+                this.alertCount = response.data.length;
+            });
+        },
+        testConnectionToDohled() {
+            axios.get("/api/testConnectionToDohled").then(response => {
+                this.dohledConnection = response.data;
+                if (this.dohledConnection == "success") {
+                    this.dohledConnectionStatus = "success";
+                    setTimeout(function() {
+                        this.dohledConnectionStatus = null;
+                    }, 5000);
+                } else {
+                    this.dohledConnectionStatus = "error";
+                }
+            });
+        },
         searchModalOpen() {
             axios
                 .get("/api/search")
@@ -655,6 +719,16 @@ export default {
         status: function() {
             setTimeout(() => (this.status = false), 3000);
         }
+    },
+    mounted() {
+        setInterval(
+            function() {
+                try {
+                    this.loadAlerts();
+                } catch (error) {}
+            }.bind(this),
+            10000
+        );
     }
 };
 </script>

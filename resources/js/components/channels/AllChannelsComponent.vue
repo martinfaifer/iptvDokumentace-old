@@ -27,11 +27,11 @@
       </v-navigation-drawer>
     </div>
     <!-- Vuejs router view -->
-    <v-content class="rightFromSIdePanel">
+    <v-main class="rightFromSIdePanel">
       <transition name="fade" mode="out-in">
         <router-view />
       </transition>
-    </v-content>
+    </v-main>
   </div>
 </template>
 

@@ -23,6 +23,11 @@
     <link href="{{ asset('css/pageNotFound.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
+    <style>
+        body {
+            font-family: Roboto;
+        }
+    </style>
 </head>
 <body>
     <v-app id="app">

@@ -147,7 +147,7 @@
                 </v-tooltip>
 
                 <!-- založení kanálu na dohledu -->
-                <v-tooltip bottom v-if="dohledData === false">
+                <!-- <v-tooltip bottom v-if="dohledData === false">
                     <template v-slot:activator="{ on }">
                         <v-btn
                             class="mr-3"
@@ -164,6 +164,23 @@
                     <span class="font-weight-medium"
                         >Založit kanál do dohledu</span
                     >
+                </v-tooltip> -->
+
+                <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                        <v-btn
+                            @click="openDialogNewEvent()"
+                            class="mr-3"
+                            color="primary"
+                            fab
+                            x-small
+                            dark
+                            v-on="on"
+                        >
+                            <v-icon color="white">mdi-calendar</v-icon>
+                        </v-btn>
+                    </template>
+                    <span class="font-weight-medium">Události u kanálu</span>
                 </v-tooltip>
 
                 <!-- odebrání kanálu -->
@@ -185,29 +202,147 @@
                 </v-tooltip>
             </div>
         </v-toolbar>
-        <v-card class="ma-3" width="1500" color="blue-grey lighten-5" outlined>
-            <v-list-item>
-                <v-card-text>
-                    <span class="ma-3">{{ channelData.nazev }}</span>
-                    <v-btn
-                        v-show="userData.role === '1' || userData.role === '2'"
-                        color="primary"
-                        x-small
-                        dark
-                        text
-                        @click="
-                            (editChannelName = true),
-                                (channelName = channelData.nazev)
-                        "
+        <v-row no-gutters>
+            <v-col class="col-6">
+                <!-- obecné informace o kanálu -->
+                <v-card class="ma-3 elevation-0" color="grey lighten-4">
+                    <v-list-item>
+                        <v-card-text>
+                            <strong>Název: </strong>
+                            <span class="ma-3">{{ channelData.nazev }}</span>
+                            <v-btn
+                                v-show="
+                                    userData.role === '1' ||
+                                        userData.role === '2'
+                                "
+                                color="primary"
+                                x-small
+                                dark
+                                text
+                                @click="
+                                    (editChannelName = true),
+                                        (channelName = channelData.nazev)
+                                "
+                            >
+                                <v-icon small>mdi-pencil</v-icon>
+                            </v-btn>
+                            <!-- Programovy balicek -->
+                            <span v-if="channelData.balicek != ''">
+                                <span class="ma-3">
+                                    <strong>Programový balíček:</strong>
+                                    <span v-for="balicek in channelData.balicek"
+                                        >{{ balicek }} ,</span
+                                    >
+                                    <!-- {{channelData.balicek}} -->
+                                </span>
+                                <v-btn
+                                    v-show="
+                                        userData.role === '1' ||
+                                            userData.role === '2'
+                                    "
+                                    color="red"
+                                    x-small
+                                    dark
+                                    text
+                                    @click="packageDelete()"
+                                >
+                                    <v-icon small>mdi-delete</v-icon>
+                                </v-btn>
+                            </span>
+                        </v-card-text>
+                    </v-list-item>
+                </v-card>
+
+                <!-- plánované události -->
+                <v-card class="ma-3 elevation-0" color="grey lighten-4">
+                    <v-card-text>
+                        <div v-if="event == 'empty'">
+                            <v-alert type="info" outlined text>
+                                Není neplánovaná žádná událost
+                            </v-alert>
+                        </div>
+                        <div v-else>
+                            <v-data-table
+                                dense
+                                :headers="eventHeaders"
+                                :items="event"
+                                :single-expand="singleExpand"
+                                :expanded.sync="expanded"
+                                item-key="id"
+                                show-expand
+                                class="elevation-0"
+                            >
+                                <template
+                                    v-slot:expanded-item="{ headers, item }"
+                                >
+                                    <td :colspan="headers.length">
+                                        {{ item.event }}
+                                    </td>
+                                </template>
+                                <!-- akce  u jednotivých událostí -->
+                                <template v-slot:item.akce="{ item }">
+                                    <!-- delete -->
+                                    <v-icon
+                                        @click="
+                                            openDeleteDalog(),
+                                                (startTime = item.start_time),
+                                                (endTime = item.end_time),
+                                                (eventId = item.id)
+                                        "
+                                        small
+                                        color="red"
+                                        >mdi-delete</v-icon
+                                    >
+                                </template>
+                            </v-data-table>
+                        </div>
+                    </v-card-text>
+                </v-card>
+                <!-- konec plánovaných událostí -->
+                <!-- modal pro editaci Názvu kanálu -->
+                <v-row justify="center">
+                    <v-dialog
+                        v-model="editChannelName"
+                        persistent
+                        max-height="200px"
+                        max-width="500px"
                     >
-                        <v-icon small>mdi-pencil</v-icon>
-                    </v-btn>
-                    <!-- Poznamka u kanalu -->
-                    <span>
-                        <span class="ma-3">
-                            <strong>Poznámka:</strong>
-                            {{ channelData.poznamka }}
-                        </span>
+                        <v-card>
+                            <v-card-text>
+                                <v-container>
+                                    <v-row>
+                                        <v-col cols="12" sm="6" md="8">
+                                            <v-text-field
+                                                required
+                                                v-model="channelName"
+                                            ></v-text-field>
+                                        </v-col>
+                                    </v-row>
+                                </v-container>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn
+                                    color="blue darken-1"
+                                    text
+                                    @click="editChannelName = false"
+                                    >Zavřít</v-btn
+                                >
+                                <v-btn
+                                    color="green darken-1"
+                                    text
+                                    @click="channelNameEdit()"
+                                    >Uložit</v-btn
+                                >
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
+                </v-row>
+            </v-col>
+            <v-col class="col-6">
+                <v-card class="ma-3 elevation-0" color="grey lighten-4">
+                    <v-row class="mr-3 mt-1">
+                        <v-spacer></v-spacer>
                         <v-btn
                             v-show="
                                 userData.role === '1' || userData.role === '2'
@@ -217,114 +352,194 @@
                             dark
                             text
                             @click="
-                                (editChannelNote = true),
-                                    (channelNote = channelData.poznamka)
+                                (editChannelISP = true),
+                                    (channelIsp = multicast.isp),
+                                    (channelMulticastId = multicast.id),
+                                    (multicastIp = multicast.ip),
+                                    (stbIp = channelData.ipKstb),
+                                    (ispMulticastId = multicast.ispId),
+                                    (dohledUrl = channelData.dohledUrl)
                             "
                         >
                             <v-icon small>mdi-pencil</v-icon>
                         </v-btn>
-                    </span>
-                    <!-- Programovy balicek -->
-                    <span v-if="channelData.balicek != ''">
-                        <span class="ma-3">
-                            <strong>Programový balíček:</strong>
-                            <span v-for="balicek in channelData.balicek"
-                                >{{ balicek }} ,</span
-                            >
-                            <!-- {{channelData.balicek}} -->
-                        </span>
                         <v-btn
                             v-show="
                                 userData.role === '1' || userData.role === '2'
                             "
-                            color="red"
+                            color="primary"
                             x-small
                             dark
                             text
-                            @click="packageDelete()"
+                            @click="
+                                deleteMulticastdata(
+                                    (channelMulticastId = multicast.id)
+                                )
+                            "
                         >
-                            <v-icon small>mdi-delete</v-icon>
+                            <v-icon color="red" small>mdi-delete</v-icon>
                         </v-btn>
-                    </span>
-                </v-card-text>
-            </v-list-item>
-        </v-card>
+                    </v-row>
 
-        <!-- modal pro editaci Názvu kanálu -->
+                    <v-list-item>
+                        <v-list-item-content>
+                            <v-card-text
+                                v-for="multicast in channelData.multicast"
+                                v-bind:key="multicast.id"
+                            >
+                                <v-row>
+                                    <span class="ma-3">
+                                        <strong>Kanál je od :</strong>
+                                        <span>{{ multicast.isp }}</span>
+                                    </span>
+                                </v-row>
+                                <v-row>
+                                    <span class="ma-3">
+                                        <strong>Muticast IP :</strong>
+                                        <span>{{ multicast.ip }}</span>
+                                    </span>
+                                    <span class="ma-3">
+                                        <strong>IP k STB :</strong>
+                                        <span>{{ channelData.ipKstb }}</span>
+                                    </span>
+                                </v-row>
+                                <v-row>
+                                    <span class="ma-3">
+                                        <strong>Url z udpxy: </strong>
+                                        <span>{{ channelData.dohledUrl }}</span>
+                                    </span>
+                                </v-row>
+                            </v-card-text>
 
-        <v-row justify="center">
-            <v-dialog
-                v-model="editChannelName"
-                persistent
-                max-height="200px"
-                max-width="500px"
-            >
-                <v-card>
-                    <v-card-text>
-                        <v-container>
-                            <v-row>
-                                <v-col cols="12" sm="6" md="8">
-                                    <v-text-field
-                                        required
-                                        v-model="channelName"
-                                    ></v-text-field>
-                                </v-col>
+                            <!-- modal edit channel -->
+                            <!-- modal delete multicast data -->
+                            <v-row justify="center">
+                                <v-dialog
+                                    v-model="deleteChannelISP"
+                                    persistent
+                                    max-height="200px"
+                                    max-width="500px"
+                                >
+                                    <v-card>
+                                        <v-card-text>
+                                            <v-container>
+                                                <p>Smazat?</p>
+                                            </v-container>
+                                        </v-card-text>
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn
+                                                v-show="
+                                                    userData.role === '1' ||
+                                                        userData.role === '2'
+                                                "
+                                                color="red darken-1"
+                                                text
+                                                @click="
+                                                    deleteChannelISP = false
+                                                "
+                                                >Zavřít</v-btn
+                                            >
+                                        </v-card-actions>
+                                    </v-card>
+                                </v-dialog>
                             </v-row>
-                        </v-container>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                            color="blue darken-1"
-                            text
-                            @click="editChannelName = false"
-                            >Zavřít</v-btn
-                        >
-                        <v-btn
-                            color="green darken-1"
-                            text
-                            @click="channelNameEdit()"
-                            >Uložit</v-btn
-                        >
-                    </v-card-actions>
+                            <!-- end modal delete mutlticast data -->
+
+                            <!-- modal edit channel ISP -->
+                            <v-row justify="center">
+                                <v-dialog
+                                    v-model="editChannelISP"
+                                    persistent
+                                    max-height="200px"
+                                    max-width="500px"
+                                >
+                                    <v-card>
+                                        <v-card-text>
+                                            <v-container>
+                                                <v-row>
+                                                    <v-col
+                                                        cols="12"
+                                                        sm="3"
+                                                        md="8"
+                                                    >
+                                                        <v-select
+                                                            v-model="isp"
+                                                            :items="isps"
+                                                            item-value="id"
+                                                            item-text="isp"
+                                                            label="ISP"
+                                                        ></v-select>
+                                                    </v-col>
+                                                </v-row>
+                                                <v-row>
+                                                    <v-col
+                                                        cols="12"
+                                                        sm="3"
+                                                        md="8"
+                                                    >
+                                                        <v-text-field
+                                                            required
+                                                            label="Multicastová IP"
+                                                            v-model="
+                                                                multicastIp
+                                                            "
+                                                        ></v-text-field>
+                                                    </v-col>
+                                                </v-row>
+                                                <v-row>
+                                                    <v-col
+                                                        cols="12"
+                                                        sm="3"
+                                                        md="8"
+                                                    >
+                                                        <v-text-field
+                                                            required
+                                                            label="IP k STB"
+                                                            v-model="stbIp"
+                                                        ></v-text-field>
+                                                    </v-col>
+                                                </v-row>
+                                                <v-row>
+                                                    <v-col
+                                                        cols="12"
+                                                        sm="3"
+                                                        md="8"
+                                                    >
+                                                        <v-text-field
+                                                            required
+                                                            label="Dohledová URL"
+                                                            v-model="dohledUrl"
+                                                        ></v-text-field>
+                                                    </v-col>
+                                                </v-row>
+                                            </v-container>
+                                        </v-card-text>
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn
+                                                color="blue darken-1"
+                                                text
+                                                @click="editChannelISP = false"
+                                                >Zavřít</v-btn
+                                            >
+                                            <v-btn
+                                                color="green darken-1"
+                                                text
+                                                @click="channelIspEdit()"
+                                                >Uložit</v-btn
+                                            >
+                                        </v-card-actions>
+                                    </v-card>
+                                </v-dialog>
+                            </v-row>
+
+                            <!-- end modal channel -->
+                        </v-list-item-content>
+                    </v-list-item>
                 </v-card>
-            </v-dialog>
+            </v-col>
         </v-row>
-
-        <!-- end modal pro editaci názvu kanálu -->
-
-        <!-- modal pro zalozeni noveho multicastu -->
-
-        <!-- <v-row justify="center">
-      <v-dialog v-model="editChannelISP" persistent max-height="200px" max-width="500px">
-        <v-card>
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col cols="12" sm="3" md="8">
-                  <v-select v-model="isp" :items="isps" item-value="id" item-text="isp" label="ISP"></v-select>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" sm="3" md="8">
-                  <v-text-field required v-model="multicastIp"></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-checkbox v-model="priority" label="Zaškrtněte pokud se jedná o primární zdroj"></v-checkbox>
-              </v-row>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="editChannelISP = false">Zavřít</v-btn>
-            <v-btn color="green darken-1" text @click="channelIspEdit()">Uložit</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-row>-->
-
-        <!-- end modal pro zalozeni noveho kanalu -->
 
         <!-- modal pro editaci zdroje ISP, Multicast ...  -->
         <v-row justify="center">
@@ -390,106 +605,1159 @@
 
         <!-- end modal pro editaci zdroje ISP, Multicast ...  -->
 
-        <v-card class="ma-3" width="1500" color="blue-grey lighten-5" outlined>
-            <v-list-item>
-                <v-list-item-content>
-                    <v-card-text
-                        v-for="multicast in channelData.multicast"
-                        v-bind:key="multicast.id"
-                    >
-                        <span class="ma-3">
-                            <strong>Kanál je od :</strong>
-                            <span>{{ multicast.isp }}</span>
-                        </span>
-                        <span class="ma-3">
-                            <strong>Muticast IP :</strong>
-                            <span>{{ multicast.ip }}</span>
-                        </span>
-                        <span class="ma-3">
-                            <strong>IP k STB :</strong>
-                            <span>{{ channelData.ipKstb }}</span>
-                        </span>
-
-                        <span class="ma-3">
-                            <strong>Dohledovaná url : </strong>
-                            <span>{{ channelData.dohledUrl }}</span>
-                        </span>
-
-                        <v-btn
-                            v-show="
-                                userData.role === '1' || userData.role === '2'
-                            "
-                            color="primary"
-                            x-small
-                            dark
-                            text
-                            @click="
-                                (editChannelISP = true),
-                                    (channelIsp = multicast.isp),
-                                    (channelMulticastId = multicast.id),
-                                    (multicastIp = multicast.ip),
-                                    (stbIp = channelData.ipKstb),
-                                    (ispMulticastId = multicast.ispId),
-                                    (dohledUrl = channelData.dohledUrl)
-                            "
-                        >
-                            <v-icon small>mdi-pencil</v-icon>
-                        </v-btn>
-                        <v-btn
-                            v-show="
-                                userData.role === '1' || userData.role === '2'
-                            "
-                            color="primary"
-                            x-small
-                            dark
-                            text
-                            @click="
-                                deleteMulticastdata(
-                                    (channelMulticastId = multicast.id)
-                                )
-                            "
-                        >
-                            <v-icon color="red" small>mdi-delete</v-icon>
-                        </v-btn>
-                    </v-card-text>
-
-                    <!-- modal edit channel -->
-                    <!-- modal delete multicast data -->
-                    <v-row justify="center">
-                        <v-dialog
-                            v-model="deleteChannelISP"
-                            persistent
-                            max-height="200px"
-                            max-width="500px"
-                        >
-                            <v-card>
-                                <v-card-text>
-                                    <v-container>
-                                        <p>Smazat?</p>
-                                    </v-container>
-                                </v-card-text>
-                                <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn
-                                        v-show="
-                                            userData.role === '1' ||
-                                                userData.role === '2'
-                                        "
-                                        color="red darken-1"
-                                        text
-                                        @click="deleteChannelISP = false"
-                                        >Zavřít</v-btn
+        <!-- multiplexer -->
+        <v-row no-gutters>
+            <v-col class="col-6">
+                <div v-for="mux in channelData.multiplexer" v-bind:key="mux.id">
+                    <div v-if="mux.status != 'KO'">
+                        <v-card class="ma-3 elevation-0" color="grey lighten-4">
+                            <v-list-item>
+                                <v-list-item-content>
+                                    <v-toolbar
+                                        dense
+                                        flat
+                                        height="10"
+                                        color="transparent"
                                     >
-                                </v-card-actions>
-                            </v-card>
-                        </v-dialog>
-                    </v-row>
-                    <!-- end modal delete mutlticast data -->
+                                        <v-spacer></v-spacer>
+                                        <div
+                                            class="text-center d-flex align-center"
+                                        >
+                                            <span>
+                                                <v-tooltip bottom>
+                                                    <template
+                                                        v-slot:activator="{
+                                                            on
+                                                        }"
+                                                    >
+                                                        <v-btn
+                                                            v-show="
+                                                                userData.role ===
+                                                                    '1' ||
+                                                                    userData.role ===
+                                                                        '2'
+                                                            "
+                                                            icon
+                                                            x-small
+                                                            v-on="on"
+                                                            @click="
+                                                                deleteMultiplexer()
+                                                            "
+                                                        >
+                                                            <v-icon color="red"
+                                                                >mdi-delete</v-icon
+                                                            >
+                                                        </v-btn>
+                                                    </template>
+                                                    <span
+                                                        class="font-weight-medium"
+                                                        >Odebrat
+                                                        multiplexer</span
+                                                    >
+                                                </v-tooltip>
+                                            </span>
+                                        </div>
+                                    </v-toolbar>
+                                    <v-card-text>
+                                        <v-row>
+                                            <span class="ma-3">
+                                                <strong>Multiplexer :</strong>
+                                                <span>{{ mux.nazev }}</span>
+                                            </span>
 
-                    <!-- modal edit channel ISP -->
+                                            <span class="ma-3">
+                                                <strong
+                                                    >IP multiplexeru :</strong
+                                                >
+                                                <a
+                                                    :href="'http://' + mux.ip"
+                                                    target="_blank"
+                                                    >{{ mux.ip }}</a
+                                                >
+                                            </span>
+                                            <span class="ma-3">
+                                                <strong
+                                                    >Přihlášení do multiplexeru
+                                                    :</strong
+                                                >
+                                                {{ mux.login }}
+                                            </span>
+                                        </v-row>
+                                        <v-row>
+                                            <span class="ma-3">
+                                                <strong>Poznámka :</strong>
+                                                {{ mux.poznamka }}
+                                            </span>
+                                        </v-row>
+                                    </v-card-text>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-card>
+                    </div>
+                    <div v-else>
+                        <v-alert type="warning">
+                            <strong>Není evidován multiplexer</strong>
+                        </v-alert>
+                    </div>
+                </div>
+            </v-col>
+
+            <v-col class="col-6">
+                <!-- přijímač -->
+                <div
+                    v-for="prijem in channelData.prijem"
+                    v-bind:key="prijem.tag"
+                >
+                    <div v-if="prijem.tag != 'KO'">
+                        <!--  tag PoIP -->
+                        <v-card
+                            v-if="prijem.tag === 'PoIP'"
+                            class="ma-3"
+                            color="grey lighten-4"
+                            outlined
+                        >
+                            <v-list-item>
+                                <v-list-item-content>
+                                    <v-toolbar
+                                        dense
+                                        flat
+                                        height="10"
+                                        color="transparent"
+                                    >
+                                        <v-spacer></v-spacer>
+                                        <div
+                                            class="text-center d-flex align-center"
+                                        >
+                                            <span>
+                                                <v-tooltip bottom>
+                                                    <template
+                                                        v-slot:activator="{
+                                                            on
+                                                        }"
+                                                    >
+                                                        <v-btn
+                                                            v-show="
+                                                                userData.role ===
+                                                                    '1' ||
+                                                                    userData.role ===
+                                                                        '2'
+                                                            "
+                                                            icon
+                                                            x-small
+                                                            v-on="on"
+                                                            @click="
+                                                                deletePrijem()
+                                                            "
+                                                        >
+                                                            <v-icon color="red"
+                                                                >mdi-delete</v-icon
+                                                            >
+                                                        </v-btn>
+                                                    </template>
+                                                    <span
+                                                        class="font-weight-medium"
+                                                        >Odebrat Přijímač</span
+                                                    >
+                                                </v-tooltip>
+                                            </span>
+                                        </div>
+                                    </v-toolbar>
+                                    <v-card-text>
+                                        <v-row>
+                                            <span class="ma-3">
+                                                <strong>Příjem kanálu :</strong>
+                                                {{ prijem.prijem }}
+                                            </span>
+                                        </v-row>
+                                    </v-card-text>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-card>
+
+                        <!-- tag Blankom -->
+                        <v-card
+                            v-if="prijem.tag === 'Blankom'"
+                            class="ma-3"
+                            color="grey lighten-4"
+                            outlined
+                        >
+                            <v-list-item>
+                                <v-list-item-content>
+                                    <v-toolbar
+                                        dense
+                                        flat
+                                        height="10"
+                                        color="transparent"
+                                    >
+                                        <v-spacer></v-spacer>
+                                        <div
+                                            class="text-center d-flex align-center"
+                                        >
+                                            <span>
+                                                <v-tooltip bottom>
+                                                    <template
+                                                        v-slot:activator="{
+                                                            on
+                                                        }"
+                                                    >
+                                                        <v-btn
+                                                            v-show="
+                                                                userData.role ===
+                                                                    '1' ||
+                                                                    userData.role ===
+                                                                        '2'
+                                                            "
+                                                            icon
+                                                            x-small
+                                                            v-on="on"
+                                                            @click="
+                                                                deletePrijem()
+                                                            "
+                                                        >
+                                                            <v-icon color="red"
+                                                                >mdi-delete</v-icon
+                                                            >
+                                                        </v-btn>
+                                                    </template>
+                                                    <span
+                                                        class="font-weight-medium"
+                                                        >Odebrat Přijímač</span
+                                                    >
+                                                </v-tooltip>
+                                            </span>
+                                        </div>
+                                    </v-toolbar>
+                                    <v-card-text>
+                                        <v-row>
+                                            <span class="ma-3">
+                                                <strong>Příjem kanálu :</strong>
+                                                <v-btn
+                                                    v-bind:to="
+                                                        '/device/' + prijem.id
+                                                    "
+                                                    target="_blank"
+                                                    dark
+                                                    text
+                                                >
+                                                    <span class="blue--text">{{
+                                                        prijem.nazev
+                                                    }}</span>
+                                                </v-btn>
+                                            </span>
+                                        </v-row>
+                                        <v-row>
+                                            <span class="ma-3">
+                                                <strong>RF :</strong>
+                                                <span
+                                                    v-for="rf in channelData.rf"
+                                                    v-bind:key="rf.id"
+                                                    >{{ rf }}</span
+                                                >
+                                            </span>
+                                            <span class="ma-3">
+                                                <strong>CI :</strong>
+                                                <span
+                                                    v-for="ci in channelData.ci"
+                                                    v-bind:key="ci.id"
+                                                    >{{ ci }}</span
+                                                >
+                                            </span>
+                                            <span class="ma-3">
+                                                <strong
+                                                    >Nastavení Blankomu
+                                                    :</strong
+                                                >
+                                                <a
+                                                    :href="
+                                                        'http://' + prijem.ip
+                                                    "
+                                                    target="_blank"
+                                                    >{{ prijem.ip }}</a
+                                                >
+                                            </span>
+                                            <span class="ma-3">
+                                                <strong>Přihlášení :</strong>
+                                                {{ prijem.login }}
+                                            </span>
+                                        </v-row>
+                                        <!-- CA modul -->
+                                        <v-row>
+                                            <span
+                                                v-show="
+                                                    channelData.ca_modul !=
+                                                        'false'
+                                                "
+                                                class="ma-3"
+                                            >
+                                                <strong>Typ CA Moduli :</strong>
+                                                {{ channelData.ca_modul }}
+                                            </span>
+                                            <span
+                                                v-show="
+                                                    channelData.ca_modul !=
+                                                        'false'
+                                                "
+                                                class="ma-3"
+                                            >
+                                                <strong
+                                                    >Maximální počet kanálů
+                                                    :</strong
+                                                >
+                                                {{
+                                                    channelData.max_ca_module_channels
+                                                }}
+                                            </span>
+                                            <v-row class="ml-1">
+                                                <span
+                                                    v-show="
+                                                        channelData.ca_modul !=
+                                                            'false'
+                                                    "
+                                                    class="ma-3"
+                                                >
+                                                    <strong
+                                                        >Číslo CA modulu
+                                                        :</strong
+                                                    >
+                                                    {{
+                                                        channelData.ca_modul_number
+                                                    }}
+                                                </span>
+                                            </v-row>
+                                        </v-row>
+
+                                        <!-- konec CA modulu -->
+                                    </v-card-text>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-card>
+
+                        <!-- TAG FTE -->
+                        <v-card
+                            v-if="prijem.tag === 'FTE'"
+                            class="ma-3"
+                            color="grey lighten-4"
+                            outlined
+                        >
+                            <v-list-item>
+                                <v-list-item-content>
+                                    <v-toolbar
+                                        dense
+                                        flat
+                                        height="10"
+                                        color="transparent"
+                                    >
+                                        <v-spacer></v-spacer>
+                                        <div
+                                            class="text-center d-flex align-center"
+                                        >
+                                            <span>
+                                                <v-tooltip bottom>
+                                                    <template
+                                                        v-slot:activator="{
+                                                            on
+                                                        }"
+                                                    >
+                                                        <v-btn
+                                                            v-show="
+                                                                userData.role ===
+                                                                    '1' ||
+                                                                    userData.role ===
+                                                                        '2'
+                                                            "
+                                                            icon
+                                                            x-small
+                                                            v-on="on"
+                                                            @click="
+                                                                deletePrijem()
+                                                            "
+                                                        >
+                                                            <v-icon color="red"
+                                                                >mdi-delete</v-icon
+                                                            >
+                                                        </v-btn>
+                                                    </template>
+                                                    <span
+                                                        class="font-weight-medium"
+                                                        >Odebrat Přijímač</span
+                                                    >
+                                                </v-tooltip>
+                                            </span>
+                                        </div>
+                                    </v-toolbar>
+                                    <v-card-text>
+                                        <v-row>
+                                            <span class="ma-3">
+                                                <strong>Příjem kanálu :</strong>
+                                                <v-btn
+                                                    v-bind:to="
+                                                        '/device/' + prijem.id
+                                                    "
+                                                    target="_blank"
+                                                    dark
+                                                    text
+                                                >
+                                                    <span class="blue--text">{{
+                                                        prijem.nazev
+                                                    }}</span>
+                                                </v-btn>
+                                            </span>
+                                        </v-row>
+                                        <v-row>
+                                            <span class="ma-3">
+                                                <strong>IP FTE :</strong>
+                                                {{ prijem.ip }}
+                                            </span>
+                                        </v-row>
+
+                                        <!-- CA modul -->
+                                        <v-row>
+                                            <span
+                                                v-show="
+                                                    channelData.ca_modul !=
+                                                        'false'
+                                                "
+                                                class="ma-3"
+                                            >
+                                                <strong>Typ CA Moduli :</strong>
+                                                {{ channelData.ca_modul }}
+                                            </span>
+                                            <span
+                                                v-show="
+                                                    channelData.ca_modul !=
+                                                        'false'
+                                                "
+                                                class="ma-3"
+                                            >
+                                                <strong
+                                                    >Maximální počet kanálů
+                                                    :</strong
+                                                >
+                                                {{
+                                                    channelData.max_ca_module_channels
+                                                }}
+                                            </span>
+                                            <span
+                                                v-show="
+                                                    channelData.ca_modul !=
+                                                        'false'
+                                                "
+                                                class="ma-3"
+                                            >
+                                                <strong
+                                                    >Číslo CA modulu :</strong
+                                                >
+                                                {{
+                                                    channelData.ca_modul_number
+                                                }}
+                                            </span>
+                                        </v-row>
+                                        <!-- konec CA modulu -->
+                                    </v-card-text>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-card>
+
+                        <!-- tag PowerVu -->
+                        <v-card
+                            v-if="prijem.tag === 'PowerVu'"
+                            class="ma-3"
+                            color="grey lighten-4"
+                            outlined
+                        >
+                            <v-list-item>
+                                <v-list-item-content>
+                                    <v-toolbar
+                                        dense
+                                        flat
+                                        height="10"
+                                        color="transparent"
+                                    >
+                                        <v-spacer></v-spacer>
+                                        <div
+                                            class="text-center d-flex align-center"
+                                        >
+                                            <span>
+                                                <v-tooltip bottom>
+                                                    <template
+                                                        v-slot:activator="{
+                                                            on
+                                                        }"
+                                                    >
+                                                        <v-btn
+                                                            v-show="
+                                                                userData.role ===
+                                                                    '1' ||
+                                                                    userData.role ===
+                                                                        '2'
+                                                            "
+                                                            icon
+                                                            x-small
+                                                            v-on="on"
+                                                            @click="
+                                                                deletePrijem()
+                                                            "
+                                                        >
+                                                            <v-icon color="red"
+                                                                >mdi-delete</v-icon
+                                                            >
+                                                        </v-btn>
+                                                    </template>
+                                                    <span
+                                                        class="font-weight-medium"
+                                                        >Odebrat Přijímač</span
+                                                    >
+                                                </v-tooltip>
+                                            </span>
+                                        </div>
+                                    </v-toolbar>
+                                    <v-card-text>
+                                        <v-row>
+                                            <span class="ma-3">
+                                                <strong>Příjem kanálu :</strong>
+                                                <v-btn
+                                                    v-bind:to="
+                                                        '/device/' + prijem.id
+                                                    "
+                                                    target="_blank"
+                                                    dark
+                                                    text
+                                                >
+                                                    <span class="blue--text">{{
+                                                        prijem.nazev
+                                                    }}</span>
+                                                </v-btn>
+                                            </span>
+                                        </v-row>
+                                        <v-row>
+                                            <span class="ma-3">
+                                                <strong>IP :</strong>
+                                                <a
+                                                    :href="
+                                                        'http://' + prijem.ip
+                                                    "
+                                                    target="_blank"
+                                                    >{{ prijem.ip }}</a
+                                                >
+                                            </span>
+                                            <span class="ma-3">
+                                                <strong>Přihlášení :</strong>
+                                                {{ prijem.login }}
+                                            </span>
+                                        </v-row>
+                                    </v-card-text>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-card>
+
+                        <!-- tag Linux -->
+
+                        <v-card
+                            v-if="prijem.tag === 'Linux'"
+                            class="ma-3"
+                            color="grey lighten-4"
+                            outlined
+                        >
+                            <v-list-item>
+                                <v-list-item-content>
+                                    <v-toolbar
+                                        dense
+                                        flat
+                                        height="10"
+                                        color="transparent"
+                                    >
+                                        <v-spacer></v-spacer>
+                                        <div
+                                            class="text-center d-flex align-center"
+                                        >
+                                            <span>
+                                                <v-tooltip bottom>
+                                                    <template
+                                                        v-slot:activator="{
+                                                            on
+                                                        }"
+                                                    >
+                                                        <v-btn
+                                                            v-show="
+                                                                userData.role ===
+                                                                    '1' ||
+                                                                    userData.role ===
+                                                                        '2'
+                                                            "
+                                                            icon
+                                                            x-small
+                                                            v-on="on"
+                                                            @click="
+                                                                deletePrijem()
+                                                            "
+                                                        >
+                                                            <v-icon color="red"
+                                                                >mdi-delete</v-icon
+                                                            >
+                                                        </v-btn>
+                                                    </template>
+                                                    <span
+                                                        class="font-weight-medium"
+                                                        >Odebrat Přijímač</span
+                                                    >
+                                                </v-tooltip>
+                                            </span>
+                                        </div>
+                                    </v-toolbar>
+                                    <v-card-text>
+                                        <v-row>
+                                            <span class="ma-3">
+                                                <strong>Příjem kanálu :</strong>
+                                                <v-btn
+                                                    v-bind:to="
+                                                        '/device/' + prijem.id
+                                                    "
+                                                    target="_blank"
+                                                    dark
+                                                    text
+                                                >
+                                                    <span class="blue--text">{{
+                                                        prijem.nazev
+                                                    }}</span>
+                                                </v-btn>
+                                            </span>
+                                        </v-row>
+                                        <v-row>
+                                            <span class="ma-3">
+                                                <strong>IP :</strong>
+                                                <a
+                                                    :href="
+                                                        'ssh:' +
+                                                            prijem.ssh_user +
+                                                            '@' +
+                                                            prijem.ip
+                                                    "
+                                                    target="_blank"
+                                                    >{{ prijem.ip }}</a
+                                                >
+                                            </span>
+                                            <span class="ma-3">
+                                                <strong>Poznámka :</strong>
+                                                {{ prijem.poznamka }}
+                                            </span>
+                                            <span class="ma-3">
+                                                <strong>
+                                                    Příkaz pro spuštění:
+                                                </strong>
+                                                {{ channelData.pathToReboot }}
+                                            </span>
+                                        </v-row>
+                                    </v-card-text>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-card>
+                        <!-- end devices -->
+                    </div>
+
+                    <div v-else>
+                        <v-alert type="warning">
+                            <strong>Není evidován přijímač</strong>
+                        </v-alert>
+                    </div>
+
+                    <!-- backup prijem -->
+                    <div
+                        v-for="backup in channelData.backup"
+                        v-bind:key="backup.tag"
+                    >
+                        <div v-if="backup.tag != 'KO'">
+                            <!--  tag PoIP -->
+                            <v-card
+                                v-if="backup.tag === 'PoIP'"
+                                class="ma-3"
+                                color="grey lighten-4"
+                                outlined
+                            >
+                                <v-list-item>
+                                    <v-list-item-content>
+                                        <v-toolbar
+                                            dense
+                                            flat
+                                            height="10"
+                                            color="transparent"
+                                        >
+                                            <v-spacer></v-spacer>
+                                            <div
+                                                class="text-center d-flex align-center"
+                                            >
+                                                <span>
+                                                    <v-tooltip bottom>
+                                                        <template
+                                                            v-slot:activator="{
+                                                                on
+                                                            }"
+                                                        >
+                                                            <v-btn
+                                                                v-show="
+                                                                    userData.role ===
+                                                                        '1' ||
+                                                                        userData.role ===
+                                                                            '2'
+                                                                "
+                                                                icon
+                                                                x-small
+                                                                v-on="on"
+                                                                @click="
+                                                                    deleteBackupPrijem()
+                                                                "
+                                                            >
+                                                                <v-icon
+                                                                    color="red"
+                                                                    >mdi-delete</v-icon
+                                                                >
+                                                            </v-btn>
+                                                        </template>
+                                                        <span
+                                                            class="font-weight-medium"
+                                                            >Odebrat
+                                                            Přijímač</span
+                                                        >
+                                                    </v-tooltip>
+                                                </span>
+                                            </div>
+                                        </v-toolbar>
+                                        <v-card-text>
+                                            <span class="ma-3">
+                                                <strong>Backup kanálu :</strong>
+                                                {{ backup.prijem }}
+                                            </span>
+                                        </v-card-text>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-card>
+
+                            <!-- tag Blankom -->
+                            <v-card
+                                v-if="backup.tag === 'Blankom'"
+                                class="ma-3"
+                                color="grey lighten-4"
+                                outlined
+                            >
+                                <v-list-item>
+                                    <v-list-item-content>
+                                        <v-toolbar
+                                            dense
+                                            flat
+                                            height="10"
+                                            color="transparent"
+                                        >
+                                            <v-spacer></v-spacer>
+                                            <div
+                                                class="text-center d-flex align-center"
+                                            >
+                                                <span>
+                                                    <v-tooltip bottom>
+                                                        <template
+                                                            v-slot:activator="{
+                                                                on
+                                                            }"
+                                                        >
+                                                            <v-btn
+                                                                v-show="
+                                                                    userData.role ===
+                                                                        '1' ||
+                                                                        userData.role ===
+                                                                            '2'
+                                                                "
+                                                                icon
+                                                                x-small
+                                                                v-on="on"
+                                                                @click="
+                                                                    deleteBackupPrijem()
+                                                                "
+                                                            >
+                                                                <v-icon
+                                                                    color="red"
+                                                                    >mdi-delete</v-icon
+                                                                >
+                                                            </v-btn>
+                                                        </template>
+                                                        <span
+                                                            class="font-weight-medium"
+                                                            >Odebrat
+                                                            Přijímač</span
+                                                        >
+                                                    </v-tooltip>
+                                                </span>
+                                            </div>
+                                        </v-toolbar>
+                                        <v-card-text>
+                                            <v-row>
+                                                <span class="ma-3">
+                                                    <strong
+                                                        >Backup kanálu :</strong
+                                                    >
+                                                    <v-btn
+                                                        v-bind:to="
+                                                            '/device/' +
+                                                                backup.id
+                                                        "
+                                                        target="_blank"
+                                                        dark
+                                                        text
+                                                    >
+                                                        <span
+                                                            class="blue--text"
+                                                            >{{
+                                                                backup.nazev
+                                                            }}</span
+                                                        >
+                                                    </v-btn>
+                                                </span>
+                                            </v-row>
+                                            <v-row>
+                                                <span class="ma-3">
+                                                    <strong>RF :</strong>
+                                                    <span
+                                                        v-for="rf in channelData.rf"
+                                                        v-bind:key="rf.id"
+                                                        >{{ rf }}</span
+                                                    >
+                                                </span>
+                                                <span class="ma-3">
+                                                    <strong
+                                                        >Nastavení Blankomu
+                                                        :</strong
+                                                    >
+                                                    <a
+                                                        :href="
+                                                            'http://' +
+                                                                backup.ip
+                                                        "
+                                                        target="_blank"
+                                                        >{{ backup.ip }}</a
+                                                    >
+                                                </span>
+                                                <span class="ma-3">
+                                                    <strong
+                                                        >Přihlášení :</strong
+                                                    >
+                                                    {{ backup.login }}
+                                                </span>
+                                            </v-row>
+                                        </v-card-text>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-card>
+
+                            <!-- TAG FTE -->
+                            <v-card
+                                v-if="backup.tag === 'FTE'"
+                                class="ma-3"
+                                color="grey lighten-4"
+                                outlined
+                            >
+                                <v-list-item>
+                                    <v-list-item-content>
+                                        <v-toolbar
+                                            dense
+                                            flat
+                                            height="10"
+                                            color="transparent"
+                                        >
+                                            <v-spacer></v-spacer>
+                                            <div
+                                                class="text-center d-flex align-center"
+                                            >
+                                                <span>
+                                                    <v-tooltip bottom>
+                                                        <template
+                                                            v-slot:activator="{
+                                                                on
+                                                            }"
+                                                        >
+                                                            <v-btn
+                                                                v-show="
+                                                                    userData.role ===
+                                                                        '1' ||
+                                                                        userData.role ===
+                                                                            '2'
+                                                                "
+                                                                icon
+                                                                x-small
+                                                                v-on="on"
+                                                                @click="
+                                                                    deleteBackupPrijem()
+                                                                "
+                                                            >
+                                                                <v-icon
+                                                                    color="red"
+                                                                    >mdi-delete</v-icon
+                                                                >
+                                                            </v-btn>
+                                                        </template>
+                                                        <span
+                                                            class="font-weight-medium"
+                                                            >Odebrat
+                                                            Přijímač</span
+                                                        >
+                                                    </v-tooltip>
+                                                </span>
+                                            </div>
+                                        </v-toolbar>
+                                        <v-card-text>
+                                            <v-row>
+                                                <span class="ma-3">
+                                                    <strong
+                                                        >Backup kanálu :</strong
+                                                    >
+                                                    <v-btn
+                                                        v-bind:to="
+                                                            '/device/' +
+                                                                backup.id
+                                                        "
+                                                        target="_blank"
+                                                        dark
+                                                        text
+                                                    >
+                                                        <span
+                                                            class="blue--text"
+                                                            >{{
+                                                                backup.nazev
+                                                            }}</span
+                                                        >
+                                                    </v-btn>
+                                                </span>
+                                            </v-row>
+                                            <v-row>
+                                                <span class="ma-3">
+                                                    <strong>IP FTE :</strong>
+                                                    {{ backup.ip }}
+                                                </span>
+                                            </v-row>
+                                        </v-card-text>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-card>
+
+                            <!-- tag PowerVu -->
+                            <v-card
+                                v-if="backup.tag === 'PowerVu'"
+                                class="ma-3"
+                                color="grey lighten-4"
+                                outlined
+                            >
+                                <v-list-item>
+                                    <v-list-item-content>
+                                        <v-toolbar
+                                            dense
+                                            flat
+                                            height="10"
+                                            color="transparent"
+                                        >
+                                            <v-spacer></v-spacer>
+                                            <div
+                                                class="text-center d-flex align-center"
+                                            >
+                                                <span>
+                                                    <v-tooltip bottom>
+                                                        <template
+                                                            v-slot:activator="{
+                                                                on
+                                                            }"
+                                                        >
+                                                            <v-btn
+                                                                v-show="
+                                                                    userData.role ===
+                                                                        '1' ||
+                                                                        userData.role ===
+                                                                            '2'
+                                                                "
+                                                                icon
+                                                                x-small
+                                                                v-on="on"
+                                                                @click="
+                                                                    deleteBackupPrijem()
+                                                                "
+                                                            >
+                                                                <v-icon
+                                                                    color="red"
+                                                                    >mdi-delete</v-icon
+                                                                >
+                                                            </v-btn>
+                                                        </template>
+                                                        <span
+                                                            class="font-weight-medium"
+                                                            >Odebrat
+                                                            Přijímač</span
+                                                        >
+                                                    </v-tooltip>
+                                                </span>
+                                            </div>
+                                        </v-toolbar>
+                                        <v-card-text>
+                                            <v-row>
+                                                <span class="ma-3">
+                                                    <strong
+                                                        >Backup kanálu :</strong
+                                                    >
+                                                    <v-btn
+                                                        v-bind:to="
+                                                            '/device/' +
+                                                                backup.id
+                                                        "
+                                                        target="_blank"
+                                                        dark
+                                                        text
+                                                    >
+                                                        <span
+                                                            class="blue--text"
+                                                            >{{
+                                                                prijem.nazev
+                                                            }}</span
+                                                        >
+                                                    </v-btn>
+                                                </span>
+                                            </v-row>
+                                            <v-row>
+                                                <span class="ma-3">
+                                                    <strong>IP :</strong>
+                                                    <a
+                                                        :href="
+                                                            'http://' +
+                                                                backup.ip
+                                                        "
+                                                        target="_blank"
+                                                        >{{ backup.ip }}</a
+                                                    >
+                                                </span>
+                                                <span class="ma-3">
+                                                    <strong
+                                                        >Přihlášení :</strong
+                                                    >
+                                                    {{ backup.login }}
+                                                </span>
+                                            </v-row>
+                                        </v-card-text>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-card>
+
+                            <!-- tag Linux -->
+
+                            <v-card
+                                v-if="backup.tag === 'Linux'"
+                                class="ma-3"
+                                color="grey lighten-4"
+                                outlined
+                            >
+                                <v-list-item>
+                                    <v-list-item-content>
+                                        <v-toolbar
+                                            dense
+                                            flat
+                                            height="10"
+                                            color="transparent"
+                                        >
+                                            <v-spacer></v-spacer>
+                                            <div
+                                                class="text-center d-flex align-center"
+                                            >
+                                                <span>
+                                                    <v-tooltip bottom>
+                                                        <template
+                                                            v-slot:activator="{
+                                                                on
+                                                            }"
+                                                        >
+                                                            <v-btn
+                                                                v-show="
+                                                                    userData.role ===
+                                                                        '1' ||
+                                                                        userData.role ===
+                                                                            '2'
+                                                                "
+                                                                icon
+                                                                x-small
+                                                                v-on="on"
+                                                                @click="
+                                                                    deleteBackupPrijem()
+                                                                "
+                                                            >
+                                                                <v-icon
+                                                                    color="red"
+                                                                    >mdi-delete</v-icon
+                                                                >
+                                                            </v-btn>
+                                                        </template>
+                                                        <span
+                                                            class="font-weight-medium"
+                                                            >Odebrat
+                                                            Přijímač</span
+                                                        >
+                                                    </v-tooltip>
+                                                </span>
+                                            </div>
+                                        </v-toolbar>
+                                        <v-card-text>
+                                            <v-row>
+                                                <span class="ma-3">
+                                                    <strong
+                                                        >Backup kanálu :</strong
+                                                    >
+                                                    <v-btn
+                                                        v-bind:to="
+                                                            '/device/' +
+                                                                backup.id
+                                                        "
+                                                        target="_blank"
+                                                        dark
+                                                        text
+                                                    >
+                                                        <span
+                                                            class="blue--text"
+                                                            >{{
+                                                                backup.nazev
+                                                            }}</span
+                                                        >
+                                                    </v-btn>
+                                                </span>
+                                            </v-row>
+                                            <v-row>
+                                                <span class="ma-3">
+                                                    <strong>IP :</strong>
+                                                    <a
+                                                        :href="
+                                                            'ssh:' +
+                                                                backup.ssh_user +
+                                                                '@' +
+                                                                backup.ip
+                                                        "
+                                                        target="_blank"
+                                                        >{{ backup.ip }}</a
+                                                    >
+                                                </span>
+                                                <span class="ma-3">
+                                                    <strong>Poznámka :</strong>
+                                                    {{ backup.poznamka }}
+                                                </span>
+                                            </v-row>
+                                        </v-card-text>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-card>
+                            <!-- end devices -->
+                        </div>
+
+                        <div v-else>
+                            <v-alert type="warning" width="100%">
+                                <strong>Není evidován backup</strong>
+                            </v-alert>
+                        </div>
+
+                        <!-- end backup prijem -->
+                    </div>
+
+                    <!-- modal multiplexer -->
+
                     <v-row justify="center">
                         <v-dialog
-                            v-model="editChannelISP"
+                            v-model="editMultiplexer"
                             persistent
                             max-height="200px"
                             max-width="500px"
@@ -498,41 +1766,14 @@
                                 <v-card-text>
                                     <v-container>
                                         <v-row>
-                                            <v-col cols="12" sm="3" md="8">
+                                            <v-col cols="12" sm="6" md="8">
                                                 <v-select
-                                                    v-model="isp"
-                                                    :items="isps"
+                                                    v-model="multiplexerId"
+                                                    :items="multiplexers"
                                                     item-value="id"
-                                                    item-text="isp"
-                                                    label="ISP"
+                                                    item-text="name"
+                                                    label="multiplexer"
                                                 ></v-select>
-                                            </v-col>
-                                        </v-row>
-                                        <v-row>
-                                            <v-col cols="12" sm="3" md="8">
-                                                <v-text-field
-                                                    required
-                                                    label="Multicastová IP"
-                                                    v-model="multicastIp"
-                                                ></v-text-field>
-                                            </v-col>
-                                        </v-row>
-                                        <v-row>
-                                            <v-col cols="12" sm="3" md="8">
-                                                <v-text-field
-                                                    required
-                                                    label="IP k STB"
-                                                    v-model="stbIp"
-                                                ></v-text-field>
-                                            </v-col>
-                                        </v-row>
-                                        <v-row>
-                                            <v-col cols="12" sm="3" md="8">
-                                                <v-text-field
-                                                    required
-                                                    label="Dohledová URL"
-                                                    v-model="dohledUrl"
-                                                ></v-text-field>
                                             </v-col>
                                         </v-row>
                                     </v-container>
@@ -542,1681 +1783,500 @@
                                     <v-btn
                                         color="blue darken-1"
                                         text
-                                        @click="editChannelISP = false"
+                                        @click="editMultiplexer = false"
                                         >Zavřít</v-btn
                                     >
                                     <v-btn
                                         color="green darken-1"
                                         text
-                                        @click="channelIspEdit()"
+                                        @click="saveMultiplexer()"
                                         >Uložit</v-btn
                                     >
                                 </v-card-actions>
                             </v-card>
                         </v-dialog>
                     </v-row>
+                    <!-- end modal multiplexer -->
 
-                    <!-- end modal channel -->
-                </v-list-item-content>
-            </v-list-item>
-        </v-card>
+                    <!-- modal pro editaci programových balícku / pridani programovaneho balicku ke kanalu -->
 
-        <!-- multiplexer -->
-        <div v-for="mux in channelData.multiplexer" v-bind:key="mux.id">
-            <div v-if="mux.status != 'KO'">
-                <v-card
-                    class="ma-3"
-                    width="1500"
-                    color="blue-grey lighten-5"
-                    outlined
-                >
-                    <v-list-item>
-                        <v-list-item-content>
-                            <v-toolbar
-                                dense
-                                flat
-                                height="10"
-                                color="transparent"
-                            >
-                                <v-spacer></v-spacer>
-                                <div class="text-center d-flex align-center">
-                                    <span>
-                                        <v-tooltip bottom>
-                                            <template v-slot:activator="{ on }">
-                                                <v-btn
-                                                    v-show="
-                                                        userData.role === '1' ||
-                                                            userData.role ===
-                                                                '2'
-                                                    "
-                                                    icon
-                                                    x-small
-                                                    v-on="on"
-                                                    @click="deleteMultiplexer()"
-                                                >
-                                                    <v-icon color="red"
-                                                        >mdi-delete</v-icon
-                                                    >
-                                                </v-btn>
-                                            </template>
-                                            <span class="font-weight-medium"
-                                                >Odebrat multiplexer</span
-                                            >
-                                        </v-tooltip>
-                                    </span>
-                                </div>
-                            </v-toolbar>
-                            <v-card-text>
-                                <span class="ma-3">
-                                    <strong>Multiplexer :</strong>
-                                    <span>{{ mux.nazev }}</span>
-                                </span>
-                                <span class="ma-3">
-                                    <strong>IP multiplexeru :</strong>
-                                    <a
-                                        :href="'http://' + mux.ip"
-                                        target="_blank"
-                                        >{{ mux.ip }}</a
-                                    >
-                                </span>
-                                <span class="ma-3">
-                                    <strong
-                                        >Přihlášení do multiplexeru :</strong
-                                    >
-                                    {{ mux.login }}
-                                </span>
-                                <span class="ma-3">
-                                    <strong>Poznámka :</strong>
-                                    {{ mux.poznamka }}
-                                </span>
-                            </v-card-text>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-            </div>
-            <div v-else>
-                <v-alert type="warning" width="1500">
-                    <strong>Není evidován multiplexer</strong>
-                </v-alert>
-            </div>
-        </div>
-
-        <!-- přijímač -->
-        <div v-for="prijem in channelData.prijem" v-bind:key="prijem.tag">
-            <div v-if="prijem.tag != 'KO'">
-                <!--  tag PoIP -->
-                <v-card
-                    v-if="prijem.tag === 'PoIP'"
-                    class="ma-3"
-                    width="1500"
-                    color="blue-grey lighten-5"
-                    outlined
-                >
-                    <v-list-item>
-                        <v-list-item-content>
-                            <v-toolbar
-                                dense
-                                flat
-                                height="10"
-                                color="transparent"
-                            >
-                                <v-spacer></v-spacer>
-                                <div class="text-center d-flex align-center">
-                                    <span>
-                                        <v-tooltip bottom>
-                                            <template v-slot:activator="{ on }">
-                                                <v-btn
-                                                    v-show="
-                                                        userData.role === '1' ||
-                                                            userData.role ===
-                                                                '2'
-                                                    "
-                                                    icon
-                                                    x-small
-                                                    v-on="on"
-                                                    @click="deletePrijem()"
-                                                >
-                                                    <v-icon color="red"
-                                                        >mdi-delete</v-icon
-                                                    >
-                                                </v-btn>
-                                            </template>
-                                            <span class="font-weight-medium"
-                                                >Odebrat Přijímač</span
-                                            >
-                                        </v-tooltip>
-                                    </span>
-                                </div>
-                            </v-toolbar>
-                            <v-card-text>
-                                <span class="ma-3">
-                                    <strong>Příjem kanálu :</strong>
-                                    {{ prijem.prijem }}
-                                </span>
-                            </v-card-text>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-
-                <!-- tag Blankom -->
-                <v-card
-                    v-if="prijem.tag === 'Blankom'"
-                    class="ma-3"
-                    width="1500"
-                    color="blue-grey lighten-5"
-                    outlined
-                >
-                    <v-list-item>
-                        <v-list-item-content>
-                            <v-toolbar
-                                dense
-                                flat
-                                height="10"
-                                color="transparent"
-                            >
-                                <v-spacer></v-spacer>
-                                <div class="text-center d-flex align-center">
-                                    <span>
-                                        <v-tooltip bottom>
-                                            <template v-slot:activator="{ on }">
-                                                <v-btn
-                                                    v-show="
-                                                        userData.role === '1' ||
-                                                            userData.role ===
-                                                                '2'
-                                                    "
-                                                    icon
-                                                    x-small
-                                                    v-on="on"
-                                                    @click="deletePrijem()"
-                                                >
-                                                    <v-icon color="red"
-                                                        >mdi-delete</v-icon
-                                                    >
-                                                </v-btn>
-                                            </template>
-                                            <span class="font-weight-medium"
-                                                >Odebrat Přijímač</span
-                                            >
-                                        </v-tooltip>
-                                    </span>
-                                </div>
-                            </v-toolbar>
-                            <v-card-text>
-                                <span class="ma-3">
-                                    <strong>Příjem kanálu :</strong>
-                                    <v-btn
-                                        v-bind:to="'/device/' + prijem.id"
-                                        target="_blank"
-                                        dark
-                                        text
-                                    >
-                                        <span class="blue--text">{{
-                                            prijem.nazev
-                                        }}</span>
-                                    </v-btn>
-                                </span>
-                                <span class="ma-3">
-                                    <strong>RF :</strong>
-                                    <span
-                                        v-for="rf in channelData.rf"
-                                        v-bind:key="rf.id"
-                                        >{{ rf }}</span
-                                    >
-                                </span>
-                                <span class="ma-3">
-                                    <strong>CI :</strong>
-                                    <span
-                                        v-for="ci in channelData.ci"
-                                        v-bind:key="ci.id"
-                                        >{{ ci }}</span
-                                    >
-                                </span>
-                                <span class="ma-3">
-                                    <strong>Nastavení Blankomu :</strong>
-                                    <a
-                                        :href="'http://' + prijem.ip"
-                                        target="_blank"
-                                        >{{ prijem.ip }}</a
-                                    >
-                                </span>
-                                <span class="ma-3">
-                                    <strong>Přihlášení :</strong>
-                                    {{ prijem.login }}
-                                </span>
-                                <!-- CA modul -->
-
-                                <span
-                                    v-show="channelData.ca_modul != 'false'"
-                                    class="ma-3"
-                                >
-                                    <strong>Typ CA Moduli :</strong>
-                                    {{ channelData.ca_modul }}
-                                </span>
-                                <span
-                                    v-show="channelData.ca_modul != 'false'"
-                                    class="ma-3"
-                                >
-                                    <strong>Maximální počet kanálů :</strong>
-                                    {{ channelData.max_ca_module_channels }}
-                                </span>
-                                <v-row class="ml-1">
-                                    <span
-                                        v-show="channelData.ca_modul != 'false'"
-                                        class="ma-3"
-                                    >
-                                        <strong>Číslo CA modulu :</strong>
-                                        {{ channelData.ca_modul_number }}
-                                    </span>
-                                </v-row>
-
-                                <!-- konec CA modulu -->
-                            </v-card-text>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-
-                <!-- TAG FTE -->
-                <v-card
-                    v-if="prijem.tag === 'FTE'"
-                    class="ma-3"
-                    width="1500"
-                    color="blue-grey lighten-5"
-                    outlined
-                >
-                    <v-list-item>
-                        <v-list-item-content>
-                            <v-toolbar
-                                dense
-                                flat
-                                height="10"
-                                color="transparent"
-                            >
-                                <v-spacer></v-spacer>
-                                <div class="text-center d-flex align-center">
-                                    <span>
-                                        <v-tooltip bottom>
-                                            <template v-slot:activator="{ on }">
-                                                <v-btn
-                                                    v-show="
-                                                        userData.role === '1' ||
-                                                            userData.role ===
-                                                                '2'
-                                                    "
-                                                    icon
-                                                    x-small
-                                                    v-on="on"
-                                                    @click="deletePrijem()"
-                                                >
-                                                    <v-icon color="red"
-                                                        >mdi-delete</v-icon
-                                                    >
-                                                </v-btn>
-                                            </template>
-                                            <span class="font-weight-medium"
-                                                >Odebrat Přijímač</span
-                                            >
-                                        </v-tooltip>
-                                    </span>
-                                </div>
-                            </v-toolbar>
-                            <v-card-text>
-                                <span class="ma-3">
-                                    <strong>Příjem kanálu :</strong>
-                                    <v-btn
-                                        v-bind:to="'/device/' + prijem.id"
-                                        target="_blank"
-                                        dark
-                                        text
-                                    >
-                                        <span class="blue--text">{{
-                                            prijem.nazev
-                                        }}</span>
-                                    </v-btn>
-                                </span>
-                                <span class="ma-3">
-                                    <strong>IP FTE :</strong>
-                                    {{ prijem.ip }}
-                                </span>
-
-                                <!-- CA modul -->
-
-                                <span
-                                    v-show="channelData.ca_modul != 'false'"
-                                    class="ma-3"
-                                >
-                                    <strong>Typ CA Moduli :</strong>
-                                    {{ channelData.ca_modul }}
-                                </span>
-                                <span
-                                    v-show="channelData.ca_modul != 'false'"
-                                    class="ma-3"
-                                >
-                                    <strong>Maximální počet kanálů :</strong>
-                                    {{ channelData.max_ca_module_channels }}
-                                </span>
-                                <span
-                                    v-show="channelData.ca_modul != 'false'"
-                                    class="ma-3"
-                                >
-                                    <strong>Číslo CA modulu :</strong>
-                                    {{ channelData.ca_modul_number }}
-                                </span>
-
-                                <!-- konec CA modulu -->
-                            </v-card-text>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-
-                <!-- tag PowerVu -->
-                <v-card
-                    v-if="prijem.tag === 'PowerVu'"
-                    class="ma-3"
-                    width="1500"
-                    color="blue-grey lighten-5"
-                    outlined
-                >
-                    <v-list-item>
-                        <v-list-item-content>
-                            <v-toolbar
-                                dense
-                                flat
-                                height="10"
-                                color="transparent"
-                            >
-                                <v-spacer></v-spacer>
-                                <div class="text-center d-flex align-center">
-                                    <span>
-                                        <v-tooltip bottom>
-                                            <template v-slot:activator="{ on }">
-                                                <v-btn
-                                                    v-show="
-                                                        userData.role === '1' ||
-                                                            userData.role ===
-                                                                '2'
-                                                    "
-                                                    icon
-                                                    x-small
-                                                    v-on="on"
-                                                    @click="deletePrijem()"
-                                                >
-                                                    <v-icon color="red"
-                                                        >mdi-delete</v-icon
-                                                    >
-                                                </v-btn>
-                                            </template>
-                                            <span class="font-weight-medium"
-                                                >Odebrat Přijímač</span
-                                            >
-                                        </v-tooltip>
-                                    </span>
-                                </div>
-                            </v-toolbar>
-                            <v-card-text>
-                                <span class="ma-3">
-                                    <strong>Příjem kanálu :</strong>
-                                    <v-btn
-                                        v-bind:to="'/device/' + prijem.id"
-                                        target="_blank"
-                                        dark
-                                        text
-                                    >
-                                        <span class="blue--text">{{
-                                            prijem.nazev
-                                        }}</span>
-                                    </v-btn>
-                                </span>
-                                <span class="ma-3">
-                                    <strong>IP :</strong>
-                                    <a
-                                        :href="'http://' + prijem.ip"
-                                        target="_blank"
-                                        >{{ prijem.ip }}</a
-                                    >
-                                </span>
-                                <span class="ma-3">
-                                    <strong>Přihlášení :</strong>
-                                    {{ prijem.login }}
-                                </span>
-                            </v-card-text>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-
-                <!-- tag Linux -->
-
-                <v-card
-                    v-if="prijem.tag === 'Linux'"
-                    class="ma-3"
-                    width="1500"
-                    color="blue-grey lighten-5"
-                    outlined
-                >
-                    <v-list-item>
-                        <v-list-item-content>
-                            <v-toolbar
-                                dense
-                                flat
-                                height="10"
-                                color="transparent"
-                            >
-                                <v-spacer></v-spacer>
-                                <div class="text-center d-flex align-center">
-                                    <span>
-                                        <v-tooltip bottom>
-                                            <template v-slot:activator="{ on }">
-                                                <v-btn
-                                                    v-show="
-                                                        userData.role === '1' ||
-                                                            userData.role ===
-                                                                '2'
-                                                    "
-                                                    icon
-                                                    x-small
-                                                    v-on="on"
-                                                    @click="deletePrijem()"
-                                                >
-                                                    <v-icon color="red"
-                                                        >mdi-delete</v-icon
-                                                    >
-                                                </v-btn>
-                                            </template>
-                                            <span class="font-weight-medium"
-                                                >Odebrat Přijímač</span
-                                            >
-                                        </v-tooltip>
-                                    </span>
-                                </div>
-                            </v-toolbar>
-                            <v-card-text>
-                                <span class="ma-3">
-                                    <strong>Příjem kanálu :</strong>
-                                    <v-btn
-                                        v-bind:to="'/device/' + prijem.id"
-                                        target="_blank"
-                                        dark
-                                        text
-                                    >
-                                        <span class="blue--text">{{
-                                            prijem.nazev
-                                        }}</span>
-                                    </v-btn>
-                                </span>
-                                <span class="ma-3">
-                                    <strong>IP :</strong>
-                                    <a
-                                        :href="
-                                            'ssh:' +
-                                                prijem.ssh_user +
-                                                '@' +
-                                                prijem.ip
-                                        "
-                                        target="_blank"
-                                        >{{ prijem.ip }}</a
-                                    >
-                                </span>
-                                <span class="ma-3">
-                                    <strong>Poznámka :</strong>
-                                    {{ prijem.poznamka }}
-                                </span>
-                                <span class="ma-3">
-                                    <strong>
-                                        Příkaz pro spuštění:
-                                    </strong>
-                                    {{ channelData.pathToReboot }}
-                                </span>
-                            </v-card-text>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-                <!-- end devices -->
-            </div>
-
-            <div v-else>
-                <v-alert type="warning" width="1500">
-                    <strong>Není evidován přijímač</strong>
-                </v-alert>
-            </div>
-
-            <!-- backup prijem -->
-            <div v-for="backup in channelData.backup" v-bind:key="backup.tag">
-                <div v-if="backup.tag != 'KO'">
-                    <!--  tag PoIP -->
-                    <v-card
-                        v-if="backup.tag === 'PoIP'"
-                        class="ma-3"
-                        width="1500"
-                        color="blue-grey lighten-5"
-                        outlined
-                    >
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-toolbar
-                                    dense
-                                    flat
-                                    height="10"
-                                    color="transparent"
-                                >
-                                    <v-spacer></v-spacer>
-                                    <div
-                                        class="text-center d-flex align-center"
-                                    >
-                                        <span>
-                                            <v-tooltip bottom>
-                                                <template
-                                                    v-slot:activator="{ on }"
-                                                >
-                                                    <v-btn
-                                                        v-show="
-                                                            userData.role ===
-                                                                '1' ||
-                                                                userData.role ===
-                                                                    '2'
-                                                        "
-                                                        icon
-                                                        x-small
-                                                        v-on="on"
-                                                        @click="
-                                                            deleteBackupPrijem()
-                                                        "
-                                                    >
-                                                        <v-icon color="red"
-                                                            >mdi-delete</v-icon
-                                                        >
-                                                    </v-btn>
-                                                </template>
-                                                <span class="font-weight-medium"
-                                                    >Odebrat Přijímač</span
-                                                >
-                                            </v-tooltip>
-                                        </span>
-                                    </div>
-                                </v-toolbar>
-                                <v-card-text>
-                                    <span class="ma-3">
-                                        <strong>Backup kanálu :</strong>
-                                        {{ backup.prijem }}
-                                    </span>
-                                </v-card-text>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-card>
-
-                    <!-- tag Blankom -->
-                    <v-card
-                        v-if="backup.tag === 'Blankom'"
-                        class="ma-3"
-                        width="1500"
-                        color="blue-grey lighten-5"
-                        outlined
-                    >
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-toolbar
-                                    dense
-                                    flat
-                                    height="10"
-                                    color="transparent"
-                                >
-                                    <v-spacer></v-spacer>
-                                    <div
-                                        class="text-center d-flex align-center"
-                                    >
-                                        <span>
-                                            <v-tooltip bottom>
-                                                <template
-                                                    v-slot:activator="{ on }"
-                                                >
-                                                    <v-btn
-                                                        v-show="
-                                                            userData.role ===
-                                                                '1' ||
-                                                                userData.role ===
-                                                                    '2'
-                                                        "
-                                                        icon
-                                                        x-small
-                                                        v-on="on"
-                                                        @click="
-                                                            deleteBackupPrijem()
-                                                        "
-                                                    >
-                                                        <v-icon color="red"
-                                                            >mdi-delete</v-icon
-                                                        >
-                                                    </v-btn>
-                                                </template>
-                                                <span class="font-weight-medium"
-                                                    >Odebrat Přijímač</span
-                                                >
-                                            </v-tooltip>
-                                        </span>
-                                    </div>
-                                </v-toolbar>
-                                <v-card-text>
-                                    <span class="ma-3">
-                                        <strong>Backup kanálu :</strong>
-                                        <v-btn
-                                            v-bind:to="'/device/' + backup.id"
-                                            target="_blank"
-                                            dark
-                                            text
-                                        >
-                                            <span class="blue--text">{{
-                                                backup.nazev
-                                            }}</span>
-                                        </v-btn>
-                                    </span>
-                                    <span class="ma-3">
-                                        <strong>RF :</strong>
-                                        <span
-                                            v-for="rf in channelData.rf"
-                                            v-bind:key="rf.id"
-                                            >{{ rf }}</span
-                                        >
-                                    </span>
-                                    <span class="ma-3">
-                                        <strong>Nastavení Blankomu :</strong>
-                                        <a
-                                            :href="'http://' + backup.ip"
-                                            target="_blank"
-                                            >{{ backup.ip }}</a
-                                        >
-                                    </span>
-                                    <span class="ma-3">
-                                        <strong>Přihlášení :</strong>
-                                        {{ backup.login }}
-                                    </span>
-                                </v-card-text>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-card>
-
-                    <!-- TAG FTE -->
-                    <v-card
-                        v-if="backup.tag === 'FTE'"
-                        class="ma-3"
-                        width="1500"
-                        color="blue-grey lighten-5"
-                        outlined
-                    >
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-toolbar
-                                    dense
-                                    flat
-                                    height="10"
-                                    color="transparent"
-                                >
-                                    <v-spacer></v-spacer>
-                                    <div
-                                        class="text-center d-flex align-center"
-                                    >
-                                        <span>
-                                            <v-tooltip bottom>
-                                                <template
-                                                    v-slot:activator="{ on }"
-                                                >
-                                                    <v-btn
-                                                        v-show="
-                                                            userData.role ===
-                                                                '1' ||
-                                                                userData.role ===
-                                                                    '2'
-                                                        "
-                                                        icon
-                                                        x-small
-                                                        v-on="on"
-                                                        @click="
-                                                            deleteBackupPrijem()
-                                                        "
-                                                    >
-                                                        <v-icon color="red"
-                                                            >mdi-delete</v-icon
-                                                        >
-                                                    </v-btn>
-                                                </template>
-                                                <span class="font-weight-medium"
-                                                    >Odebrat Přijímač</span
-                                                >
-                                            </v-tooltip>
-                                        </span>
-                                    </div>
-                                </v-toolbar>
-                                <v-card-text>
-                                    <span class="ma-3">
-                                        <strong>Backup kanálu :</strong>
-                                        <v-btn
-                                            v-bind:to="'/device/' + backup.id"
-                                            target="_blank"
-                                            dark
-                                            text
-                                        >
-                                            <span class="blue--text">{{
-                                                backup.nazev
-                                            }}</span>
-                                        </v-btn>
-                                    </span>
-                                    <span class="ma-3">
-                                        <strong>IP FTE :</strong>
-                                        {{ backup.ip }}
-                                    </span>
-                                </v-card-text>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-card>
-
-                    <!-- tag PowerVu -->
-                    <v-card
-                        v-if="backup.tag === 'PowerVu'"
-                        class="ma-3"
-                        width="1500"
-                        color="blue-grey lighten-5"
-                        outlined
-                    >
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-toolbar
-                                    dense
-                                    flat
-                                    height="10"
-                                    color="transparent"
-                                >
-                                    <v-spacer></v-spacer>
-                                    <div
-                                        class="text-center d-flex align-center"
-                                    >
-                                        <span>
-                                            <v-tooltip bottom>
-                                                <template
-                                                    v-slot:activator="{ on }"
-                                                >
-                                                    <v-btn
-                                                        v-show="
-                                                            userData.role ===
-                                                                '1' ||
-                                                                userData.role ===
-                                                                    '2'
-                                                        "
-                                                        icon
-                                                        x-small
-                                                        v-on="on"
-                                                        @click="
-                                                            deleteBackupPrijem()
-                                                        "
-                                                    >
-                                                        <v-icon color="red"
-                                                            >mdi-delete</v-icon
-                                                        >
-                                                    </v-btn>
-                                                </template>
-                                                <span class="font-weight-medium"
-                                                    >Odebrat Přijímač</span
-                                                >
-                                            </v-tooltip>
-                                        </span>
-                                    </div>
-                                </v-toolbar>
-                                <v-card-text>
-                                    <span class="ma-3">
-                                        <strong>Backup kanálu :</strong>
-                                        <v-btn
-                                            v-bind:to="'/device/' + backup.id"
-                                            target="_blank"
-                                            dark
-                                            text
-                                        >
-                                            <span class="blue--text">{{
-                                                prijem.nazev
-                                            }}</span>
-                                        </v-btn>
-                                    </span>
-                                    <span class="ma-3">
-                                        <strong>IP :</strong>
-                                        <a
-                                            :href="'http://' + backup.ip"
-                                            target="_blank"
-                                            >{{ backup.ip }}</a
-                                        >
-                                    </span>
-                                    <span class="ma-3">
-                                        <strong>Přihlášení :</strong>
-                                        {{ backup.login }}
-                                    </span>
-                                </v-card-text>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-card>
-
-                    <!-- tag Linux -->
-
-                    <v-card
-                        v-if="backup.tag === 'Linux'"
-                        class="ma-3"
-                        width="1500"
-                        color="blue-grey lighten-5"
-                        outlined
-                    >
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-toolbar
-                                    dense
-                                    flat
-                                    height="10"
-                                    color="transparent"
-                                >
-                                    <v-spacer></v-spacer>
-                                    <div
-                                        class="text-center d-flex align-center"
-                                    >
-                                        <span>
-                                            <v-tooltip bottom>
-                                                <template
-                                                    v-slot:activator="{ on }"
-                                                >
-                                                    <v-btn
-                                                        v-show="
-                                                            userData.role ===
-                                                                '1' ||
-                                                                userData.role ===
-                                                                    '2'
-                                                        "
-                                                        icon
-                                                        x-small
-                                                        v-on="on"
-                                                        @click="
-                                                            deleteBackupPrijem()
-                                                        "
-                                                    >
-                                                        <v-icon color="red"
-                                                            >mdi-delete</v-icon
-                                                        >
-                                                    </v-btn>
-                                                </template>
-                                                <span class="font-weight-medium"
-                                                    >Odebrat Přijímač</span
-                                                >
-                                            </v-tooltip>
-                                        </span>
-                                    </div>
-                                </v-toolbar>
-                                <v-card-text>
-                                    <span class="ma-3">
-                                        <strong>Backup kanálu :</strong>
-                                        <v-btn
-                                            v-bind:to="'/device/' + backup.id"
-                                            target="_blank"
-                                            dark
-                                            text
-                                        >
-                                            <span class="blue--text">{{
-                                                backup.nazev
-                                            }}</span>
-                                        </v-btn>
-                                    </span>
-                                    <span class="ma-3">
-                                        <strong>IP :</strong>
-                                        <a
-                                            :href="
-                                                'ssh:' +
-                                                    backup.ssh_user +
-                                                    '@' +
-                                                    backup.ip
-                                            "
-                                            target="_blank"
-                                            >{{ backup.ip }}</a
-                                        >
-                                    </span>
-                                    <span class="ma-3">
-                                        <strong>Poznámka :</strong>
-                                        {{ backup.poznamka }}
-                                    </span>
-                                </v-card-text>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-card>
-                    <!-- end devices -->
-                </div>
-
-                <div v-else>
-                    <v-alert type="warning" width="1500">
-                        <strong>Není evidován backup</strong>
-                    </v-alert>
-                </div>
-
-                <!-- end backup prijem -->
-            </div>
-
-            <!-- data z dohledu -->
-            <div v-show="dohledData != 'false'">
-                <v-row>
-                    <v-card
-                        class="ma-3 ml-6"
-                        width="1500"
-                        color="blue-grey lighten-5"
-                        outlined
-                        v-for="dohledovaData in dohledData"
-                        :key="dohledovaData.id"
-                    >
-                        <v-list-item>
-                            <v-card-text>
-                                <span class="ma-3">
-                                    <strong>Status kanálu:</strong>
-                                    <span
-                                        v-if="dohledovaData.Alert === 'success'"
-                                        class="green--text"
-                                    >
-                                        funkční
-                                    </span>
-                                    <span v-else class="red--text">
-                                        výpadek
-                                    </span>
-                                </span>
-                                <!-- Poznamka u kanalu -->
-
-                                <span
-                                    class="ma-3 ml-12"
-                                    v-if="
-                                        dohledovaData.noMonitor === 'mdi-check'
-                                    "
-                                >
-                                    <strong class="green--text"
-                                        >Kanál je dohledován</strong
-                                    >
-                                </span>
-                                <span class="ma-3 ml-12" v-else>
-                                    <strong class="red--text"
-                                        >Kanál se nedohleduje</strong
-                                    >
-                                </span>
-
-                                <!-- Programovy balicek -->
-                                <span
-                                    class="ma-3 ml-12"
-                                    v-if="dohledovaData.audioLang != null"
-                                >
-                                    <strong>Jazyková stopa:</strong>
-                                    <span>{{ dohledovaData.audioLang }}</span>
-                                </span>
-                                <span v-else class="ma-3 ml-12">
-                                    <strong
-                                        >Jazykovou stopu se nepodařilo
-                                        detekovat</strong
-                                    >
-                                </span>
-                            </v-card-text>
-                        </v-list-item>
-                    </v-card>
-                </v-row>
-            </div>
-
-            <!-- výpis historie  -->
-            <div v-show="channelHistory != 'false'" class=" ma-3 mr-12">
-                <v-row>
-                    <v-card
-                        class="ma-3 ml-6 body-1 elevation-0"
-                        width="1500"
-                        v-for="dohledovaData in dohledData"
-                        :key="dohledovaData.id"
-                    >
-                        <v-data-table
-                            no-data-text="nejsou evidované výpadky"
-                            :headers="headerHistory"
-                            :items="channelHistory"
-                            :items-per-page="5"
-                            class="elevation-0"
-                            dense
+                    <v-row justify="center">
+                        <v-dialog
+                            v-model="editIPTVpackage"
+                            persistent
+                            max-height="200px"
+                            max-width="500px"
                         >
-                            <template v-slot:item.ko_time="{ item }">
-                                <span class="red--text" dark>{{
-                                    item.ko_time
-                                }}</span>
-                            </template>
-                        </v-data-table>
-                    </v-card>
-                </v-row>
-            </div>
+                            <v-card>
+                                <v-card-text>
+                                    <v-container>
+                                        <v-row>
+                                            <v-col cols="12" sm="6" md="8">
+                                                <v-select
+                                                    v-model="iptvPackageName"
+                                                    :items="iptvPackage"
+                                                    item-value="nazev"
+                                                    item-text="nazev"
+                                                    label="Programový balíček"
+                                                ></v-select>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row
+                                            v-if="
+                                                channelData.balicek != 'false'
+                                            "
+                                        >
+                                            <v-checkbox
+                                                v-model="addIPTVPackage"
+                                                label="Přidat k již existujícímu"
+                                            ></v-checkbox>
+                                        </v-row>
+                                    </v-container>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                        color="blue darken-1"
+                                        text
+                                        @click="editIPTVpackage = false"
+                                        >Zavřít</v-btn
+                                    >
+                                    <v-btn
+                                        color="green darken-1"
+                                        text
+                                        @click="saveIPTVPackage()"
+                                        >Uložit</v-btn
+                                    >
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </v-row>
+                    <!-- end programovy balicek modal -->
 
-            <!-- konec historie -->
+                    <!-- modal prijem -->
 
-            <!-- vykreslení grafu z dohledu -->
-            <div v-show="volumeChart != false" class=" ma-3 mr-12">
-                <line-chart
-                    width="1500"
-                    class="mr-12"
-                    label="úroveň hlasitosti v dB"
-                    ytitle="dB"
-                    :data="volumeChart"
-                ></line-chart>
-            </div>
+                    <v-row justify="center">
+                        <v-dialog
+                            v-model="addSatelit"
+                            persistent
+                            max-height="200px"
+                            max-width="600px"
+                        >
+                            <v-card>
+                                <v-card-text>
+                                    <v-container>
+                                        <v-row>
+                                            <v-col cols="12" sm="6" md="8">
+                                                <v-select
+                                                    v-model="kategorieId"
+                                                    :items="prijemKategorie"
+                                                    item-value="id"
+                                                    item-text="kategorie"
+                                                    label="kategorie"
+                                                ></v-select>
+                                            </v-col>
+                                        </v-row>
 
-            <div v-show="birateChart != false" class=" ma-3 mr-12">
-                <line-chart
-                    width="1500"
-                    label="bitrate v Mbps"
-                    ytitle="Bitrate v Mbps"
-                    :data="birateChart"
-                ></line-chart>
-            </div>
-
-            <!-- konec vyreslení grafu z dohledu -->
-
-            <!-- náhled -->
-            <v-row>
-                <!-- <v-card
-                    v-if="channelData.img !== 'false'"
-                    class="ma-6"
-                    width="400"
-                    outlined
-                >
-                    <v-list-item>
-                        <v-list-item-content>
-                            <div class="overline mb-4">Náhled</div>
-                            <v-card-text>
-                                <v-row>
-                                    <span width="350" height="200">
-                                        <v-img
-                                            :src="'http://' + channelData.img"
-                                            width="350"
-                                            height="200"
-                                        ></v-img>
-                                    </span>
-                                </v-row>
-                            </v-card-text>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-card> -->
-                <!-- <v-card loading v-else class="ma-6" width="400" outlined>
-                    <v-list-item>
-                        <v-list-item-content>
-                            <v-card-text>
-                                <p>Pokouším se získat náhled</p>
-                            </v-card-text>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-card> -->
-                <!-- konec náhledu -->
-                <!-- historie -->
-                <!-- <v-card
-                    v-if="history === 'false'"
-                    class="ma-6"
-                    width="900"
-                    height="300px"
-                    outlined
-                >
-                    <v-list-item>
-                        <v-list-item-content>
-                            <v-card-text>
-                                <v-row>
-                                    <p>
-                                        Na kanálu nebyl za poslední měsíc žádný
-                                        výpadek.
-                                    </p>
-                                </v-row>
-                            </v-card-text>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-card> -->
-                <!-- <v-card
-                    v-else-if="history !== ''"
-                    class="ma-6"
-                    width="900"
-                    height="300px"
-                    outlined
-                >
-                    <v-list-item>
-                        <v-list-item-content>
-                            <div class="overline mb-4">
-                                Náhled za poslední měsíc, kdy měl kanál výpadek
-                            </div>
-                            <v-card-text>
-                                <v-simple-table height="200px">
-                                    <template v-slot:default>
-                                        <thead>
-                                            <tr>
-                                                <th class="text-left">
-                                                    Status
-                                                </th>
-                                                <th class="text-left">Čas</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr
-                                                v-for="data in history"
-                                                :key="data.id"
+                                        <!-- CA modul -->
+                                        <v-row v-if="kategorieId == '2'">
+                                            <v-col cols="6" sm="6" md="4">
+                                                <v-select
+                                                    v-model="camodulId"
+                                                    :items="camodul"
+                                                    item-value="id"
+                                                    item-text="ca_modul"
+                                                    label="CA Modul"
+                                                ></v-select>
+                                            </v-col>
+                                            <v-col
+                                                v-show="camodulId != ''"
+                                                cols="6"
+                                                sm="6"
+                                                md="6"
                                             >
-                                                <td>{{ data.akce }}</td>
-                                                <td>{{ data.created_at }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </template>
-                                </v-simple-table>
-                            </v-card-text>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-card>
-                <v-card -->
-                <!-- v-else
-                    loading
-                    class="ma-6"
-                    width="900"
-                    height="300px"
-                    outlined
-                >
-                    <v-list-item>
-                        <v-list-item-content>
-                            <v-card-text>
-                                <v-row>
-                                    <p>Pokouším se načíst historii kanálu</p>
-                                </v-row>
-                            </v-card-text>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-card> -->
-                <!-- konec historie -->
-            </v-row>
-            <!-- modal multiplexer -->
+                                                <v-select
+                                                    v-model="camodulChannelId"
+                                                    :items="camodulChannel"
+                                                    item-value="id"
+                                                    item-text="pocet_podporovanych_kanalu"
+                                                    label="Počet kanálů, které CA Modul podporuje"
+                                                ></v-select>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row v-if="camodulChannelId != ''">
+                                            <v-col cols="12" sm="3" md="8">
+                                                <v-text-field
+                                                    type="number"
+                                                    label="Číslo CA modulu"
+                                                    v-model="camodulNumber"
+                                                ></v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                        <!-- konec CA modulu -->
 
-            <v-row justify="center">
-                <v-dialog
-                    v-model="editMultiplexer"
-                    persistent
-                    max-height="200px"
-                    max-width="500px"
-                >
-                    <v-card>
-                        <v-card-text>
-                            <v-container>
-                                <v-row>
-                                    <v-col cols="12" sm="6" md="8">
-                                        <v-select
-                                            v-model="multiplexerId"
-                                            :items="multiplexers"
-                                            item-value="id"
-                                            item-text="name"
-                                            label="multiplexer"
-                                        ></v-select>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn
-                                color="blue darken-1"
-                                text
-                                @click="editMultiplexer = false"
-                                >Zavřít</v-btn
-                            >
-                            <v-btn
-                                color="green darken-1"
-                                text
-                                @click="saveMultiplexer()"
-                                >Uložit</v-btn
-                            >
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-            </v-row>
-            <!-- end modal multiplexer -->
+                                        <v-row v-if="kategorieId == '5'">
+                                            <v-col cols="12" sm="6" md="8">
+                                                <v-text-field
+                                                    v-model="linuxPath"
+                                                    label="Příkaz pro spuštění kanálu"
+                                                    required
+                                                ></v-text-field>
+                                            </v-col>
+                                        </v-row>
 
-            <!-- modal pro poznamku u kanalu -->
-            <v-row justify="center">
-                <v-dialog
-                    v-model="editChannelNote"
-                    persistent
-                    max-height="200px"
-                    max-width="500px"
-                >
-                    <v-card>
-                        <v-card-text>
-                            <v-container>
-                                <v-row>
-                                    <v-col cols="12" sm="6" md="8">
-                                        <v-text-field
-                                            required
-                                            v-model="channelNote"
-                                        ></v-text-field>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn
-                                color="blue darken-1"
-                                text
-                                @click="editChannelNote = false"
-                                >Zavřít</v-btn
-                            >
-                            <v-btn
-                                color="green darken-1"
-                                text
-                                @click="saveChannelNote()"
-                                >Uložit</v-btn
-                            >
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-            </v-row>
-            <!-- end modal poznamky -->
+                                        <v-row v-if="devices != ''">
+                                            <v-col cols="12" sm="6" md="8">
+                                                <v-select
+                                                    v-model="deviceId"
+                                                    :items="devices"
+                                                    item-value="id"
+                                                    item-text="name"
+                                                    label="Zařízení"
+                                                ></v-select>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row
+                                            v-if="rf != '' && rf != 'submit'"
+                                        >
+                                            <v-col cols="12" sm="6" md="8">
+                                                <v-select
+                                                    v-model="rfId"
+                                                    :items="rf"
+                                                    item-value="id"
+                                                    item-text="rf"
+                                                    label="RF na Blankomu"
+                                                ></v-select>
+                                            </v-col>
+                                        </v-row>
 
-            <!-- modal pro editaci programových balícku / pridani programovaneho balicku ke kanalu -->
-
-            <v-row justify="center">
-                <v-dialog
-                    v-model="editIPTVpackage"
-                    persistent
-                    max-height="200px"
-                    max-width="500px"
-                >
-                    <v-card>
-                        <v-card-text>
-                            <v-container>
-                                <v-row>
-                                    <v-col cols="12" sm="6" md="8">
-                                        <v-select
-                                            v-model="iptvPackageName"
-                                            :items="iptvPackage"
-                                            item-value="nazev"
-                                            item-text="nazev"
-                                            label="Programový balíček"
-                                        ></v-select>
-                                    </v-col>
-                                </v-row>
-                                <v-row v-if="channelData.balicek != 'false'">
-                                    <v-checkbox
-                                        v-model="addIPTVPackage"
-                                        label="Přidat k již existujícímu"
-                                    ></v-checkbox>
-                                </v-row>
-                            </v-container>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn
-                                color="blue darken-1"
-                                text
-                                @click="editIPTVpackage = false"
-                                >Zavřít</v-btn
-                            >
-                            <v-btn
-                                color="green darken-1"
-                                text
-                                @click="saveIPTVPackage()"
-                                >Uložit</v-btn
-                            >
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-            </v-row>
-            <!-- end programovy balicek modal -->
-
-            <!-- modal prijem -->
-
-            <v-row justify="center">
-                <v-dialog
-                    v-model="addSatelit"
-                    persistent
-                    max-height="200px"
-                    max-width="600px"
-                >
-                    <v-card>
-                        <v-card-text>
-                            <v-container>
-                                <v-row>
-                                    <v-col cols="12" sm="6" md="8">
-                                        <v-select
-                                            v-model="kategorieId"
-                                            :items="prijemKategorie"
-                                            item-value="id"
-                                            item-text="kategorie"
-                                            label="kategorie"
-                                        ></v-select>
-                                    </v-col>
-                                </v-row>
-
-                                <!-- CA modul -->
-                                <v-row v-if="kategorieId == '2'">
-                                    <v-col cols="6" sm="6" md="4">
-                                        <v-select
-                                            v-model="camodulId"
-                                            :items="camodul"
-                                            item-value="id"
-                                            item-text="ca_modul"
-                                            label="CA Modul"
-                                        ></v-select>
-                                    </v-col>
-                                    <v-col
-                                        v-show="camodulId != ''"
-                                        cols="6"
-                                        sm="6"
-                                        md="6"
+                                        <v-row v-if="rfId != ''">
+                                            <v-col cols="12" sm="6" md="8">
+                                                <v-select
+                                                    v-model="ci"
+                                                    :items="cis"
+                                                    label="CI"
+                                                ></v-select>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                        color="blue darken-1"
+                                        text
+                                        @click="closeSatelit()"
+                                        >Zavřít</v-btn
                                     >
-                                        <v-select
-                                            v-model="camodulChannelId"
-                                            :items="camodulChannel"
-                                            item-value="id"
-                                            item-text="pocet_podporovanych_kanalu"
-                                            label="Počet kanálů, které CA Modul podporuje"
-                                        ></v-select>
-                                    </v-col>
-                                </v-row>
-                                <v-row v-if="camodulChannelId != ''">
-                                    <v-col cols="12" sm="3" md="8">
-                                        <v-text-field
-                                            type="number"
-                                            label="Číslo CA modulu"
-                                            v-model="camodulNumber"
-                                        ></v-text-field>
-                                    </v-col>
-                                </v-row>
-                                <!-- konec CA modulu -->
-
-                                <v-row v-if="kategorieId == '5'">
-                                    <v-col cols="12" sm="6" md="8">
-                                        <v-text-field
-                                            v-model="linuxPath"
-                                            label="Příkaz pro spuštění kanálu"
-                                            required
-                                        ></v-text-field>
-                                    </v-col>
-                                </v-row>
-
-                                <v-row v-if="devices != ''">
-                                    <v-col cols="12" sm="6" md="8">
-                                        <v-select
-                                            v-model="deviceId"
-                                            :items="devices"
-                                            item-value="id"
-                                            item-text="name"
-                                            label="Zařízení"
-                                        ></v-select>
-                                    </v-col>
-                                </v-row>
-                                <v-row v-if="rf != '' && rf != 'submit'">
-                                    <v-col cols="12" sm="6" md="8">
-                                        <v-select
-                                            v-model="rfId"
-                                            :items="rf"
-                                            item-value="id"
-                                            item-text="rf"
-                                            label="RF na Blankomu"
-                                        ></v-select>
-                                    </v-col>
-                                </v-row>
-
-                                <v-row v-if="rfId != ''">
-                                    <v-col cols="12" sm="6" md="8">
-                                        <v-select
-                                            v-model="ci"
-                                            :items="cis"
-                                            label="CI"
-                                        ></v-select>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn
-                                color="blue darken-1"
-                                text
-                                @click="closeSatelit()"
-                                >Zavřít</v-btn
-                            >
-                            <v-btn
-                                color="green darken-1"
-                                text
-                                @click="savePrijem()"
-                                >Uložit</v-btn
-                            >
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-            </v-row>
-            <!-- end modal prijem -->
-
-            <!-- modal backup prijem -->
-
-            <v-row justify="center">
-                <v-dialog
-                    v-model="addBackupSatelit"
-                    persistent
-                    max-height="200px"
-                    max-width="600px"
-                >
-                    <v-card>
-                        <v-card-text>
-                            <v-container>
-                                <v-row>
-                                    <v-col cols="12" sm="6" md="8">
-                                        <v-select
-                                            v-model="kategorieId"
-                                            :items="prijemKategorie"
-                                            item-value="id"
-                                            item-text="kategorie"
-                                            label="kategorie"
-                                        ></v-select>
-                                    </v-col>
-                                </v-row>
-                                <!-- CA modul -->
-                                <v-row v-if="kategorieId == '2'">
-                                    <v-col cols="6" sm="6" md="4">
-                                        <v-select
-                                            v-model="camodulId"
-                                            :items="camodul"
-                                            item-value="id"
-                                            item-text="ca_modul"
-                                            label="CA Modul"
-                                        ></v-select>
-                                    </v-col>
-                                    <v-col
-                                        v-show="camodulId != ''"
-                                        cols="6"
-                                        sm="6"
-                                        md="6"
+                                    <v-btn
+                                        color="green darken-1"
+                                        text
+                                        @click="savePrijem()"
+                                        >Uložit</v-btn
                                     >
-                                        <v-select
-                                            v-model="camodulChannelId"
-                                            :items="camodulChannel"
-                                            item-value="id"
-                                            item-text="pocet_podporovanych_kanalu"
-                                            label="Počet kanálů, které CA Modul podporuje"
-                                        ></v-select>
-                                    </v-col>
-                                </v-row>
-                                <v-row v-if="camodulChannelId != ''">
-                                    <v-col cols="12" sm="3" md="8">
-                                        <v-text-field
-                                            type="number"
-                                            label="Číslo CA modulu"
-                                            v-model="camodulNumber"
-                                        ></v-text-field>
-                                    </v-col>
-                                </v-row>
-                                <!-- konec CA modulu -->
-                                <v-row v-if="kategorieId == '5'">
-                                    <v-col cols="12" sm="6" md="8">
-                                        <v-text-field
-                                            v-model="linuxPath"
-                                            label="Příkaz pro spuštění kanálu"
-                                            required
-                                        ></v-text-field>
-                                    </v-col>
-                                </v-row>
-                                <v-row v-if="devices != ''">
-                                    <v-col cols="12" sm="6" md="8">
-                                        <v-select
-                                            v-model="deviceId"
-                                            :items="devices"
-                                            item-value="id"
-                                            item-text="name"
-                                            label="Zařízení"
-                                        ></v-select>
-                                    </v-col>
-                                </v-row>
-                                <v-row v-if="rf != '' && rf != 'submit'">
-                                    <v-col cols="12" sm="6" md="8">
-                                        <v-select
-                                            v-model="rfId"
-                                            :items="rf"
-                                            item-value="id"
-                                            item-text="rf"
-                                            label="RF na Blankomu"
-                                        ></v-select>
-                                    </v-col>
-                                </v-row>
-                                <v-row v-if="rfId != ''">
-                                    <v-col cols="12" sm="6" md="8">
-                                        <v-select
-                                            v-model="ci"
-                                            :items="cis"
-                                            label="CI"
-                                        ></v-select>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn
-                                color="blue darken-1"
-                                text
-                                @click="closeBackupSatelit()"
-                                >Zavřít</v-btn
-                            >
-                            <v-btn
-                                color="green darken-1"
-                                text
-                                @click="saveBackupPrijem()"
-                                >Uložit</v-btn
-                            >
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-            </v-row>
-            <!-- end modal backup prijem -->
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </v-row>
+                    <!-- end modal prijem -->
 
-            <!-- modal pro založení kanálu do dohledu -->
+                    <!-- modal backup prijem -->
 
-            <v-row justify="center">
-                <v-dialog
-                    v-model="dohledDialog"
-                    persistent
-                    max-height="200px"
-                    max-width="600px"
-                >
-                    <v-card v-if="channelData.dohledUrl != null">
-                        <v-card-text>
-                            <v-container>
-                                <v-row>
-                                    <v-col cols="12" sm="12" md="12">
-                                        <v-text-field
-                                            label="dohledovaná url"
-                                            v-model="channelData.dohledUrl"
-                                            disabled
-                                        ></v-text-field>
-                                    </v-col>
-                                </v-row>
-                                <v-row>
-                                    <v-col cols="6" sm="6" md="6">
-                                        <v-checkbox
-                                            v-model="dohledovatStream"
-                                            label="Dohledovat stream?"
-                                        ></v-checkbox>
-                                    </v-col>
-                                </v-row>
-                                <v-row v-show="dohledovatStream != false">
-                                    <v-col cols="6" sm="6" md="6">
-                                        <v-checkbox
-                                            v-model="dohledVolume"
-                                            label="Dohledovat hlasitosti"
-                                        ></v-checkbox>
-                                    </v-col>
-                                    <v-col cols="6" sm="6" md="6">
-                                        <v-checkbox
-                                            v-model="dohledBitrate"
-                                            label="Dohled datového toku"
-                                        ></v-checkbox>
-                                    </v-col>
-                                </v-row>
-                                <v-row v-show="dohledovatStream != false">
-                                    <v-col cols="6" sm="6" md="6">
-                                        <v-checkbox
-                                            v-model="sendMailAlert"
-                                            label="Zaslat mail alert"
-                                        ></v-checkbox>
-                                    </v-col>
-                                    <v-col cols="6" sm="6" md="6">
-                                        <v-checkbox
-                                            v-model="sendSMS"
-                                            label="Zaslat SMS alert"
-                                        ></v-checkbox>
-                                    </v-col>
-                                </v-row>
-                                <v-row v-show="dohledovatStream != false">
-                                    <v-col cols="6" sm="6" md="6">
-                                        <v-checkbox
-                                            v-model="vytvoritNahled"
-                                            label="Vytvořit náhled"
-                                        ></v-checkbox>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn
-                                color="blue darken-1"
-                                text
-                                @click="closeDohledDialog()"
-                                >Zavřít</v-btn
-                            >
-                            <v-btn
-                                color="green darken-1"
-                                text
-                                @click="saveStoreChannelToDohled()"
-                                >Uložit</v-btn
-                            >
-                        </v-card-actions>
-                    </v-card>
-                    <v-card v-else>
-                        <v-card-text>
-                            <br />
+                    <v-row justify="center">
+                        <v-dialog
+                            v-model="addBackupSatelit"
+                            persistent
+                            max-height="200px"
+                            max-width="600px"
+                        >
+                            <v-card>
+                                <v-card-text>
+                                    <v-container>
+                                        <v-row>
+                                            <v-col cols="12" sm="6" md="8">
+                                                <v-select
+                                                    v-model="kategorieId"
+                                                    :items="prijemKategorie"
+                                                    item-value="id"
+                                                    item-text="kategorie"
+                                                    label="kategorie"
+                                                ></v-select>
+                                            </v-col>
+                                        </v-row>
+                                        <!-- CA modul -->
+                                        <v-row v-if="kategorieId == '2'">
+                                            <v-col cols="6" sm="6" md="4">
+                                                <v-select
+                                                    v-model="camodulId"
+                                                    :items="camodul"
+                                                    item-value="id"
+                                                    item-text="ca_modul"
+                                                    label="CA Modul"
+                                                ></v-select>
+                                            </v-col>
+                                            <v-col
+                                                v-show="camodulId != ''"
+                                                cols="6"
+                                                sm="6"
+                                                md="6"
+                                            >
+                                                <v-select
+                                                    v-model="camodulChannelId"
+                                                    :items="camodulChannel"
+                                                    item-value="id"
+                                                    item-text="pocet_podporovanych_kanalu"
+                                                    label="Počet kanálů, které CA Modul podporuje"
+                                                ></v-select>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row v-if="camodulChannelId != ''">
+                                            <v-col cols="12" sm="3" md="8">
+                                                <v-text-field
+                                                    type="number"
+                                                    label="Číslo CA modulu"
+                                                    v-model="camodulNumber"
+                                                ></v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                        <!-- konec CA modulu -->
+                                        <v-row v-if="kategorieId == '5'">
+                                            <v-col cols="12" sm="6" md="8">
+                                                <v-text-field
+                                                    v-model="linuxPath"
+                                                    label="Příkaz pro spuštění kanálu"
+                                                    required
+                                                ></v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row v-if="devices != ''">
+                                            <v-col cols="12" sm="6" md="8">
+                                                <v-select
+                                                    v-model="deviceId"
+                                                    :items="devices"
+                                                    item-value="id"
+                                                    item-text="name"
+                                                    label="Zařízení"
+                                                ></v-select>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row
+                                            v-if="rf != '' && rf != 'submit'"
+                                        >
+                                            <v-col cols="12" sm="6" md="8">
+                                                <v-select
+                                                    v-model="rfId"
+                                                    :items="rf"
+                                                    item-value="id"
+                                                    item-text="rf"
+                                                    label="RF na Blankomu"
+                                                ></v-select>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row v-if="rfId != ''">
+                                            <v-col cols="12" sm="6" md="8">
+                                                <v-select
+                                                    v-model="ci"
+                                                    :items="cis"
+                                                    label="CI"
+                                                ></v-select>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                        color="blue darken-1"
+                                        text
+                                        @click="closeBackupSatelit()"
+                                        >Zavřít</v-btn
+                                    >
+                                    <v-btn
+                                        color="green darken-1"
+                                        text
+                                        @click="saveBackupPrijem()"
+                                        >Uložit</v-btn
+                                    >
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </v-row>
+                    <!-- end modal backup prijem -->
 
-                            <h2 class="red--text" justify="center">
-                                Není vyplněna dohledová URL!!!
-                            </h2>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn
-                                color="blue darken-1"
-                                text
-                                @click="closeDohledDialog()"
-                                >Zavřít</v-btn
-                            >
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-            </v-row>
-            <!-- konec modal pro založení kanálu do dohledu -->
-        </div>
+                    <!-- Vytvoření nové události u kanálu -->
+
+                    <v-row justify="center">
+                        <v-dialog
+                            v-model="newEventDialog"
+                            persistent
+                            max-height="200px"
+                            max-width="600px"
+                        >
+                            <v-card>
+                                <v-card-title>
+                                    Vytvoření nové události
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-container>
+                                        <v-row>
+                                            <v-col cols="6">
+                                                <v-text-field
+                                                    :disabled="
+                                                        repeatEveryDay == true
+                                                    "
+                                                    :readonly="
+                                                        repeatEveryDay == true
+                                                    "
+                                                    label="Datum začátku výpadku"
+                                                    v-model="start_day"
+                                                    type="date"
+                                                ></v-text-field>
+                                            </v-col>
+                                            <v-col cols="6">
+                                                <v-text-field
+                                                    label="Hodiny začátku výpadku"
+                                                    v-model="start_time"
+                                                    type="time"
+                                                ></v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col cols="6">
+                                                <v-text-field
+                                                    :disabled="
+                                                        repeatEveryDay == true
+                                                    "
+                                                    :readonly="
+                                                        repeatEveryDay == true
+                                                    "
+                                                    label="Datum konce výpadku"
+                                                    v-model="end_day"
+                                                    type="date"
+                                                ></v-text-field>
+                                            </v-col>
+                                            <v-col cols="6">
+                                                <v-text-field
+                                                    label="Hodiny konce výpadku"
+                                                    v-model="end_time"
+                                                    type="time"
+                                                ></v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col>
+                                                <v-textarea
+                                                    v-model="eventPopis"
+                                                    label="Popis výpadku"
+                                                >
+                                                </v-textarea>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col cols="12">
+                                                <v-checkbox
+                                                    v-model="repeatEveryDay"
+                                                    label="Opakovat každý den?"
+                                                ></v-checkbox>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                        color="blue darken-1"
+                                        text
+                                        @click="closeEventDialog()"
+                                        >Zavřít</v-btn
+                                    >
+                                    <v-btn
+                                        color="green darken-1"
+                                        text
+                                        @click="saveNewEvent()"
+                                        >Uložit</v-btn
+                                    >
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </v-row>
+                    <!-- konec modal pro založení kanálu do dohledu -->
+
+                    <!-- odebrání události -->
+
+                    <v-row justify="center">
+                        <v-dialog
+                            v-model="deleteEventDialog"
+                            persistent
+                            max-height="200px"
+                            max-width="600px"
+                        >
+                            <v-card>
+                                <v-card-text>
+                                    <v-container class="pt-12">
+                                        <!-- obsah -->
+                                        <h2>
+                                            Vážně si přejete odebrat událost?
+                                        </h2>
+
+                                        <!-- konec obsahu odebrání události -->
+                                    </v-container>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                        color="blue darken-1"
+                                        text
+                                        @click="closeEventDialog()"
+                                        >Zavřít</v-btn
+                                    >
+                                    <v-btn
+                                        color="red darken-1"
+                                        text
+                                        @click="deleteEvent()"
+                                        >Odebrat</v-btn
+                                    >
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </v-row>
+
+                    <!-- konec dialogu -->
+                </div>
+            </v-col>
+        </v-row>
     </div>
 </template>
 <script>
 export default {
     data() {
         return {
-            headerHistory: [
+            startTime: null,
+            endTime: null,
+            eventId: null,
+            deleteEventDialog: false,
+            expanded: [],
+            singleExpand: false,
+            eventHeaders: [
                 {
-                    text: "Výpadek",
+                    text: "Plánovaný výpadek od dne",
                     align: "start",
-                    value: "ko_time"
-                }
+                    value: "start_day"
+                },
+                { text: "Hodin", value: "start_time" },
+                { text: "Plánovaný výpadek do dne", value: "end_day" },
+                { text: "Hodin", value: "end_time" },
+                { text: "", value: "data-table-expand" },
+                { text: "", value: "akce" }
             ],
+
+            repeatEveryDay: false,
+            end_day: "",
+            end_time: "",
+            start_day: "",
+            start_time: "",
+            newEventDialog: false,
+            event: [],
+            eventPopis: "",
             linuxPath: "",
             vytvoritNahled: true,
             channelHistory: [],
@@ -2287,35 +2347,9 @@ export default {
     },
 
     created() {
+        this.loadEventData();
         try {
             this.loadMulticastData();
-
-            setTimeout(
-                function() {
-                    this.loadDataFromDohled();
-                }.bind(this),
-                1000
-            );
-            setTimeout(
-                function() {
-                    this.loadVolumeChartFromDohled();
-                }.bind(this),
-                1000
-            );
-
-            setTimeout(
-                function() {
-                    this.loadChannelHistory();
-                }.bind(this),
-                1000
-            );
-
-            setTimeout(
-                function() {
-                    this.loadBitrateChartFromDohled();
-                }.bind(this),
-                1000
-            );
         } catch (error) {
             console.log("nepodařilo se načíst multicast");
         }
@@ -2346,6 +2380,76 @@ export default {
             });
     },
     methods: {
+        deleteEvent() {
+            let currentObj = this;
+            axios.post("channel/event/delete", {
+                channelId: this.$route.params.id,
+                startTime: this.startTime,
+                endTime: this.endTime,
+                eventId: this.eventId
+            })
+            .then(function(response) {
+                currentObj.status = response.data;
+                currentObj.deleteEventDialog = false,
+                currentObj.loadEventData();
+            })
+        },
+        openDeleteDalog() {
+            this.deleteEventDialog = true;
+        },
+
+        openDialogNewEvent() {
+            this.newEventDialog = true;
+        },
+        closeEventDialog() {
+            this.newEventDialog = false;
+            this.deleteEventDialog = false;
+            this.repeatEveryDay = false;
+            this.end_day = "";
+            this.end_time = "";
+            this.start_day = "";
+            this.start_time = "";
+            this.eventPopis = "";
+        },
+        saveNewEvent() {
+            let currentObj = this;
+            axios
+                .post("channel/newEvent", {
+                    channelId: this.$route.params.id,
+                    repeatEveryDay: this.repeatEveryDay,
+                    end_day: this.end_day,
+                    end_time: this.end_time,
+                    start_day: this.start_day,
+                    start_time: this.start_time,
+                    eventPopis: this.eventPopis
+                })
+                .then(function(response) {
+                    currentObj.status = response.data;
+                    currentObj.loadEventData();
+                    currentObj.closeEventDialog();
+                })
+                .catch(function(error) {
+                    console.log("chyba" + error);
+                });
+        },
+        loadEventData() {
+            let currentObj = this;
+            axios
+                .post("/api/channel/get/event", {
+                    channelId: this.$route.params.id
+                })
+                .then(function(response) {
+                    if (response.data.status == "empty") {
+                        currentObj.event = "empty";
+                    } else {
+                        currentObj.event = response.data;
+                    }
+                })
+                .catch(function(error) {
+                    console.log("chyba" + error);
+                });
+        },
+
         loadMulticastData() {
             let currentObj = this;
             axios
@@ -2390,48 +2494,6 @@ export default {
                 })
                 .then(function(response) {
                     currentObj.birateChart = response.data;
-                })
-                .catch(function(error) {
-                    console.log("chyba" + error);
-                });
-        },
-
-        loadChannelHistory() {
-            let currentObj = this;
-            axios
-                .post("/api/getChannelHistoryFromDohled", {
-                    id: this.$route.params.id
-                })
-                .then(function(response) {
-                    currentObj.channelHistory = response.data;
-                })
-                .catch(function(error) {
-                    console.log("chyba" + error);
-                });
-        },
-
-        loadVolumeChartFromDohled() {
-            let currentObj = this;
-            axios
-                .post("/api/getVolumeDataFromDohledForChart", {
-                    id: this.$route.params.id
-                })
-                .then(function(response) {
-                    currentObj.volumeChart = response.data;
-                })
-                .catch(function(error) {
-                    console.log("chyba" + error);
-                });
-        },
-
-        loadDataFromDohled() {
-            let currentObj = this;
-            axios
-                .post("/api/getChannelDataFromDohled", {
-                    id: this.$route.params.id
-                })
-                .then(function(response) {
-                    currentObj.dohledData = response.data;
                 })
                 .catch(function(error) {
                     console.log("chyba" + error);
@@ -2936,21 +2998,7 @@ export default {
         }
     },
 
-    mounted() {
-        this.interval = setInterval(
-            function() {
-                try {
-                    this.loadDataFromDohled();
-                    this.loadVolumeChartFromDohled();
-                    this.loadBitrateChartFromDohled();
-                    this.loadChannelHistory();
-                } catch (error) {
-                    console.log(error);
-                }
-            }.bind(this),
-            20000
-        );
-    },
+    mounted() {},
 
     watch: {
         history: function() {
@@ -2986,22 +3034,7 @@ export default {
 
             try {
                 this.loadMulticastData();
-
-                setTimeout(
-                    function() {
-                        try {
-                            this.loadDataFromDohled();
-                            this.loadVolumeChartFromDohled();
-                            this.loadBitrateChartFromDohled();
-                            this.loadChannelHistory();
-                        } catch (error) {
-                            (currentObj.dohledData = false),
-                                (currentObj.volumeChart = false),
-                                (currentObj.birateChart = false);
-                        }
-                    }.bind(this),
-                    2000
-                );
+                this.loadEventData();
             } catch (error) {
                 currentObj.channelData = false;
                 console.log("nepodařilo se načíst multicast");
@@ -3066,10 +3099,6 @@ export default {
                     });
             }
         }
-    },
-
-    beforeDestroy: function() {
-        clearInterval(this.interval);
-    },
+    }
 };
 </script>

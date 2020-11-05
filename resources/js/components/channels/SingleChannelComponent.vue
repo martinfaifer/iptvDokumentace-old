@@ -93,6 +93,13 @@
                             "
                             >H265</v-tab
                         >
+                        <v-tab
+                            link
+                            v-bind:to="
+                                '/channel/' + this.$route.params.id + '/dohled'
+                            "
+                            >Informace z dohledu</v-tab
+                        >
                     </v-tabs>
                 </v-card>
 

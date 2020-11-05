@@ -32,6 +32,7 @@ import WikiDefaultComponent from './components/wiki/WikiDefaultComponent';
 import ChannelPackageDefaultComponent from './components/channelPackages/ChannelPackageDefaultComponent';
 import SettingsDefaultComponent from './components/SettingsDefaultComponent';
 import TagComponent from './components/settings/TagComponent';
+import DohledComponent from './components/channels/DohledComponent';
 
 // midleware
 Vue.use(Vuetify);
@@ -72,6 +73,10 @@ let routes = [
                             {
                                 path: 'h265',
                                 component: H265ChannelComponent
+                            },
+                            {
+                                path: 'dohled',
+                                component: DohledComponent
                             }
                         ]
                     },

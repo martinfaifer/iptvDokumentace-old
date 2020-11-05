@@ -52,10 +52,10 @@ class H264Controller extends Controller
      */
     public function editTranscoder(Request $request)
     {
-        $validation = ValidationController::validateIfIsNull($request->multiplexerId);
-        if ($validation != "true") {
-            return $validation;
-        }
+        // $validation = ValidationController::validateIfIsNull($request->multiplexerId);
+        // if ($validation != "true") {
+        //     return $validation;
+        // }
         return $this->updateH264("id_device", $request->device, $request->channelId);
     }
 

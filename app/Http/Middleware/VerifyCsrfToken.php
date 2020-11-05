@@ -23,6 +23,7 @@ class VerifyCsrfToken extends Middleware
         '/api/communication/channels/monitor',
         '/api/channel/tryToRestartChannel',
         '/api/connectionTest',
-        '/api/channel/search'
+        '/api/channel/search',
+        '/api/channel/get/event'
     ];
 }
