@@ -491,7 +491,14 @@ export default {
     },
     created() {
         this.loadAlerts();
-        this.testConnectionToDohled();
+        try {
+            this.testConnectionToDohled();
+        } catch (error) {
+            this.dohledConnectionStatus = "error";
+            setTimeout(function() {
+                this.dohledConnectionStatus = null;
+            }, 5000);
+        }
         axios
             .get("/api/getUser")
             .then(response => (this.userData = response.data));

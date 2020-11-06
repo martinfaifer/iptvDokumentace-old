@@ -206,18 +206,19 @@ class ApiController extends Controller
      */
     public function test_connection_to_dohled()
     {
+        try {
+            $client = new Client;
 
-        $client = new Client;
-
-        $response = $client->post($this->iptvdohledUriApiConnectionTest, [
-
-            'form_params' => [
-                'hello' => $this->hello_dohled,
-            ]
-        ]);
-
-        if ($body = $response->getBody()->getContents()) {
-            return $body;
+            $response = $client->post($this->iptvdohledUriApiConnectionTest, [
+                'form_params' => [
+                    'hello' => $this->hello_dohled,
+                ]
+            ]);
+            if ($body = $response->getBody()->getContents()) {
+                return $body;
+            }
+        } catch (\Throwable $th) {
+            return "error";
         }
     }
 
@@ -238,12 +239,11 @@ class ApiController extends Controller
         $client = new Client;
 
         $response = $client->post($this->iptvdohledUriApiAlerts, [
-
             'form_params' => [
                 'hello' => $this->hello_dohled,
             ]
         ]);
-
+        // echo $response->getStatusCode();
         if ($body = $response->getBody()->getContents()) {
             return json_decode($body, true);
         }
